@@ -1,4 +1,4 @@
-package com.example.hendercine.bakinbuns;
+package com.hendercine.android.bakinbuns;
 
 import org.junit.Test;
 

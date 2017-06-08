@@ -1,4 +1,4 @@
-package com.example.hendercine.bakinbuns;
+package com.hendercine.android.bakinbuns;
 
 import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.hendercine.bakinbuns.dummy.DummyContent;
+import com.hendercine.android.bakinbuns.dummy.DummyContent;
 
 /**
  * A fragment representing a single Recipe detail screen.

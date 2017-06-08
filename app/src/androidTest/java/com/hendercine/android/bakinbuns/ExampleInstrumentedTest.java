@@ -1,4 +1,4 @@
-package com.example.hendercine.bakinbuns;
+package com.hendercine.android.bakinbuns;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.hendercine.bakinbuns", appContext.getPackageName());
+        assertEquals("com.android.android.bakinbuns", appContext.getPackageName());
     }
 }

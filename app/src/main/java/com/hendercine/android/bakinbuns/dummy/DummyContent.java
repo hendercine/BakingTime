@@ -1,4 +1,4 @@
-package com.example.hendercine.bakinbuns.dummy;
+package com.hendercine.android.bakinbuns.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;

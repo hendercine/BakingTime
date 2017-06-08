@@ -1,4 +1,4 @@
-package com.example.hendercine.bakinbuns;
+package com.hendercine.android.bakinbuns;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-import com.example.hendercine.bakinbuns.dummy.DummyContent;
+import com.hendercine.android.bakinbuns.dummy.DummyContent;
 
 import java.util.List;
 
