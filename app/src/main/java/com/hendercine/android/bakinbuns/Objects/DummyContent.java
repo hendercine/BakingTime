@@ -1,4 +1,4 @@
-package com.hendercine.android.bakinbuns.dummy;
+package com.hendercine.android.bakinbuns.Objects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,12 +16,12 @@ public class DummyContent {
     /**
      * An array of sample (dummy) items.
      */
-    public static final List<DummyItem> ITEMS = new ArrayList<DummyItem>();
+    public static final List<RecipeItem> ITEMS = new ArrayList<RecipeItem>();
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
+    public static final Map<String, RecipeItem> ITEM_MAP = new HashMap<String, RecipeItem>();
 
     private static final int COUNT = 25;
 
@@ -32,13 +32,13 @@ public class DummyContent {
         }
     }
 
-    private static void addItem(DummyItem item) {
+    private static void addItem(RecipeItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
 
-    private static DummyItem createDummyItem(int position) {
-        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
+    private static RecipeItem createDummyItem(int position) {
+        return new RecipeItem(String.valueOf(position), "Item " + position, makeDetails(position));
     }
 
     private static String makeDetails(int position) {
@@ -53,12 +53,12 @@ public class DummyContent {
     /**
      * A dummy item representing a piece of content.
      */
-    public static class DummyItem {
+    public static class RecipeItem {
         public final String id;
         public final String content;
         public final String details;
 
-        public DummyItem(String id, String content, String details) {
+        public RecipeItem(String id, String content, String details) {
             this.id = id;
             this.content = content;
             this.details = details;

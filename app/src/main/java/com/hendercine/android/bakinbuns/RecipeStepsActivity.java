@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-import com.hendercine.android.bakinbuns.dummy.DummyContent;
+import com.hendercine.android.bakinbuns.Objects.DummyContent;
 
 import java.util.List;
 
@@ -73,9 +73,9 @@ public class RecipeStepsActivity extends AppCompatActivity {
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<DummyContent.RecipeItem> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
+        public SimpleItemRecyclerViewAdapter(List<DummyContent.RecipeItem> items) {
             mValues = items;
         }
 
@@ -123,7 +123,7 @@ public class RecipeStepsActivity extends AppCompatActivity {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
+            public DummyContent.RecipeItem mItem;
 
             public ViewHolder(View view) {
                 super(view);

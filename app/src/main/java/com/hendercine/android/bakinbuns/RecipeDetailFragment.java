@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.hendercine.android.bakinbuns.dummy.DummyContent;
+import com.hendercine.android.bakinbuns.Objects.DummyContent;
 
 /**
  * A fragment representing a single Recipe detail screen.
@@ -27,7 +27,7 @@ public class RecipeDetailFragment extends Fragment {
     /**
      * The dummy content this fragment is presenting.
      */
-    private DummyContent.DummyItem mItem;
+    private DummyContent.RecipeItem mItem;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
