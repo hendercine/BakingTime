@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
+import butterknife.ButterKnife;
 import icepick.Icepick;
+import timber.log.Timber;
 
 public class MainSelectionActivity extends AppCompatActivity {
 
@@ -33,6 +35,9 @@ public class MainSelectionActivity extends AppCompatActivity {
 
         Icepick.restoreInstanceState(this, savedInstanceState);
         setContentView(R.layout.activity_main_selection);
+        ButterKnife.bind(this);
+        Timber.tag("LifeCycles");
+        Timber.d("Activity Created");
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.grid_view_recipe_cards, new MainSelectionFragment())

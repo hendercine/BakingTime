@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'maven'
 
 
@@ -22,8 +21,14 @@ android {
                     'proguard-rules.pro'
         }
     }
+    lintOptions {
+        textReport true
+        textOutput 'stdout'
+        ignore 'InvalidPackage'
+    }
 }
 
+def AAVersion = '4.3.1'
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -31,25 +36,48 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    // Retrofit dependencies
+    // ButterKnife
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    // AndroidAnnotations
+    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
+    // Retrofit
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    // IcePick dependencies
+    // IcePick
     compile "frankiesardo:icepick:3.2.0"
     compile "frankiesardo:icepick-processor:3.2.0"
-    // AutoParcel dependencies
+    // AutoParcel
     provided "com.google.auto.value:auto-value:1.2"
-    apt         "com.google.auto.value:auto-value:1.2"
+    annotationProcessor "com.google.auto.value:auto-value:1.2"
     provided "frankiesardo:auto-parcel:1.0.3"
-    apt 'frankiesardo:auto-parcel:{{latest-version}}'
+    annotationProcessor 'frankiesardo:auto-parcel:{{latest-version}}'
     compile 'com.github.tbroyer:gradle-apt-plugin:0b8ff4d'
+    // RxJava
+    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'io.reactivex:rxjava:1.1.4'
+    // Dagger2
+    compile "com.google.dagger:dagger:2.9"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.9"
+    provided 'javax.annotation:jsr250-api:1.0'
+    // ExoPlayer
+    compile 'com.google.android.exoplayer:exoplayer:r2.4.1'
+    // Schematic
+    compile 'com.github.SimonVT.schematic:schematic:81b7df4'
+    annotationProcessor 'com.github.SimonVT.schematic:schematic-compiler:81b7df4'
+    // AboutLibraries
+    compile('com.mikepenz:aboutlibraries:5.9.6@aar') {transitive = true}
+    // Timber
+    compile 'com.jakewharton.timber:timber:4.5.1'
 
-    // LeakCanary dependencies
+    // Testing Dependencies
+    // LeakCanary
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-    // Testing
+    // Espresso
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2',
             {exclude group: 'com.android.support',
                     module: 'support-annotations'})
