@@ -15,8 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-import com.hendercine.android.bakinbuns.Objects.DummyContent;
-
 import java.util.List;
 
 /**

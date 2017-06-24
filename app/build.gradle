@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'maven'
-
+apply plugin: 'org.greenrobot.greendao'
+apply from: '../config/quality/quality.gradle'
 
 android {
     compileSdkVersion 25
@@ -10,76 +11,101 @@ android {
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"http://www.mocky.io/v2\"")
+            buildConfigField("String", "API_KEY", "\"ABCXYZ123TEST\"")
+        }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile(
                     'proguard-android.txt'),
                     'proguard-rules.pro'
+            // TODO: Add API_KEY and BASE_URL to release build type
         }
-    }
-    lintOptions {
-        textReport true
-        textOutput 'stdout'
-        ignore 'InvalidPackage'
     }
 }
 
-def AAVersion = '4.3.1'
+greendao {
+    schemaVersion 1
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    // ButterKnife
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    // AndroidAnnotations
-    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
-    compile "org.androidannotations:androidannotations-api:$AAVersion"
-    // Retrofit
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    // IcePick
-    compile "frankiesardo:icepick:3.2.0"
-    compile "frankiesardo:icepick-processor:3.2.0"
-    // AutoParcel
-    provided "com.google.auto.value:auto-value:1.2"
-    annotationProcessor "com.google.auto.value:auto-value:1.2"
-    provided "frankiesardo:auto-parcel:1.0.3"
-    annotationProcessor 'frankiesardo:auto-parcel:{{latest-version}}'
-    compile 'com.github.tbroyer:gradle-apt-plugin:0b8ff4d'
-    // RxJava
-    compile 'io.reactivex:rxandroid:1.2.0'
-    compile 'io.reactivex:rxjava:1.1.4'
-    // Dagger2
-    compile "com.google.dagger:dagger:2.9"
-    annotationProcessor "com.google.dagger:dagger-compiler:2.9"
-    provided 'javax.annotation:jsr250-api:1.0'
-    // ExoPlayer
-    compile 'com.google.android.exoplayer:exoplayer:r2.4.1'
-    // Schematic
-    compile 'com.github.SimonVT.schematic:schematic:81b7df4'
-    annotationProcessor 'com.github.SimonVT.schematic:schematic-compiler:81b7df4'
-    // AboutLibraries
-    compile('com.mikepenz:aboutlibraries:5.9.6@aar') {transitive = true}
-    // Timber
-    compile 'com.jakewharton.timber:timber:4.5.1'
 
-    // Testing Dependencies
+
+    // android support libraries
+    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:design:$rootProject.supportLibraryVersion"
+    compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
+    compile "com.android.support:animated-vector-drawable:$rootProject.supportLibraryVersion"
+
+    // font
+    compile "uk.co.chrisjenx:calligraphy:$rootProject.calligraphyVersion"
+
+    // network
+    compile "com.amitshekhar.android:rx2-android-networking:$rootProject.rx2FastAndroidNetworking"
+
+    // image
+    compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+
+    // ExoPlayer
+    compile "com.google.android.exoplayer:exoplayer:$rootProject.exoplayerVersion"
+
+    // parser
+    compile "com.google.code.gson:gson:$rootProject.gsonVersion"
+
+    // database
+    compile "org.greenrobot:greendao:$rootProject.greenDaoVersion"
+
+    // debug database
+    debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDBVersion"
+
+    // dependency injection
+    compile "com.google.dagger:dagger:$rootProject.dagger2Version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
+    provided 'javax.annotation:jsr250-api:1.0'
+    compile 'javax.inject:javax.inject:1'
+
+    // reactive
+    compile "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2Version"
+    compile "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
+
+    // code generator for view
+    compile "com.jakewharton:butterknife:$rootProject.butterKnifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterKnifeVersion"
+
+    // swipe view
+    compile "com.mindorks:placeholderview:$rootProject.placeholderviewVersion"
+
+    // logger
+    compile "com.jakewharton.timber:timber:$rootProject.timberVersion"
+
+    // AboutLibraries
+    compile("com.mikepenz:aboutlibraries:$rootProject.aboutlibrariesVersion"){transitive = true}
+
+    // dependencies for local unit tests
+    testCompile "junit:junit:$rootProject.ext.junitVersion"
+    testCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    testAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
+
+    // UI Testing
+    androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-intents:$rootProject.espressoVersion"
+    androidTestCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
     // LeakCanary
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-    // Espresso
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2',
-            {exclude group: 'com.android.support',
-                    module: 'support-annotations'})
-    testCompile 'junit:junit:4.12'
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.leakcanaryVersion"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakcanaryVersion"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakcanaryVersion"
+}
+
+configurations.all {
+    resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
 }
