@@ -1,9 +1,18 @@
-package com.hendercine.android.bakinbuns;
+/*
+ * Created by James Henderson on 2017
+ * Copyright (c) Hendercine Productions and James Henderson 2017.
+ * All rights reserved.
+ *
+ * Last modified 6/13/17 11:44 AM
+ */
+
+package com.hendercine.android.bakinbuns.ui.main;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.hendercine.android.bakinbuns.R;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 

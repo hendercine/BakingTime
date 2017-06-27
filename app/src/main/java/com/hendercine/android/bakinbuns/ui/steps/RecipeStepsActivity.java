@@ -1,4 +1,12 @@
-package com.hendercine.android.bakinbuns;
+/*
+ * Created by James Henderson on 2017
+ * Copyright (c) Hendercine Productions and James Henderson 2017.
+ * All rights reserved.
+ *
+ * Last modified 6/26/17 10:45 AM
+ */
+
+package com.hendercine.android.bakinbuns.ui.steps;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +22,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
+import com.hendercine.android.bakinbuns.R;
+import com.hendercine.android.bakinbuns.ui.details.RecipeDetailActivity;
 
 import java.util.List;
 
