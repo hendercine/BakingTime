@@ -8,6 +8,13 @@
 
 package com.hendercine.android.bakinbuns.data;
 
+import android.content.Context;
+
+import com.hendercine.android.bakinbuns.data.db.DbHelper;
+import com.hendercine.android.bakinbuns.data.network.ApiHelper;
+import com.hendercine.android.bakinbuns.di.ApplicationContext;
+
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
@@ -16,4 +23,19 @@ import javax.inject.Singleton;
 
 @Singleton
 public class AppDataManager implements DataManager {
+
+    private static final String TAG = "AppDataManager";
+
+    private final Context mContext;
+    private final DbHelper mDdbHelper;
+    private final ApiHelper mApiHelper;
+
+    @Inject
+    public AppDataManager(@ApplicationContext Context context,
+                          DbHelper dbHelper,
+                          ApiHelper apiHelper) {
+        mContext = context;
+        mDdbHelper = dbHelper;
+        mApiHelper = apiHelper;
+    }
 }

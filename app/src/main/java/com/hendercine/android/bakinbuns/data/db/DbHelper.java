@@ -8,7 +8,9 @@
 
 package com.hendercine.android.bakinbuns.data.db;
 
+import com.hendercine.android.bakinbuns.data.db.model.Ingredient;
 import com.hendercine.android.bakinbuns.data.db.model.Recipe;
+import com.hendercine.android.bakinbuns.data.db.model.RecipeStep;
 
 import java.util.List;
 
@@ -22,4 +24,26 @@ import io.reactivex.Observable;
 public interface DbHelper {
 
     Observable<List<Recipe>> getAllRecipes();
+
+    Observable<List<RecipeStep>> getAllRecipeSteps();
+
+    Observable<List<Ingredient>> getAllIngredients();
+
+    Observable<Boolean> isRecipeEmpty();
+
+    Observable<Boolean> isRecipeStepEmpty();
+
+    Observable<Boolean> isIngredientEmpty();
+
+    Observable<Boolean> saveRecipe();
+
+    Observable<Boolean> saveRecipeStep();
+
+    Observable<Boolean> saveIngredient();
+
+    Observable<Boolean> saveRecipeList();
+
+    Observable<Boolean> saveRecipeStepList();
+
+    Observable<Boolean> saveIngredientList();
 }

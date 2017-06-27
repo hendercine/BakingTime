@@ -8,7 +8,19 @@
 
 package com.hendercine.android.bakinbuns.data.db;
 
+import com.hendercine.android.bakinbuns.data.db.model.DaoMaster;
+import com.hendercine.android.bakinbuns.data.db.model.DaoSession;
+import com.hendercine.android.bakinbuns.data.db.model.Ingredient;
+import com.hendercine.android.bakinbuns.data.db.model.Recipe;
+import com.hendercine.android.bakinbuns.data.db.model.RecipeStep;
+
+import java.util.List;
+import java.util.concurrent.Callable;
+
+import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import io.reactivex.Observable;
 
 /**
  * BakinBuns created by hendercine on 6/26/17.
@@ -16,4 +28,137 @@ import javax.inject.Singleton;
 
 @Singleton
 public class AppDbHelper implements DbHelper {
+
+    private final DaoSession mDaoSession;
+
+    @Inject
+    public AppDbHelper(DbOpenHelper dbOpenHelper) {
+        mDaoSession = new DaoMaster(dbOpenHelper.getWritableDb()).newSession();
+    }
+
+    @Override
+    public Observable<List<Recipe>> getAllRecipes() {
+        return Observable.fromCallable(new Callable<List<Recipe>>() {
+            @Override
+            public List<Recipe> call() throws Exception {
+                return mDaoSession.getRecipeDao().loadAll();
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<RecipeStep>> getAllRecipeSteps() {
+        return Observable.fromCallable(new Callable<List<RecipeStep>>() {
+            @Override
+            public List<RecipeStep> call() throws Exception {
+                return mDaoSession.getRecipeStepDao().loadAll();
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<Ingredient>> getAllIngredients() {
+        return Observable.fromCallable(new Callable<List<Ingredient>>() {
+            @Override
+            public List<Ingredient> call() throws Exception {
+                return mDaoSession.getIngredientsDao().loadAll();
+            }
+        });
+    }
+
+    @Override
+    public Observable<Boolean> isRecipeEmpty() {
+        return Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return !(mDaoSession.getRecipeDao().count() > 0);
+            }
+        });
+    }
+
+    @Override
+    public Observable<Boolean> isRecipeStepEmpty() {
+        return Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return !(mDaoSession.getRecipeStepDao().count() > 0);
+            }
+        });
+    }
+
+    @Override
+    public Observable<Boolean> isIngredientEmpty() {
+        return Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return !(mDaoSession.getIngredientsDao().count() > 0);
+            }
+        });
+    }
+
+    @Override
+    public Observable<Boolean> saveRecipe(final Recipe recipe) {
+        return Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                mDaoSession.getRecipeDao().insert(recipe);
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public Observable<Boolean> saveRecipeStep(final RecipeStep recipeStep) {
+        return Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                mDaoSession.getRecipeStepDao().insert(recipeStep);
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public Observable<Boolean> saveIngredient(final Ingredient ingredient) {
+        return Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                mDaoSession.getIngredientsDao().insert(ingredient);
+                return true
+            }
+        });
+    }
+
+    @Override
+    public Observable<Boolean> saveRecipeList(final List<Recipe> recipeList) {
+        return Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                mDaoSession.getRecipeDao().insertInTx(recipeList);
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public Observable<Boolean> saveRecipeStepList(final List<RecipeStep> recipeStepList) {
+        return Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                mDaoSession.getRecipeStepDao().insertInTx(recipeStepList);
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public Observable<Boolean> saveIngredientList(final List<Ingredient> ingredientList) {
+        return Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                mDaoSession.getIngredientsDao().insertInTx(ingredientList);
+                return true;
+            }
+        });
+    }
 }
