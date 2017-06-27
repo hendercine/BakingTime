@@ -28,12 +28,28 @@ public class RecipeStep {
     private Long id;
 
     @Expose
-    @SerializedName("steps_title")
-    @Property(nameInDb = "steps_title")
-    private String stepsTitle;
+    @SerializedName("short_description")
+    @Property(nameInDb = "short_description")
+    private String shortDescription;
 
     @Expose
-    @SerializedName("steps_text")
-    @Property(nameInDb = "steps_text")
-    private String stepsText;
+    @SerializedName("description")
+    @Property(nameInDb = "description")
+    private String description;
+
+    @Expose
+    @SerializedName("video_url")
+    @Property(nameInDb = "video_url")
+    private String videoUrl;
+
+    @Expose
+    @SerializedName("thumbnail_url")
+    @Property(nameInDb = "thumbnail_url")
+    private String thumbnailUrl;
+
+    @Expose
+    @SerializedName("recipe_id")
+    @Property(nameInDb = "recipe_id")
+    private Long recipeId;
+
 }

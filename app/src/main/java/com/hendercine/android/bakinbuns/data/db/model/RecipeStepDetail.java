@@ -3,7 +3,7 @@
  * Copyright (c) Hendercine Productions and James Henderson 2017.
  * All rights reserved.
  *
- * Last modified 6/26/17 5:51 PM
+ * Last modified 6/26/17 8:57 AM
  */
 
 package com.hendercine.android.bakinbuns.data.db.model;
@@ -19,8 +19,8 @@ import org.greenrobot.greendao.annotation.Property;
  * BakinBuns created by hendercine on 6/26/17.
  */
 
-@Entity(nameInDb = "ingredients")
-public class Ingredients {
+@Entity(nameInDb = "step_instructions")
+public class RecipeStepDetail {
 
     @Expose
     @SerializedName("id")
@@ -28,23 +28,8 @@ public class Ingredients {
     private Long id;
 
     @Expose
-    @SerializedName("quantity")
-    @Property(nameInDb = "quantity")
-    private String ingredientQuantity;
-
-    @Expose
-    @SerializedName("measure")
-    @Property(nameInDb = "measure")
-    private String ingredientMeasure;
-
-    @Expose
-    @SerializedName("ingredient")
-    @Property(nameInDb = "ingredient")
-    private String ingredientName;
-
-    @Expose
-    @SerializedName("recipe_id")
-    @Property(nameInDb = "recipe_id")
-    private Long recipeId;
+    @SerializedName("step_id")
+    @Property(nameInDb = "step_id")
+    private Long stepId;
 
 }
