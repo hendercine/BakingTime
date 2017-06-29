@@ -10,6 +10,7 @@ package com.hendercine.android.bakinbuns.di.component;
 
 import com.hendercine.android.bakinbuns.di.PerService;
 import com.hendercine.android.bakinbuns.di.module.ServiceModule;
+import com.hendercine.android.bakinbuns.service.SyncService;
 
 import dagger.Component;
 

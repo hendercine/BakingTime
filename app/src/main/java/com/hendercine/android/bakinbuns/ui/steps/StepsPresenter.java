@@ -16,4 +16,7 @@ import com.hendercine.android.bakinbuns.ui.base.BasePresenter;
 
 public class StepsPresenter<V extends StepsMvpView> extends BasePresenter<V>
         implements StepsMvpPresenter<V> {
+    public StepsPresenter() {
+        super(mDataManager, mSchedulerProvider, mCompositeDisposable);
+    }
 }

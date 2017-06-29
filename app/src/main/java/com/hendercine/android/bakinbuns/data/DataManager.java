@@ -8,9 +8,20 @@
 
 package com.hendercine.android.bakinbuns.data;
 
+import com.hendercine.android.bakinbuns.data.db.DbHelper;
+
+import io.reactivex.Observable;
+
 /**
  * BakinBuns created by hendercine on 6/23/17.
  */
 
-interface DataManager {
+public interface DataManager extends DbHelper {
+
+    Observable<Boolean> addDatabaseRecipes();
+
+    Observable<Boolean> addDatabaseRecipeSteps();
+
+    Observable<Boolean> addDatabaseIngredients();
+
 }

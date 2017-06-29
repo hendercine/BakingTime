@@ -10,6 +10,9 @@ package com.hendercine.android.bakinbuns.di.component;
 
 import com.hendercine.android.bakinbuns.di.PerActivity;
 import com.hendercine.android.bakinbuns.di.module.ActivityModule;
+import com.hendercine.android.bakinbuns.ui.details.DetailFragment;
+import com.hendercine.android.bakinbuns.ui.main.MainSelectionActivity;
+import com.hendercine.android.bakinbuns.ui.steps.RecipeStepsActivity;
 
 import dagger.Component;
 
@@ -20,4 +23,11 @@ import dagger.Component;
 @PerActivity
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
 public interface ActivityComponent {
+
+    void inject(MainSelectionActivity activity);
+
+    void inject(RecipeStepsActivity activity);
+
+    void inject(DetailFragment fragment);
+
 }

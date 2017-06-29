@@ -25,7 +25,7 @@
 
         </activity>
         <activity
-            android:name="com.hendercine.android.bakinbuns.ui.details.RecipeDetailActivity"
+            android:name="com.hendercine.android.bakinbuns.ui.details.DetailFragment"
             android:label="@string/title_recipe_detail"
             android:parentActivityName="com.hendercine.android.bakinbuns.ui.steps.RecipeStepsActivity"
             android:theme="@style/AppTheme.NoActionBar">

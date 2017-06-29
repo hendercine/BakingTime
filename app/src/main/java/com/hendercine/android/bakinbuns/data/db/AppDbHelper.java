@@ -124,7 +124,7 @@ public class AppDbHelper implements DbHelper {
             @Override
             public Boolean call() throws Exception {
                 mDaoSession.getIngredientsDao().insert(ingredient);
-                return true
+                return true;
             }
         });
     }

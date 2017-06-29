@@ -16,4 +16,7 @@ import com.hendercine.android.bakinbuns.ui.base.BasePresenter;
 
 public class MainPresenter<V extends MainMvpView> extends BasePresenter<V>
         implements MainMvpPresenter<V> {
+    public MainPresenter() {
+        super(mDataManager, mSchedulerProvider, mCompositeDisposable);
+    }
 }

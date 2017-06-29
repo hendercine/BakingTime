@@ -35,15 +35,15 @@ public interface DbHelper {
 
     Observable<Boolean> isIngredientEmpty();
 
-    Observable<Boolean> saveRecipe();
+    Observable<Boolean> saveRecipe(Recipe recipe);
 
-    Observable<Boolean> saveRecipeStep();
+    Observable<Boolean> saveRecipeStep(RecipeStep recipeStep);
 
-    Observable<Boolean> saveIngredient();
+    Observable<Boolean> saveIngredient(Ingredient ingredient);
 
-    Observable<Boolean> saveRecipeList();
+    Observable<Boolean> saveRecipeList(List<Recipe> recipeList);
 
-    Observable<Boolean> saveRecipeStepList();
+    Observable<Boolean> saveRecipeStepList(List<RecipeStep> recipeStepList);
 
-    Observable<Boolean> saveIngredientList();
+    Observable<Boolean> saveIngredientList(List<Ingredient> ingredientList);
 }

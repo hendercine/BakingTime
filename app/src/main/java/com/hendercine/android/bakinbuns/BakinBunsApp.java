@@ -12,6 +12,7 @@ import android.app.Application;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.interceptors.HttpLoggingInterceptor;
+import com.hendercine.android.bakinbuns.data.DataManager;
 import com.hendercine.android.bakinbuns.di.component.ApplicationComponent;
 import com.hendercine.android.bakinbuns.di.module.ApplicationModule;
 import com.hendercine.android.bakinbuns.utils.AppLogger;
