@@ -21,6 +21,9 @@ import com.hendercine.android.bakinbuns.ui.steps.RecipeStepsActivity;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * An activity representing a single Recipe detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
@@ -28,6 +31,8 @@ import javax.inject.Inject;
  * in a {@link RecipeStepsActivity}.
  */
 public class DetailFragment extends BaseFragment implements DetailsMvpView {
+
+    public static final String TAG = "AboutFragment";
 
     @Inject
     DetailsMvpPresenter<DetailsMvpView> mPresenter;
@@ -42,9 +47,36 @@ public class DetailFragment extends BaseFragment implements DetailsMvpView {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
         ActivityComponent component = getActivityComponent();
+        if (component != null) {
+            component.inject(this);
+            setUnbinder(ButterKnife.bind(this, view));
+        }
+
+        return view;
+    }
+
+    @Override
+    protected void setUp(View view) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    @OnClick(R.id.toolbar)
+    void onNavBackClick() {
+        getBaseActivity().onFragmentDetached(TAG);
+    }
+
+    @Override
+    public void onDestroyView() {
+        mPresenter.onDetach();
+        super.onDestroyView();
     }
 }

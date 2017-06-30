@@ -14,11 +14,13 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ import com.hendercine.android.bakinbuns.di.module.ActivityModule;
 import com.hendercine.android.bakinbuns.utils.CommonUtils;
 import com.hendercine.android.bakinbuns.utils.NetworkUtils;
 
+import butterknife.BindView;
 import butterknife.Unbinder;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -46,6 +49,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     private Unbinder mUnbinder;
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +58,28 @@ public abstract class BaseActivity extends AppCompatActivity implements
                 .activityModule(new ActivityModule(this))
                 .applicationComponent(((BakinBunsApp) getApplication()).getComponent())
                 .build();
+    }
+
+    private boolean useToolbar() {
+        return true;
+    }
+
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        View view = getLayoutInflater().inflate(layoutResID, null);
+        configureToolbar(view);
+        super.setContentView(view);
+    }
+
+    private void configureToolbar(View view) {
+        if (toolbar != null) {
+            if (useToolbar()) {
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            } else {
+                toolbar.setVisibility(View.GONE);
+            }
+        }
     }
 
     public ActivityComponent getActivityComponent() {

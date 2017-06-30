@@ -17,10 +17,11 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:title="@string/app_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
             android:subtitleTextColor="@color/white"
             android:titleTextAppearance="@style/Toolbar.TitleText"
+            android:elevation="4dp"
             style="@style/Toolbar"
             tools:targetApi="m"/>
 
