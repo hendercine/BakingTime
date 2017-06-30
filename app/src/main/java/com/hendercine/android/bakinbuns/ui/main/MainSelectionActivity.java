@@ -63,7 +63,7 @@ public class MainSelectionActivity extends AppCompatActivity {
     // TODO: Remove or uncomment and modify the following code.
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.main, menu);
+//        getMenuInflater().inflate(R.menu.menu, menu);
 //        return true;
 //    }
 //

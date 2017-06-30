@@ -8,18 +8,11 @@
   -->
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:tools="http://schemas.android.com/tools"
        android:layout_width="match_parent"
        android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:title="@string/app_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:subtitleTextColor="@color/white"
-        android:titleTextAppearance="@style/Toolbar.TitleText"
-        style="@style/Toolbar"
-        tools:targetApi="m"/>
-
+        style="@style/Toolbar"/>
 </merge>

@@ -73,12 +73,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     private void configureToolbar(View view) {
         if (toolbar != null) {
-            if (useToolbar()) {
-                setSupportActionBar(toolbar);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            } else {
-                toolbar.setVisibility(View.GONE);
-            }
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
