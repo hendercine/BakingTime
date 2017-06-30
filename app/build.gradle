@@ -104,6 +104,7 @@ dependencies {
     debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.leakcanaryVersion"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakcanaryVersion"
     testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakcanaryVersion"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 
 configurations.all {

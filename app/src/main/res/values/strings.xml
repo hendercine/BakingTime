@@ -9,4 +9,5 @@
     <string name="api_default_error">Something went wrong!</string>
     <string name="connection_error">Internet connection lost!</string>
     <string name="api_retry_error">Please retry!</string>
+    <string name="next_step">Next Step</string>
 </resources>

@@ -109,7 +109,7 @@ public class Recipe {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 1713959885)
+    @Generated
     public List<Ingredient> getIngredientList() {
         if (ingredientList == null) {
             final DaoSession daoSession = this.daoSession;

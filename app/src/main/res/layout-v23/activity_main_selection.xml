@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by James Henderson on 2017
+  ~ Copyright (c) Hendercine Productions and James Henderson 2017.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 6/29/17 9:57 PM
+  -->
 
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.hendercine.android.bakinbuns.ui.details.DetailFragment"
-    tools:ignore="MergeRootFrame">
-
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             tools:context="com.hendercine.android.bakinbuns.ui.main.MainSelectionActivity"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/activity_main"
@@ -18,11 +21,9 @@
         android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            app:elevation="4dp">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -30,9 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:subtitleTextColor="@color/white"
-                android:titleTextAppearance="@style/Toolbar.TitleText"
-                style="@style/Toolbar"
-                tools:targetApi="m"/>
+                style="@style/Toolbar"/>
 
         </android.support.design.widget.AppBarLayout>
 
@@ -43,5 +42,5 @@
             android:numColumns="auto_fit"/>
 
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</FrameLayout>
 
