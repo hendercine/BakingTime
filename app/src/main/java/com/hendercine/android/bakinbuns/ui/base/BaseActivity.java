@@ -49,7 +49,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     private Unbinder mUnbinder;
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
                 .build();
     }
 
-    private boolean useToolbar() {
+    protected boolean useToolbar() {
         return true;
     }
 
@@ -72,9 +72,15 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     private void configureToolbar(View view) {
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            if (useToolbar()) {
+                setSupportActionBar(toolbar);
+                assert getSupportActionBar() != null;
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            } else {
+                toolbar.setVisibility(View.GONE);
+            }
         }
     }
 

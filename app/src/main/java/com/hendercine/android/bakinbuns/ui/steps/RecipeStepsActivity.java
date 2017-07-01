@@ -28,6 +28,8 @@ import com.hendercine.android.bakinbuns.ui.details.DetailFragment;
 
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * An activity representing a list of Recipes. This activity
  * has different presentations for handset and tablet-size devices. On
@@ -43,30 +45,25 @@ public class RecipeStepsActivity extends AppCompatActivity {
      * device.
      */
     private boolean mTwoPane;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.recipe_list)
+    View recyclerView;
+    @BindView(R.id.recipe_detail_container)
+    View recipe_detail_container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_steps);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        View recyclerView = findViewById(R.id.recipe_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
 
-        if (findViewById(R.id.recipe_detail_container) != null) {
+        if (recipe_detail_container != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
