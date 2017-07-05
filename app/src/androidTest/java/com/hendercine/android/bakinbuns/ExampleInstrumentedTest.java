@@ -1,3 +1,11 @@
+/*
+ * Created by James Henderson on 2017
+ * Copyright (c) Hendercine Productions and James Henderson 2017.
+ * All rights reserved.
+ *
+ * Last modified 7/4/17 5:15 PM
+ */
+
 package com.hendercine.android.bakinbuns;
 
 import android.content.Context;

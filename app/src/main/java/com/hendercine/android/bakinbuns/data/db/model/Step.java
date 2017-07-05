@@ -13,6 +13,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.Generated;
 
@@ -21,7 +22,7 @@ import org.greenrobot.greendao.annotation.Generated;
  */
 
 @Entity(nameInDb = "steps")
-public class RecipeStep {
+public class Step {
 
     @Expose
     @SerializedName("id")
@@ -54,8 +55,8 @@ public class RecipeStep {
     private Long recipeId;
 
     @Generated(hash = 1570994513)
-    public RecipeStep(Long id, String shortDescription, String description,
-            String videoUrl, String thumbnailUrl, Long recipeId) {
+    public Step(Long id, String shortDescription, String description,
+                String videoUrl, String thumbnailUrl, Long recipeId) {
         this.id = id;
         this.shortDescription = shortDescription;
         this.description = description;
@@ -65,7 +66,7 @@ public class RecipeStep {
     }
 
     @Generated(hash = 540939657)
-    public RecipeStep() {
+    public Step() {
     }
 
     public Long getId() {
@@ -116,4 +117,31 @@ public class RecipeStep {
         this.recipeId = recipeId;
     }
 
+    @Keep
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Step)) return false;
+
+        Step step = (Step) obj;
+
+        if (!id.equals(step.id)) return false;
+        if (!shortDescription.equals(step.shortDescription)) return false;
+        if (!description.equals(step.description)) return false;
+        if (!videoUrl.equals(step.videoUrl)) return false;
+        if (!thumbnailUrl.equals(step.thumbnailUrl)) return false;
+        return recipeId.equals(step.recipeId);
+    }
+
+    @Keep
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + shortDescription.hashCode();
+        result = 31 * result + description.hashCode();
+        result = 31 * result + videoUrl.hashCode();
+        result = 31 * result + thumbnailUrl.hashCode();
+        result = 31 * result + recipeId.hashCode();
+        return result;
+    }
 }

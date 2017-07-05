@@ -12,7 +12,7 @@ import com.hendercine.android.bakinbuns.di.PerActivity;
 import com.hendercine.android.bakinbuns.di.module.ActivityModule;
 import com.hendercine.android.bakinbuns.ui.details.DetailFragment;
 import com.hendercine.android.bakinbuns.ui.main.MainSelectionActivity;
-import com.hendercine.android.bakinbuns.ui.steps.RecipeStepsActivity;
+import com.hendercine.android.bakinbuns.ui.steps.StepsActivity;
 
 import dagger.Component;
 
@@ -26,7 +26,7 @@ public interface ActivityComponent {
 
     void inject(MainSelectionActivity activity);
 
-    void inject(RecipeStepsActivity activity);
+    void inject(StepsActivity activity);
 
     void inject(DetailFragment fragment);
 

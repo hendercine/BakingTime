@@ -38,7 +38,7 @@ public class Recipe {
     private String recipeName;
 
     @ToMany(referencedJoinProperty = "recipeId")
-    private List<RecipeStep> recipeStepList;
+    private List<Step> stepList;
 
     @ToMany(referencedJoinProperty = "recipeId")
     private List<Ingredient> ingredientList;
@@ -82,27 +82,27 @@ public class Recipe {
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
     @Generated(hash = 1174902388)
-    public List<RecipeStep> getRecipeStepList() {
-        if (recipeStepList == null) {
+    public List<Step> getStepList() {
+        if (stepList == null) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
             RecipeStepDao targetDao = daoSession.getRecipeStepDao();
-            List<RecipeStep> recipeStepListNew = targetDao._queryRecipe_RecipeStepList(id);
+            List<Step> stepListNew = targetDao._queryRecipe_RecipeStepList(id);
             synchronized (this) {
-                if (recipeStepList == null) {
-                    recipeStepList = recipeStepListNew;
+                if (stepList == null) {
+                    stepList = stepListNew;
                 }
             }
         }
-        return recipeStepList;
+        return stepList;
     }
 
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
     @Generated(hash = 1544548276)
     public synchronized void resetRecipeStepList() {
-        recipeStepList = null;
+        stepList = null;
     }
 
     /**

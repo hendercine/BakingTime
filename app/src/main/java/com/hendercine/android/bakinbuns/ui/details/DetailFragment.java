@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.di.component.ActivityComponent;
 import com.hendercine.android.bakinbuns.ui.base.BaseFragment;
-import com.hendercine.android.bakinbuns.ui.steps.RecipeStepsActivity;
+import com.hendercine.android.bakinbuns.ui.steps.StepsActivity;
 
 import javax.inject.Inject;
 
@@ -28,7 +28,7 @@ import butterknife.OnClick;
  * An activity representing a single Recipe detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link RecipeStepsActivity}.
+ * in a {@link StepsActivity}.
  */
 public class DetailFragment extends BaseFragment implements DetailsMvpView {
 

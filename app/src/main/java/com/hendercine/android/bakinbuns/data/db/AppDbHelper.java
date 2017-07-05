@@ -12,7 +12,7 @@ import com.hendercine.android.bakinbuns.data.db.model.DaoMaster;
 import com.hendercine.android.bakinbuns.data.db.model.DaoSession;
 import com.hendercine.android.bakinbuns.data.db.model.Ingredient;
 import com.hendercine.android.bakinbuns.data.db.model.Recipe;
-import com.hendercine.android.bakinbuns.data.db.model.RecipeStep;
+import com.hendercine.android.bakinbuns.data.db.model.Step;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -47,10 +47,10 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<List<RecipeStep>> getAllRecipeSteps() {
-        return Observable.fromCallable(new Callable<List<RecipeStep>>() {
+    public Observable<List<Step>> getAllRecipeSteps() {
+        return Observable.fromCallable(new Callable<List<Step>>() {
             @Override
-            public List<RecipeStep> call() throws Exception {
+            public List<Step> call() throws Exception {
                 return mDaoSession.getRecipeStepDao().loadAll();
             }
         });
@@ -108,11 +108,11 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> saveRecipeStep(final RecipeStep recipeStep) {
+    public Observable<Boolean> saveRecipeStep(final Step step) {
         return Observable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                mDaoSession.getRecipeStepDao().insert(recipeStep);
+                mDaoSession.getRecipeStepDao().insert(step);
                 return true;
             }
         });
@@ -141,11 +141,11 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> saveRecipeStepList(final List<RecipeStep> recipeStepList) {
+    public Observable<Boolean> saveRecipeStepList(final List<Step> stepList) {
         return Observable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                mDaoSession.getRecipeStepDao().insertInTx(recipeStepList);
+                mDaoSession.getRecipeStepDao().insertInTx(stepList);
                 return true;
             }
         });

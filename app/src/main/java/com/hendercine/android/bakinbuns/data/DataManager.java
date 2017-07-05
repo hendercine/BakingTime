@@ -9,6 +9,7 @@
 package com.hendercine.android.bakinbuns.data;
 
 import com.hendercine.android.bakinbuns.data.db.DbHelper;
+import com.hendercine.android.bakinbuns.data.network.ApiHelper;
 
 import io.reactivex.Observable;
 
@@ -16,7 +17,7 @@ import io.reactivex.Observable;
  * BakinBuns created by hendercine on 6/23/17.
  */
 
-public interface DataManager extends DbHelper {
+public interface DataManager extends DbHelper, ApiHelper {
 
     Observable<Boolean> addDatabaseRecipes();
 

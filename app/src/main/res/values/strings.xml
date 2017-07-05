@@ -11,4 +11,5 @@
     <string name="api_retry_error">Please retry!</string>
     <string name="next_step">Next Step</string>
     <string name="action_back">Back</string>
+    <string name="step_instruction_placeholder_text">Some recipe step instructions here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque luctus metus et augue interdum auctor. Nunc suscipit augue arcu, ac sollicitudin purus tincidunt non. Sed tempor velit tincidunt, gravida quam at, ullamcorper quam. Nunc facilisis magna sit amet lacinia tempor. Morbi id diam scelerisque diam facilisis imperdiet ac nec felis. Vestibulum pretium facilisis metus, vel ultrices urna dignissim non. Aenean non ante ligula. Ut sodales aliquam urna quis consectetur. Etiam semper, elit in scelerisque interdum, leo ipsum condimentum mi, vitae tempus nulla magna eu tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.</string>
 </resources>

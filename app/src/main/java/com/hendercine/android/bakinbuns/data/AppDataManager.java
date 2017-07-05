@@ -16,7 +16,7 @@ import com.google.gson.internal.$Gson$Types;
 import com.hendercine.android.bakinbuns.data.db.DbHelper;
 import com.hendercine.android.bakinbuns.data.db.model.Ingredient;
 import com.hendercine.android.bakinbuns.data.db.model.Recipe;
-import com.hendercine.android.bakinbuns.data.db.model.RecipeStep;
+import com.hendercine.android.bakinbuns.data.db.model.Step;
 import com.hendercine.android.bakinbuns.di.ApplicationContext;
 import com.hendercine.android.bakinbuns.utils.AppConstants;
 import com.hendercine.android.bakinbuns.utils.CommonUtils;
@@ -88,13 +88,13 @@ public class AppDataManager implements DataManager {
                             throws Exception {
                         if (isEmpty) {
                             Type type = $Gson$Types.newParameterizedTypeWithOwner
-                                    (null, List.class, RecipeStep.class);
-                            List<RecipeStep> recipeStepList = gson.fromJson(CommonUtils
+                                    (null, List.class, Step.class);
+                            List<Step> stepList = gson.fromJson(CommonUtils
                                             .loadJSONFromUrl(mContext,
                                                     AppConstants.RECIPE_JSON_URL),
                                     type);
 
-                            return saveRecipeStepList(recipeStepList);
+                            return saveRecipeStepList(stepList);
                         }
                         return Observable.just(false);
                     }
@@ -132,7 +132,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<List<RecipeStep>> getAllRecipeSteps() {
+    public Observable<List<Step>> getAllRecipeSteps() {
         return mDdbHelper.getAllRecipeSteps();
     }
 
@@ -162,8 +162,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<Boolean> saveRecipeStep(RecipeStep recipeStep) {
-        return mDdbHelper.saveRecipeStep(recipeStep);
+    public Observable<Boolean> saveRecipeStep(Step step) {
+        return mDdbHelper.saveRecipeStep(step);
     }
 
     @Override
@@ -177,8 +177,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<Boolean> saveRecipeStepList(List<RecipeStep> recipeStepList) {
-        return mDdbHelper.saveRecipeStepList(recipeStepList);
+    public Observable<Boolean> saveRecipeStepList(List<Step> stepList) {
+        return mDdbHelper.saveRecipeStepList(stepList);
     }
 
     @Override

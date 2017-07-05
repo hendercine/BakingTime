@@ -8,9 +8,21 @@
 
 package com.hendercine.android.bakinbuns.data.network;
 
+import com.hendercine.android.bakinbuns.data.network.model.IngredientResponse;
+import com.hendercine.android.bakinbuns.data.network.model.StepResponse;
+
+import io.reactivex.Observable;
+
 /**
  * BakinBuns created by hendercine on 6/26/17.
  */
 
 public interface ApiHelper {
+
+    ApiHeader getApiHeader();
+
+    Observable<StepResponse> getStepApiCall();
+
+    Observable<IngredientResponse> getIngredientApiCall();
+
 }

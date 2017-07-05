@@ -10,7 +10,7 @@ package com.hendercine.android.bakinbuns.data.db;
 
 import com.hendercine.android.bakinbuns.data.db.model.Ingredient;
 import com.hendercine.android.bakinbuns.data.db.model.Recipe;
-import com.hendercine.android.bakinbuns.data.db.model.RecipeStep;
+import com.hendercine.android.bakinbuns.data.db.model.Step;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public interface DbHelper {
 
     Observable<List<Recipe>> getAllRecipes();
 
-    Observable<List<RecipeStep>> getAllRecipeSteps();
+    Observable<List<Step>> getAllRecipeSteps();
 
     Observable<List<Ingredient>> getAllIngredients();
 
@@ -37,13 +37,13 @@ public interface DbHelper {
 
     Observable<Boolean> saveRecipe(Recipe recipe);
 
-    Observable<Boolean> saveRecipeStep(RecipeStep recipeStep);
+    Observable<Boolean> saveRecipeStep(Step step);
 
     Observable<Boolean> saveIngredient(Ingredient ingredient);
 
     Observable<Boolean> saveRecipeList(List<Recipe> recipeList);
 
-    Observable<Boolean> saveRecipeStepList(List<RecipeStep> recipeStepList);
+    Observable<Boolean> saveRecipeStepList(List<Step> stepList);
 
     Observable<Boolean> saveIngredientList(List<Ingredient> ingredientList);
 }
