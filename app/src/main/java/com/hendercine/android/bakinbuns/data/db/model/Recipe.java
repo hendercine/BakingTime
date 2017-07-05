@@ -81,15 +81,15 @@ public class Recipe {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 1174902388)
+    @Generated(hash = 840021958)
     public List<Step> getStepList() {
         if (stepList == null) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            RecipeStepDao targetDao = daoSession.getRecipeStepDao();
-            List<Step> stepListNew = targetDao._queryRecipe_RecipeStepList(id);
+            StepDao targetDao = daoSession.getStepDao();
+            List<Step> stepListNew = targetDao._queryRecipe_StepList(id);
             synchronized (this) {
                 if (stepList == null) {
                     stepList = stepListNew;
@@ -100,8 +100,8 @@ public class Recipe {
     }
 
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    @Generated(hash = 1544548276)
-    public synchronized void resetRecipeStepList() {
+    @Generated(hash = 2055851112)
+    public synchronized void resetStepList() {
         stepList = null;
     }
 
@@ -109,15 +109,16 @@ public class Recipe {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated
+    @Generated(hash = 1854910623)
     public List<Ingredient> getIngredientList() {
         if (ingredientList == null) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            IngredientsDao targetDao = daoSession.getIngredientsDao();
-            List<Ingredient> ingredientListNew = targetDao._queryRecipe_IngredientsList(id);
+            IngredientDao targetDao = daoSession.getIngredientDao();
+            List<Ingredient> ingredientListNew = targetDao
+                    ._queryRecipe_IngredientList(id);
             synchronized (this) {
                 if (ingredientList == null) {
                     ingredientList = ingredientListNew;
@@ -128,8 +129,8 @@ public class Recipe {
     }
 
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    @Generated(hash = 913976339)
-    public synchronized void resetIngredientsList() {
+    @Generated(hash = 29217069)
+    public synchronized void resetIngredientList() {
         ingredientList = null;
     }
 
@@ -175,5 +176,4 @@ public class Recipe {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getRecipeDao() : null;
     }
-
 }

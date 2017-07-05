@@ -21,12 +21,6 @@
               android:gravity="center"
               android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/imageViewEmpty"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_rabbit" />
 
     <TextView
         android:id="@+id/tv_message"
@@ -50,7 +44,7 @@
 
     <Button
         android:id="@+id/btn_retry"
-        style="@style/Button.Primary.Quiz.Empty"
+        style="@style/Button.Primary.Step.Empty"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

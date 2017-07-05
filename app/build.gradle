@@ -55,7 +55,7 @@ dependencies {
     // image
     compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
 
-    // ExoPlayer
+    // exoPlayer
     compile "com.google.android.exoplayer:exoplayer:$rootProject.exoplayerVersion"
 
     // parser
@@ -66,6 +66,10 @@ dependencies {
 
     // debug database
     debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDBVersion"
+
+    // icepick
+    compile "frankiesardo:icepick:$rootProject.icepickVersion"
+    provided "frankiesardo:icepick-processor:$rootProject.icepickVersion"
 
     // dependency injection
     compile "com.google.dagger:dagger:$rootProject.dagger2Version"

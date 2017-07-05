@@ -16,6 +16,8 @@ import com.hendercine.android.bakinbuns.ui.base.MvpPresenter;
  */
 
 @PerActivity
-public interface DetailsMvpPresenter<V extends DetailsMvpView> extends
-        MvpPresenter<V> {
+public interface DetailsMvpPresenter<V extends DetailsMvpView>
+        extends MvpPresenter<V> {
+
+//    void onViewPrepared();
 }

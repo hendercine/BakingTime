@@ -10,9 +10,9 @@ package com.hendercine.android.bakinbuns.ui.main;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.hendercine.android.bakinbuns.R;
+import com.hendercine.android.bakinbuns.ui.base.BaseActivity;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 import icepick.Icepick;
 import timber.log.Timber;
 
-public class MainSelectionActivity extends AppCompatActivity {
+public class MainSelectionActivity extends BaseActivity implements MainMvpView {
 
     // Create the LeakCanary watcher
     public static RefWatcher getRefWatcher(Context context) {
@@ -47,17 +47,28 @@ public class MainSelectionActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Timber.tag("LifeCycles");
         Timber.d("Activity Created");
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.grid_view_recipe_cards, new MainSelectionFragment())
-                    .commit();
+
         }
+
+    @Override
+    protected void setUp() {
+
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
+    }
+
+    @Override
+    public void onError(String message) {
+
+    }
+
+    @Override
+    public void onFragmentDetached(String tag) {
+
     }
 
     // TODO: Remove or uncomment and modify the following code.

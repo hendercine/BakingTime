@@ -48,9 +48,9 @@ public class Ingredient {
     @Property(nameInDb = "recipe_id")
     private Long recipeId;
 
-    @Generated(hash = 1293555273)
+    @Generated(hash = 571558325)
     public Ingredient(Long id, String ingredientQuantity, String ingredientMeasure,
-                      String ingredientName, Long recipeId) {
+            String ingredientName, Long recipeId) {
         this.id = id;
         this.ingredientQuantity = ingredientQuantity;
         this.ingredientMeasure = ingredientMeasure;
@@ -58,7 +58,7 @@ public class Ingredient {
         this.recipeId = recipeId;
     }
 
-    @Generated(hash = 1338416856)
+    @Generated(hash = 1584798654)
     public Ingredient() {
     }
 

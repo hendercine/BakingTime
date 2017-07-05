@@ -54,9 +54,9 @@ public class Step {
     @Property(nameInDb = "recipe_id")
     private Long recipeId;
 
-    @Generated(hash = 1570994513)
+    @Generated(hash = 1437332610)
     public Step(Long id, String shortDescription, String description,
-                String videoUrl, String thumbnailUrl, Long recipeId) {
+            String videoUrl, String thumbnailUrl, Long recipeId) {
         this.id = id;
         this.shortDescription = shortDescription;
         this.description = description;
@@ -65,8 +65,36 @@ public class Step {
         this.recipeId = recipeId;
     }
 
-    @Generated(hash = 540939657)
+    @Generated(hash = 561308863)
     public Step() {
+    }
+
+    @Keep
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Step)) return false;
+
+        Step step = (Step) obj;
+
+        if (!id.equals(step.id)) return false;
+        if (!shortDescription.equals(step.shortDescription)) return false;
+        if (!description.equals(step.description)) return false;
+        if (!videoUrl.equals(step.videoUrl)) return false;
+        if (!thumbnailUrl.equals(step.thumbnailUrl)) return false;
+        return recipeId.equals(step.recipeId);
+    }
+
+    @Keep
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + shortDescription.hashCode();
+        result = 31 * result + description.hashCode();
+        result = 31 * result + videoUrl.hashCode();
+        result = 31 * result + thumbnailUrl.hashCode();
+        result = 31 * result + recipeId.hashCode();
+        return result;
     }
 
     public Long getId() {
@@ -115,33 +143,5 @@ public class Step {
 
     public void setRecipeId(Long recipeId) {
         this.recipeId = recipeId;
-    }
-
-    @Keep
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Step)) return false;
-
-        Step step = (Step) obj;
-
-        if (!id.equals(step.id)) return false;
-        if (!shortDescription.equals(step.shortDescription)) return false;
-        if (!description.equals(step.description)) return false;
-        if (!videoUrl.equals(step.videoUrl)) return false;
-        if (!thumbnailUrl.equals(step.thumbnailUrl)) return false;
-        return recipeId.equals(step.recipeId);
-    }
-
-    @Keep
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + shortDescription.hashCode();
-        result = 31 * result + description.hashCode();
-        result = 31 * result + videoUrl.hashCode();
-        result = 31 * result + thumbnailUrl.hashCode();
-        result = 31 * result + recipeId.hashCode();
-        return result;
     }
 }

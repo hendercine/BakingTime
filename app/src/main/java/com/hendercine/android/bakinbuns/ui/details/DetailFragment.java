@@ -10,9 +10,12 @@ package com.hendercine.android.bakinbuns.ui.details;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.di.component.ActivityComponent;
@@ -21,6 +24,7 @@ import com.hendercine.android.bakinbuns.ui.steps.StepsActivity;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -30,12 +34,21 @@ import butterknife.OnClick;
  * item details are presented side-by-side with a list of items
  * in a {@link StepsActivity}.
  */
-public class DetailFragment extends BaseFragment implements DetailsMvpView {
+public class DetailFragment extends BaseFragment implements DetailsMvpView  {
 
-    public static final String TAG = "AboutFragment";
+    public static final String TAG = "DetailFragment";
 
     @Inject
     DetailsMvpPresenter<DetailsMvpView> mPresenter;
+
+    @BindView(R.id.vid_view)
+    VideoView mVidView;
+
+    @BindView(R.id.detail_step_instruction)
+    CardView mStepInstructionCv;
+
+    @BindView(R.id.step_instruction_text)
+    TextView mStepInstructionTv;
 
     public DetailFragment newInstance() {
         Bundle args = new Bundle();
@@ -48,15 +61,16 @@ public class DetailFragment extends BaseFragment implements DetailsMvpView {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detail, container, false);
+        View detailView = inflater.inflate(R.layout.fragment_detail, container, false);
 
         ActivityComponent component = getActivityComponent();
         if (component != null) {
             component.inject(this);
-            setUnbinder(ButterKnife.bind(this, view));
+            setUnbinder(ButterKnife.bind(this, detailView));
+            mPresenter.onAttach(this);
         }
 
-        return view;
+        return detailView;
     }
 
     @Override
@@ -79,4 +93,9 @@ public class DetailFragment extends BaseFragment implements DetailsMvpView {
         mPresenter.onDetach();
         super.onDestroyView();
     }
+
+//    @Override
+//    public void updateStep(List<Step> stepList) {
+//
+//    }
 }

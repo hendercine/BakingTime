@@ -15,4 +15,6 @@ import com.hendercine.android.bakinbuns.ui.base.MvpView;
  */
 
 public interface DetailsMvpView extends MvpView {
+
+//    void updateStep(List<Step> stepList);
 }
