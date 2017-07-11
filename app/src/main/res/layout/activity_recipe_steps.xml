@@ -27,7 +27,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include layout="@layout/recipe_steps" />
+        <include layout="@layout/fragment_recipe_steps" />
     </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
