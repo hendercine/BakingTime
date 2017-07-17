@@ -8,55 +8,57 @@
 
 package com.hendercine.android.bakinbuns.Objects;
 
+import android.os.Parcelable;
+
+import com.google.auto.value.AutoValue;
+
 import java.util.ArrayList;
 
 /**
  * BakinBuns created by hendercine on 7/10/17.
  */
 
-public class Recipe {
+@AutoValue
+public abstract class Recipe implements Parcelable {
+    public abstract int recipeId();
 
-    private int mRecipeId;
-    private String mRecipeName;
-    private ArrayList<Ingredient> mIngredients;
-    private ArrayList<Step> mSteps;
+    public abstract String recipeName();
 
-    public Recipe(int recipeId, String recipeName, ArrayList<Ingredient> ingredients, ArrayList<Step> steps) {
-        this.mRecipeId = recipeId;
-        this.mRecipeName = recipeName;
-        this.mIngredients = ingredients;
-        this.mSteps = steps;
+    public abstract ArrayList<Ingredient> ingredients();
+
+    public abstract ArrayList<Step> steps();
+
+    public abstract int servings();
+
+    public static Recipe create(int recipeId, String recipeName,
+                                ArrayList<Ingredient> ingredients,
+                                ArrayList<Step> steps, int servings) {
+        return builder()
+                .recipeId(recipeId)
+                .recipeName(recipeName)
+                .ingredients(ingredients)
+                .steps(steps)
+                .servings(servings)
+                .build();
     }
 
-    public int getRecipeId() {
-        return mRecipeId;
+    public static Builder builder() {
+        return new AutoValue_Recipe.Builder();
     }
 
-    public void setRecipeId(int recipeId) {
-        this.mRecipeId = recipeId;
+    @AutoValue.Builder
+    public interface Builder {
+        Builder recipeId(int x);
+
+        Builder recipeName(String s);
+
+        Builder ingredients(ArrayList<Ingredient> g);
+
+        Builder steps(ArrayList<Step> p);
+
+        Builder servings(int x);
+
+        Recipe build();
     }
 
-    public String getRecipeName() {
-        return mRecipeName;
-    }
-
-    public void setRecipeName(String recipeName) {
-        this.mRecipeName = recipeName;
-    }
-
-    public ArrayList<Ingredient> getIngredients() {
-        return mIngredients;
-    }
-
-    public void setIngredients(ArrayList<Ingredient> ingredients) {
-        this.mIngredients = ingredients;
-    }
-
-    public ArrayList<Step> getSteps() {
-        return mSteps;
-    }
-
-    public void setSteps(ArrayList<Step> steps) {
-        this.mSteps = steps;
-    }
 }

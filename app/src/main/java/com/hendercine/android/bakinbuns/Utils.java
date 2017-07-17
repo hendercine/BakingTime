@@ -10,7 +10,6 @@ package com.hendercine.android.bakinbuns;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
-import android.util.JsonReader;
 
 /**
  * BakinBuns created by hendercine on 7/10/17.
@@ -25,5 +24,5 @@ public class Utils {
         return noOfColumns;
     }
 
-    static JsonReader readJSONData(Context context)
+//    static JsonReader readJSONData(Context context)
 }

@@ -8,63 +8,47 @@
 
 package com.hendercine.android.bakinbuns.Objects;
 
+import android.os.Parcelable;
+
+import com.google.auto.value.AutoValue;
+
+import retrofit2.http.Url;
+
 /**
  * BakinBuns created by hendercine on 7/10/17.
  */
 
-class Step {
+@AutoValue
+public abstract class Step implements Parcelable {
 
-    private int mStepId;
-    private String mShortDescription;
-    private String mDescription;
-    private String mVideoUrl;
-    private String mThumbnailUrl;
+    public abstract int stepId();
+    public abstract String shortDescription();
+    public abstract String description();
+    public abstract Url videoUrl();
+    public abstract Url thumbnailUrl();
 
-    public Step(int stepId, String shortDescription, String description, String videoUrl, String thumbnailUrl) {
-        this.mStepId = stepId;
-        this.mShortDescription = shortDescription;
-        this.mDescription = description;
-        this.mVideoUrl = videoUrl;
-        this.mThumbnailUrl = thumbnailUrl;
+    public static Step create(int stepId, String shortDescription, String
+            description, Url videoUrl, Url thumbnailUrl) {
+        return builder()
+                .stepId(stepId)
+                .shortDescription(shortDescription)
+                .description(description)
+                .videoUrl(videoUrl)
+                .thumbnailUrl(thumbnailUrl)
+                .build();
     }
 
-    public int getStepId() {
-        return mStepId;
+    public static Builder builder() {
+        return new AutoValue_Step.Builder();
     }
 
-    public void setStepId(int stepId) {
-        this.mStepId = stepId;
-    }
-
-    public String getShortDescription() {
-        return mShortDescription;
-    }
-
-    public void setShortDescription(String shortDescription) {
-        this.mShortDescription = shortDescription;
-    }
-
-    public String getDescription() {
-        return mDescription;
-    }
-
-    public void setDescription(String description) {
-        this.mDescription = description;
-    }
-
-    public String getVideoUrl() {
-        return mVideoUrl;
-    }
-
-    public void setVideoUrl(String videoUrl) {
-        this.mVideoUrl = videoUrl;
-    }
-
-    public String getThumbnailUrl() {
-        return mThumbnailUrl;
-    }
-
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.mThumbnailUrl = thumbnailUrl;
+    @AutoValue.Builder
+    public interface Builder {
+        Builder stepId(int x);
+        Builder shortDescription(String s);
+        Builder description(String s);
+        Builder videoUrl(Url v);
+        Builder thumbnailUrl(Url i);
+        Step build();
     }
 }

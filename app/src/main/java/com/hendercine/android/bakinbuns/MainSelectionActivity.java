@@ -13,16 +13,15 @@ import com.squareup.leakcanary.RefWatcher;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.Icepick;
-import icepick.State;
 import timber.log.Timber;
 
 public class MainSelectionActivity extends AppCompatActivity implements
         MainRecyclerViewGridAdapter.ItemClickListener {
 
-    @State private RefWatcher refWatcher;
-    MainRecyclerViewGridAdapter mAdapter;
+    private RefWatcher refWatcher;
+    private MainRecyclerViewGridAdapter mAdapter;
     @BindView(R.id.main_rv_recipe_cards)
-    private RecyclerView mainGridCards;
+    RecyclerView mainGridCards;
 
 
     // Create the LeakCanary watcher

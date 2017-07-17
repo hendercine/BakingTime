@@ -15,24 +15,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.hendercine.android.bakinbuns.Objects.Recipe;
-
-import java.util.ArrayList;
-
 import butterknife.BindView;
 
 /**
  * BakinBuns created by hendercine on 7/10/17.
  */
 
-public class MainRecyclerViewGridAdapter extends RecyclerView
+class MainRecyclerViewGridAdapter extends RecyclerView
         .Adapter<MainRecyclerViewGridAdapter.ViewHolder> {
 
     private LayoutInflater mInflater;
-    private ArrayList<Recipe> mData = new ArrayList<>();
+//    TODO: Change String[] to ArrayList<Recipe> and change other instances
+//    to array access.
+    private String[] mData = new String[0];
     private ItemClickListener mClickListener;
 
-    public MainRecyclerViewGridAdapter(Context context, ArrayList<Recipe> data) {
+    MainRecyclerViewGridAdapter(Context context, String[] data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -40,28 +38,32 @@ public class MainRecyclerViewGridAdapter extends RecyclerView
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater
-                .inflate(R.layout.fragment_main_selection, parent, false);
+                .inflate(R.layout.activity_main_selection, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(MainRecyclerViewGridAdapter.ViewHolder holder, int position) {
-        Recipe recipe = mData.get(position);
-        holder.mCardTextView.setText((CharSequence) recipe);
+        String recipe = mData[position];
+        holder.mTitleTextView.setText(recipe);
+        holder.mServingsTextView.setText(recipe);
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mData.length;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements
+    class ViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener {
 
-        @BindView(R.id.main_grid_item_text)
-        public TextView mCardTextView;
+        @BindView(R.id.main_grid_item_servings)
+        TextView mServingsTextView;
 
-        public ViewHolder(View itemView) {
+        @BindView(R.id.main_grid_item_title)
+        TextView mTitleTextView;
+
+        ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
         }
@@ -73,15 +75,15 @@ public class MainRecyclerViewGridAdapter extends RecyclerView
         }
     }
 
-        public String getItem(int id) {
-            return String.valueOf(mData.get(id));
+        String getItem(int id) {
+            return String.valueOf(mData[id]);
         }
 
-        public void setClickListener(ItemClickListener itemClickListener) {
+        void setClickListener(ItemClickListener itemClickListener) {
             this.mClickListener = itemClickListener;
         }
 
-    public interface ItemClickListener {
+    interface ItemClickListener {
         void onItemClick(View view, int position);
     }
 }

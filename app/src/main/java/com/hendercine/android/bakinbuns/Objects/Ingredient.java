@@ -8,43 +8,37 @@
 
 package com.hendercine.android.bakinbuns.Objects;
 
+import android.os.Parcelable;
+
+import com.google.auto.value.AutoValue;
+
 /**
  * BakinBuns created by hendercine on 7/10/17.
  */
+@AutoValue
+public abstract class Ingredient implements Parcelable {
 
-class Ingredient {
+    public abstract int quantity();
+    public abstract String measure();
+    public abstract String ingredientName();
 
-    private int mQuantity;
-    private String mMeasure;
-    private String mIngredientName;
-
-    public Ingredient(int quantity, String measure, String ingredientName) {
-        this.mQuantity = quantity;
-        this.mMeasure = measure;
-        this.mIngredientName = ingredientName;
+    public static Ingredient create(int quantity, String measure, String ingredientName) {
+        return builder()
+                .quantity(quantity)
+                .measure(measure).
+                ingredientName(ingredientName)
+                .build();
     }
 
-    public int getQuantity() {
-        return mQuantity;
+    @AutoValue.Builder
+    public interface Builder {
+        Builder quantity(int x);
+        Builder measure(String x);
+        Builder ingredientName(String x);
+        Ingredient build();
     }
 
-    public void setQuantity(int quantity) {
-        this.mQuantity = quantity;
-    }
-
-    public String getMeasure() {
-        return mMeasure;
-    }
-
-    public void setMeasure(String measure) {
-        this.mMeasure = measure;
-    }
-
-    public String getIngredientName() {
-        return mIngredientName;
-    }
-
-    public void setIngredientName(String ingredientName) {
-        this.mIngredientName = ingredientName;
+    public static Builder builder() {
+        return new AutoValue_Ingredient.Builder();
     }
 }
