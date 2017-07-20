@@ -12,7 +12,6 @@ import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import icepick.Icepick;
 import timber.log.Timber;
 
 public class MainSelectionActivity extends AppCompatActivity implements
@@ -42,7 +41,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
         }
         refWatcher = LeakCanary.install(getApplication());
 
-        Icepick.restoreInstanceState(this, savedInstanceState);
         setContentView(R.layout.activity_main_selection);
         ButterKnife.bind(this);
         Timber.tag("LifeCycles");
@@ -54,8 +52,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
                 "31", "32", "33", "34", "35", "36", "37", "38", "39", "40",
                 "41", "42", "43", "44", "45", "46", "47", "48"};
 
-        int numberOfColumns = Utils.calculateNoOfColumns(getApplicationContext())
-                ;
+        int numberOfColumns = Utils.calculateNoOfColumns(getApplicationContext());
         mainGridCards.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
         mAdapter = new MainRecyclerViewGridAdapter(this, data);
         mAdapter.setClickListener(this);
@@ -65,7 +62,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
     }
 
     @Override

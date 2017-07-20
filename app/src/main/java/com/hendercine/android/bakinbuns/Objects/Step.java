@@ -8,47 +8,71 @@
 
 package com.hendercine.android.bakinbuns.Objects;
 
-import android.os.Parcelable;
-
-import com.google.auto.value.AutoValue;
-
-import retrofit2.http.Url;
+import org.parceler.Parcel;
 
 /**
  * BakinBuns created by hendercine on 7/10/17.
  */
 
-@AutoValue
-public abstract class Step implements Parcelable {
+@Parcel
+public class Step {
 
-    public abstract int stepId();
-    public abstract String shortDescription();
-    public abstract String description();
-    public abstract Url videoUrl();
-    public abstract Url thumbnailUrl();
+    int stepId;
+    String shortDescription;
+    String description;
+    String videoUrl;
+    String thumbnailUrl;
 
-    public static Step create(int stepId, String shortDescription, String
-            description, Url videoUrl, Url thumbnailUrl) {
-        return builder()
-                .stepId(stepId)
-                .shortDescription(shortDescription)
-                .description(description)
-                .videoUrl(videoUrl)
-                .thumbnailUrl(thumbnailUrl)
-                .build();
+    // Empty constructor needed by the Parceler library
+    public Step() {
     }
 
-    public static Builder builder() {
-        return new AutoValue_Step.Builder();
+    public Step(int stepId, String shortDescription, String description,
+                String videoUrl, String thumbnailUrl) {
+        this.stepId = stepId;
+        this.shortDescription = shortDescription;
+        this.description = description;
+        this.videoUrl = videoUrl;
+        this.thumbnailUrl = thumbnailUrl;
     }
 
-    @AutoValue.Builder
-    public interface Builder {
-        Builder stepId(int x);
-        Builder shortDescription(String s);
-        Builder description(String s);
-        Builder videoUrl(Url v);
-        Builder thumbnailUrl(Url i);
-        Step build();
+    public int getStepId() {
+        return stepId;
+    }
+
+    public void setStepId(int stepId) {
+        this.stepId = stepId;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 }

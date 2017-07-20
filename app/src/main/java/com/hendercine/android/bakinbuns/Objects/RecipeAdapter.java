@@ -31,9 +31,9 @@ import butterknife.BindView;
 public class RecipeAdapter extends ArrayAdapter<Recipe> {
 
     @BindView(R.id.main_grid_item_title)
-    TextView recipeName;
+    TextView recipeNameView;
     @BindView(R.id.main_grid_item_servings)
-    TextView numberOfServings;
+    TextView numberOfServingsView;
     @BindView(R.id.main_grid_item)
     CardView gridItemCard;
 
@@ -46,8 +46,10 @@ public class RecipeAdapter extends ArrayAdapter<Recipe> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         Recipe currentRecipe = getItem(position);
-        String getRecipeName = currentRecipe.recipeName();
-        String getNumberOfServings = String.valueOf(currentRecipe.servings());
+
+        assert currentRecipe != null;
+        String recipeName = currentRecipe.getRecipeName();
+        String numberOfServings = String.valueOf(currentRecipe.getServings());
         gridItemCard = (CardView) convertView;
 
         if (gridItemCard == null) {
@@ -55,8 +57,8 @@ public class RecipeAdapter extends ArrayAdapter<Recipe> {
                     .inflate(R.layout.main_rv_grid_item, parent, false);
         }
 
-        recipeName.setText(getRecipeName);
-        numberOfServings.setText(getNumberOfServings);
+        recipeNameView.setText(recipeName);
+        numberOfServingsView.setText(numberOfServings);
         return gridItemCard;
     }
 }
