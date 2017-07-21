@@ -8,9 +8,11 @@
              tools:ignore="MergeRootFrame">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/main_rv_recipe_cards"
+        android:id="@+id/single_pane_rv_recipe_cards"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="auto_fit"/>
+        android:layout_gravity="center"
+        android:numColumns="auto_fit"
+        android:fitsSystemWindows="true"/>
 
 </FrameLayout>
