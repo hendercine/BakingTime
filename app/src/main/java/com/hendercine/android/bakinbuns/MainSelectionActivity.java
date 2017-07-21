@@ -10,8 +10,13 @@ import android.view.View;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import icepick.Icepick;
+import icepick.State;
 import timber.log.Timber;
 
 public class MainSelectionActivity extends AppCompatActivity implements
@@ -22,6 +27,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @BindView(R.id.main_rv_recipe_cards)
     RecyclerView mainGridCards;
 
+    @State int numberOfColumns;
 
     // Create the LeakCanary watcher
     public static RefWatcher getRefWatcher(Context context) {
@@ -32,6 +38,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
 
         // Install the LeakCanary watcher
         if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -46,14 +53,18 @@ public class MainSelectionActivity extends AppCompatActivity implements
         Timber.tag("LifeCycles");
         Timber.d("Activity Created");
 
-        String[] data = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+        ArrayList<String> data = new ArrayList<>(Arrays.asList("1", "2", "3", "4",
+                "5",
+                "6", "7", "8",
+                "9", "10",
                 "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
                 "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
                 "31", "32", "33", "34", "35", "36", "37", "38", "39", "40",
-                "41", "42", "43", "44", "45", "46", "47", "48"};
+                "41", "42", "43", "44", "45", "46", "47", "48"));
 
-        int numberOfColumns = Utils.calculateNoOfColumns(getApplicationContext());
-        mainGridCards.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+        numberOfColumns = Utils.calculateNoOfColumns(getApplicationContext());
+        mainGridCards.setLayoutManager(new GridLayoutManager(this,
+                numberOfColumns));
         mAdapter = new MainRecyclerViewGridAdapter(this, data);
         mAdapter.setClickListener(this);
         mainGridCards.setAdapter(mAdapter);
@@ -62,6 +73,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
     }
 
     @Override

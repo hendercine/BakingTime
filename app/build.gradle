@@ -27,11 +27,9 @@ android {
         ignore 'InvalidPackage'
     }
 
-//    packagingOptions {
-//        exclude 'META-INF/leiningen.quoin.quoin/project.clj'
-//        exclude 'META-INF/leiningen.scout.scout/project.clj'
-//        exclude 'META-INF/leiningen.stencil.stencil/project.clj'
-//    }
+    packagingOptions {
+        pickFirst 'project.clj'
+    }
 }
 
 def AAVersion = '4.3.1'
@@ -52,9 +50,9 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-//    // IcePick
-//    compile "frankiesardo:icepick:3.2.0"
-//    compile "frankiesardo:icepick-processor:3.2.0"
+    // IcePick
+    compile "frankiesardo:icepick:3.2.0"
+    provided "frankiesardo:icepick-processor:3.2.0"
     // Parceler
     compile 'org.parceler:parceler-api:1.1.6'
     annotationProcessor 'org.parceler:parceler:1.1.6'
@@ -86,3 +84,5 @@ dependencies {
                     module: 'support-annotations'})
     testCompile 'junit:junit:4.12'
 }
+
+apply plugin: 'com.google.gms.google-services'

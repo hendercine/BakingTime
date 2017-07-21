@@ -15,6 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import butterknife.BindView;
 
 /**
@@ -25,16 +28,16 @@ class MainRecyclerViewGridAdapter extends RecyclerView
         .Adapter<MainRecyclerViewGridAdapter.ViewHolder> {
 
     private LayoutInflater mInflater;
-//    TODO: Change String[] to ArrayList<Recipe> and change other instances
-//    to array access.
-    private String[] mData = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-        "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-        "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
-        "31", "32", "33", "34", "35", "36", "37", "38", "39", "40",
-        "41", "42", "43", "44", "45", "46", "47", "48"};
+//    TODO: Change ArrayList<String> to ArrayList<Recipe>
+
+    private ArrayList<String> mData = new ArrayList<>(Arrays.asList("1", "2",
+        "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
+        "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27",
+        "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39",
+        "40", "41", "42", "43", "44", "45", "46", "47", "48"));
     private ItemClickListener mClickListener;
 
-    MainRecyclerViewGridAdapter(Context context, String[] data) {
+    MainRecyclerViewGridAdapter(Context context, ArrayList<String> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -48,14 +51,20 @@ class MainRecyclerViewGridAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(MainRecyclerViewGridAdapter.ViewHolder holder, int position) {
-        String recipe = mData[position];
-        holder.mTitleTextView.setText(recipe);
-        holder.mServingsTextView.setText(recipe);
+        if (holder != null) {
+            holder.mTitleTextView.setText("Disgusting Hardcode");
+            holder.mServingsTextView.setText("0 Servings");
+
+            // TODO: Uncomment below after setting up JSON Fetch Task
+            // String recipe = mData.get(position);
+            // holder.mTitleTextView.setText(recipe);
+            // holder.mServingsTextView.setText(recipe);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mData.length;
+        return mData.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements
@@ -80,7 +89,7 @@ class MainRecyclerViewGridAdapter extends RecyclerView
     }
 
         String getItem(int id) {
-            return String.valueOf(mData[id]);
+            return String.valueOf(mData.get(id));
         }
 
         void setClickListener(ItemClickListener itemClickListener) {
