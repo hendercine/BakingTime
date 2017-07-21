@@ -1,10 +1,10 @@
-package com.hendercine.android.bakinbuns.REST;
+package com.hendercine.android.bakinbuns.network;
 
 import android.os.AsyncTask;
 
 import com.hendercine.android.bakinbuns.MainSelectionActivity;
-import com.hendercine.android.bakinbuns.Objects.Recipe;
-import com.hendercine.android.bakinbuns.Objects.RecipeAdapter;
+import com.hendercine.android.bakinbuns.objects.Recipe;
+import com.hendercine.android.bakinbuns.objects.RecipeAdapter;
 
 import java.util.ArrayList;
 

@@ -6,7 +6,7 @@
  * Last modified 7/10/17 6:26 PM
  */
 
-package com.hendercine.android.bakinbuns.Objects;
+package com.hendercine.android.bakinbuns.objects;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

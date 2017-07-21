@@ -9,7 +9,7 @@
 //import android.view.ViewGroup;
 //import android.widget.TextView;
 //
-//import com.hendercine.android.bakinbuns.Objects.DummyContent;
+//import com.hendercine.android.bakinbuns.objects.DummyContent;
 //
 ///**
 // * A fragment representing a single Recipe detail screen.

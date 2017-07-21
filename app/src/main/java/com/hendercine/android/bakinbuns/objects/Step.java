@@ -6,7 +6,7 @@
  * Last modified 7/10/17 5:51 PM
  */
 
-package com.hendercine.android.bakinbuns.Objects;
+package com.hendercine.android.bakinbuns.objects;
 
 import org.parceler.Parcel;
 

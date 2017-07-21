@@ -9,6 +9,7 @@
 package com.hendercine.android.bakinbuns;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * BakinBuns created by hendercine on 7/10/17.
@@ -27,14 +28,10 @@ import butterknife.BindView;
 class MainRecyclerViewGridAdapter extends RecyclerView
         .Adapter<MainRecyclerViewGridAdapter.ViewHolder> {
 
-    private LayoutInflater mInflater;
 //    TODO: Change ArrayList<String> to ArrayList<Recipe>
 
-    private ArrayList<String> mData = new ArrayList<>(Arrays.asList("1", "2",
-        "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
-        "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27",
-        "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39",
-        "40", "41", "42", "43", "44", "45", "46", "47", "48"));
+    private ArrayList<String> mData = new ArrayList<>();
+    private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     MainRecyclerViewGridAdapter(Context context, ArrayList<String> data) {
@@ -45,15 +42,18 @@ class MainRecyclerViewGridAdapter extends RecyclerView
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater
-                .inflate(R.layout.activity_main_selection, parent, false);
+                .inflate(R.layout.main_rv_grid_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(MainRecyclerViewGridAdapter.ViewHolder holder, int position) {
+        String recipeName = mData.get(position);
+        String recipeServings = mData.get(position);
         if (holder != null) {
-            holder.mTitleTextView.setText("Disgusting Hardcode");
-            holder.mServingsTextView.setText("0 Servings");
+            holder.mMainCardView.setClickable(true);
+            holder.mTitleTextView.setText(recipeName);
+            holder.mServingsTextView.setText(recipeServings);
 
             // TODO: Uncomment below after setting up JSON Fetch Task
             // String recipe = mData.get(position);
@@ -70,14 +70,16 @@ class MainRecyclerViewGridAdapter extends RecyclerView
     class ViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener {
 
-        @BindView(R.id.main_grid_item_servings)
-        TextView mServingsTextView;
+        @BindView(R.id.main_grid_item)
+        CardView mMainCardView;
 
-        @BindView(R.id.main_grid_item_title)
-        TextView mTitleTextView;
+        @BindView(R.id.main_grid_item_servings) TextView mServingsTextView;
+
+        @BindView(R.id.main_grid_item_title) TextView mTitleTextView;
 
         ViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 

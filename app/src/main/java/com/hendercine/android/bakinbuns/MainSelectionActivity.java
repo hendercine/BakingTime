@@ -1,12 +1,16 @@
 package com.hendercine.android.bakinbuns;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.hendercine.android.bakinbuns.utils.SpacesItemDecoration;
+import com.hendercine.android.bakinbuns.utils.Utils;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -35,6 +39,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
         return activity.refWatcher;
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,21 +58,24 @@ public class MainSelectionActivity extends AppCompatActivity implements
         Timber.tag("LifeCycles");
         Timber.d("Activity Created");
 
-        ArrayList<String> data = new ArrayList<>(Arrays.asList("1", "2", "3", "4",
-                "5",
-                "6", "7", "8",
-                "9", "10",
-                "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-                "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
-                "31", "32", "33", "34", "35", "36", "37", "38", "39", "40",
-                "41", "42", "43", "44", "45", "46", "47", "48"));
+        ArrayList<String> data = new ArrayList<>(Arrays
+                .asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+                        "12", "13", "14", "15", "16", "17", "18", "19", "20",
+                        "21", "22", "23", "24", "25", "26", "27", "28", "29",
+                        "30", "31", "32", "33", "34", "35", "36", "37", "38",
+                        "39", "40", "41", "42", "43", "44", "45", "46", "47",
+                        "48"));
 
         numberOfColumns = Utils.calculateNoOfColumns(getApplicationContext());
+        int spacingInPixels = 50;
         mainGridCards.setLayoutManager(new GridLayoutManager(this,
                 numberOfColumns));
         mAdapter = new MainRecyclerViewGridAdapter(this, data);
         mAdapter.setClickListener(this);
         mainGridCards.setAdapter(mAdapter);
+        mainGridCards.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
+//        mainGridCards.setBackgroundColor(getResources().getColor(R.color
+//                .colorAccent));
         }
 
     @Override
