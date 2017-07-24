@@ -51,9 +51,11 @@ class MainRecyclerViewGridAdapter extends RecyclerView
         String recipeName = mData.get(position);
         String recipeServings = mData.get(position);
         if (holder != null) {
-            holder.mMainCardView.setClickable(true);
-            holder.mTitleTextView.setText(recipeName);
-            holder.mServingsTextView.setText(recipeServings);
+            for (int i = 0; i < mData.size(); i++) {
+                holder.mMainCardView.setClickable(true);
+                holder.mTitleTextView.setText(recipeName);
+                holder.mServingsTextView.setText(recipeServings);
+            }
 
             // TODO: Uncomment below after setting up JSON Fetch Task
             // String recipe = mData.get(position);
