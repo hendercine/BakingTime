@@ -3,10 +3,10 @@
  * Copyright (c) Hendercine Productions and James Henderson 2017.
  * All rights reserved.
  *
- * Last modified 7/10/17 6:26 PM
+ * Last modified 7/20/17 10:08 PM
  */
 
-package com.hendercine.android.bakinbuns.objects;
+package com.hendercine.android.bakinbuns.data.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.hendercine.android.bakinbuns.R;
+import com.hendercine.android.bakinbuns.data.models.Recipe;
 
 import java.util.List;
 

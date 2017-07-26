@@ -3,10 +3,10 @@
  * Copyright (c) Hendercine Productions and James Henderson 2017.
  * All rights reserved.
  *
- * Last modified 7/10/17 3:34 PM
+ * Last modified 7/21/17 4:33 PM
  */
 
-package com.hendercine.android.bakinbuns;
+package com.hendercine.android.bakinbuns.data.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -16,7 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.hendercine.android.bakinbuns.R;
+import com.hendercine.android.bakinbuns.data.models.Recipe;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,16 +29,16 @@ import butterknife.ButterKnife;
  * BakinBuns created by hendercine on 7/10/17.
  */
 
-class MainRecyclerViewGridAdapter extends RecyclerView
+public class MainRecyclerViewGridAdapter extends RecyclerView
         .Adapter<MainRecyclerViewGridAdapter.ViewHolder> {
 
 //    TODO: Change ArrayList<String> to ArrayList<Recipe>
 
-    private ArrayList<String> mData = new ArrayList<>();
+    private List<Recipe> mData = new ArrayList<>();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
-    MainRecyclerViewGridAdapter(Context context, ArrayList<String> data) {
+    public MainRecyclerViewGridAdapter(Context context, List<Recipe> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -48,8 +52,11 @@ class MainRecyclerViewGridAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(MainRecyclerViewGridAdapter.ViewHolder holder, int position) {
-        String recipeName = mData.get(position);
-        String recipeServings = mData.get(position);
+
+        Recipe recipe = mData.get(position);
+        String recipeName = recipe.getRecipeName();
+        String recipeServings = recipe.getServings();
+
         if (holder != null) {
             for (int i = 0; i < mData.size(); i++) {
                 holder.mMainCardView.setClickable(true);
@@ -57,10 +64,6 @@ class MainRecyclerViewGridAdapter extends RecyclerView
                 holder.mServingsTextView.setText(recipeServings);
             }
 
-            // TODO: Uncomment below after setting up JSON Fetch Task
-            // String recipe = mData.get(position);
-            // holder.mTitleTextView.setText(recipe);
-            // holder.mServingsTextView.setText(recipe);
         }
     }
 
@@ -92,15 +95,15 @@ class MainRecyclerViewGridAdapter extends RecyclerView
         }
     }
 
-        String getItem(int id) {
+        public String getItem(int id) {
             return String.valueOf(mData.get(id));
         }
 
-        void setClickListener(ItemClickListener itemClickListener) {
+        public void setClickListener(ItemClickListener itemClickListener) {
             this.mClickListener = itemClickListener;
         }
 
-    interface ItemClickListener {
+    public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
 }

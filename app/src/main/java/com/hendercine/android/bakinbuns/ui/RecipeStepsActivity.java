@@ -15,7 +15,7 @@
 //import android.widget.TextView;
 //
 //
-//import com.hendercine.android.bakinbuns.objects.DummyContent;
+//import com.hendercine.android.bakinbuns.data.models.DummyContent;
 //
 //import java.util.List;
 //
