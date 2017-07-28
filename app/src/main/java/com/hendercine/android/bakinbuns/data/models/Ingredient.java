@@ -8,10 +8,13 @@
 
 package com.hendercine.android.bakinbuns.data.models;
 
+import org.parceler.Parcel;
+
 /**
  * BakinBuns created by hendercine on 7/10/17.
  */
 
+@Parcel
 public class Ingredient {
 
     int quantity;
@@ -30,37 +33,39 @@ public class Ingredient {
         return ingredientName;
     }
 
-    //    // Empty constructor needed by the Parceler library
-//    public Ingredient() {
+        // Empty constructor needed by the Parceler library
+    public Ingredient() {
+    }
+
+    public Ingredient(int quantity, String measure, String ingredientName) {
+        this.quantity = quantity;
+        this.measure = measure;
+        this.ingredientName = ingredientName;
+    }
+
+    //@AutoValue
+//public abstract class Ingredient implements Parcelable {
+//    public abstract int quantity();
+//    public abstract String measure();
+//    public abstract String ingredientName();
+//
+//    public static Ingredient create(int quantity, String measure, String ingredientName) {
+//        return builder()
+//                .quantity(quantity)
+//                .measure(measure)
+//                .ingredientName(ingredientName)
+//                .build();
 //    }
 //
-//    public Ingredient(int quantity, String measure, String ingredientName) {
-//        this.quantity = quantity;
-//        this.measure = measure;
-//        this.ingredientName = ingredientName;
+//    @AutoValue.Builder
+//    public interface Builder {
+//        Builder quantity(int x);
+//        Builder measure(String x);
+//        Builder ingredientName(String x);
+//        Ingredient build();
 //    }
 //
-//    public int getQuantity() {
-//        return quantity;
-//    }
-//
-//    public void setQuantity(int quantity) {
-//        this.quantity = quantity;
-//    }
-//
-//    public String getMeasure() {
-//        return measure;
-//    }
-//
-//    public void setMeasure(String measure) {
-//        this.measure = measure;
-//    }
-//
-//    public String getIngredientName() {
-//        return ingredientName;
-//    }
-//
-//    public void setIngredientName(String ingredientName) {
-//        this.ingredientName = ingredientName;
+//    public static Builder builder() {
+//        return new AutoValue_Ingredient.Builder();
 //    }
 }

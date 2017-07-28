@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -52,7 +52,7 @@ public class RecipeClient {
         return instance;
     }
 
-    Observable<List<Recipe>> getRecipes(@NonNull int recipeId) {
-        return recipeService.getRecipes(recipeId);
+    public Observable<ArrayList<Recipe>> getRecipe(@NonNull int recipe) {
+        return recipeService.getRecipes(recipe);
     }
 }

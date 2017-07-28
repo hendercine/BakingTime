@@ -20,7 +20,6 @@ import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,49 +29,61 @@ import butterknife.ButterKnife;
  */
 
 public class MainRecyclerViewGridAdapter extends RecyclerView
-        .Adapter<MainRecyclerViewGridAdapter.ViewHolder> {
+        .Adapter<MainRecyclerViewGridAdapter.MainGridViewHolder> {
 
-//    TODO: Change ArrayList<String> to ArrayList<Recipe>
-
-    private List<Recipe> mData = new ArrayList<>();
+    private ArrayList<Recipe> recipeArrayList = new ArrayList<>();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
-    public MainRecyclerViewGridAdapter(Context context, List<Recipe> data) {
+    public MainRecyclerViewGridAdapter(Context context, ArrayList<Recipe> arrayList) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = data;
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater
-                .inflate(R.layout.main_rv_grid_item, parent, false);
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(MainRecyclerViewGridAdapter.ViewHolder holder, int position) {
-
-        Recipe recipe = mData.get(position);
-        String recipeName = recipe.getRecipeName();
-        String recipeServings = recipe.getServings();
-
-        if (holder != null) {
-            for (int i = 0; i < mData.size(); i++) {
-                holder.mMainCardView.setClickable(true);
-                holder.mTitleTextView.setText(recipeName);
-                holder.mServingsTextView.setText(recipeServings);
-            }
-
-        }
+        this.recipeArrayList = arrayList;
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return recipeArrayList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements
+    public Recipe getItem(int position) {
+        if (position < 0 || position >= recipeArrayList.size()) {
+            return null;
+        } else {
+            return recipeArrayList.get(position);
+        }
+    }
+
+    public long getItemId(int position) {
+        return position;
+    }
+
+    public void setRecipeArrayList(ArrayList<Recipe> recipes) {
+        if (recipes == null) {
+            return;
+        }
+        recipeArrayList.clear();
+        recipeArrayList.addAll(recipes);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public MainGridViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = mInflater
+                .inflate(R.layout.main_rv_grid_item, parent, false);
+        return new MainGridViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(MainGridViewHolder holder, int position) {
+
+        Recipe recipeIndex = recipeArrayList.get(position);
+        String recipeName = recipeIndex.recipeName;
+        String servings = String.valueOf(recipeIndex.servings);
+        holder.setRecipeName(recipeName);
+        holder.setServings(servings);
+    }
+
+    class MainGridViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener {
 
         @BindView(R.id.main_grid_item)
@@ -82,10 +93,19 @@ public class MainRecyclerViewGridAdapter extends RecyclerView
 
         @BindView(R.id.main_grid_item_title) TextView mTitleTextView;
 
-        ViewHolder(View itemView) {
+        MainGridViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
+        }
+
+        public void setRecipeName(String recipeName) {
+            mTitleTextView.setText(recipeName);
+
+        }
+
+        public void setServings(String servings) {
+            mServingsTextView.setText(servings);
         }
 
         @Override
@@ -94,10 +114,6 @@ public class MainRecyclerViewGridAdapter extends RecyclerView
                 mClickListener.onItemClick(v, getAdapterPosition());
         }
     }
-
-        public String getItem(int id) {
-            return String.valueOf(mData.get(id));
-        }
 
         public void setClickListener(ItemClickListener itemClickListener) {
             this.mClickListener = itemClickListener;

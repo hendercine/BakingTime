@@ -24,7 +24,7 @@ public class FakeDataProvider {
             Recipe recipe = new Recipe();
             recipe.recipeId = i;
             recipe.recipeName = String.valueOf(i);
-            recipe.servings = String.valueOf(i);
+            recipe.servings = i;
             recipes.add(recipe);
         }
         return recipes;

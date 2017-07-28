@@ -19,17 +19,21 @@ import android.view.View;
 import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.adapters.MainRecyclerViewGridAdapter;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
-import com.hendercine.android.bakinbuns.network.RecipeService;
+import com.hendercine.android.bakinbuns.network.RecipeClient;
 import com.hendercine.android.bakinbuns.utils.GridSpacingItemDecoration;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.Icepick;
+import icepick.State;
+import rx.Observer;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class MainSelectionActivity extends AppCompatActivity implements
@@ -37,7 +41,9 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
     private RefWatcher refWatcher;
     private MainRecyclerViewGridAdapter mAdapter;
-    private RecipeService mBackAppApi;
+    @State ArrayList<Recipe> mRecipesList;
+    Recipe mRecipe;
+    private Subscription subscription;
 
     @Nullable
     @BindView(R.id.dual_pane_rv_recipe_cards)
@@ -74,8 +80,11 @@ public class MainSelectionActivity extends AppCompatActivity implements
         mIsDualPane = dualPaneGridCards != null &&
                 dualPaneGridCards.getVisibility() == View.VISIBLE;
 
-        List<Recipe> recipes = new ArrayList<>();
-        recipes.set(0, ).recipeName;
+        int recipeId = mRecipe.recipeId;
+        mRecipesList = new ArrayList<>();
+        if (mRecipesList.isEmpty()) {
+            mAdapter.setRecipeArrayList(getRecipeItems(recipeId));
+        }
 
 //        ArrayList<String> data = new ArrayList<>(Arrays.asList("Banana Bread",
 //                "Serves 8", "Poop Pie", "Serves 4",
@@ -102,15 +111,40 @@ public class MainSelectionActivity extends AppCompatActivity implements
         if (convertView != null) {
             convertView.setLayoutManager(new GridLayoutManager(this,
                     spanCount));
-            mAdapter = new MainRecyclerViewGridAdapter(this, recipes);
+            mAdapter = new MainRecyclerViewGridAdapter(this, mRecipesList);
             mAdapter.setClickListener(this);
             convertView.setAdapter(mAdapter);
             convertView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
                     spacingInPixels, true));
         }
-//        dualPaneGridCards.setBackgroundColor(getResources().getColor(R.color
-//                .colorAccent));
-        }
+    }
+
+    private void getRecipeItems(int recipeId) {
+        subscription = RecipeClient.getInstance()
+                .getRecipe(recipeId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ArrayList<Recipe>>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("In onCompleted()");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        Timber.d("In onError()");
+
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<Recipe> recipes) {
+                        Timber.d("In onNext()");
+                        mAdapter.setRecipeArrayList(recipes);
+                    }
+                });
+
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

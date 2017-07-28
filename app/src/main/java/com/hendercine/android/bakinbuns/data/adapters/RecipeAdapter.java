@@ -49,8 +49,8 @@ public class RecipeAdapter extends ArrayAdapter<Recipe> {
         Recipe currentRecipe = getItem(position);
 
         assert currentRecipe != null;
-        String recipeName = currentRecipe.getRecipeName();
-        String numberOfServings = String.valueOf(currentRecipe.getServings());
+        String recipeName = currentRecipe.recipeName;
+        String numberOfServings = String.valueOf(currentRecipe.servings);
         gridItemCard = (CardView) convertView;
 
         if (gridItemCard == null) {

@@ -8,10 +8,13 @@
 
 package com.hendercine.android.bakinbuns.data.models;
 
+import org.parceler.Parcel;
+
 /**
  * BakinBuns created by hendercine on 7/10/17.
  */
 
+@Parcel
 public class Step {
 
     int stepId;
@@ -40,10 +43,10 @@ public class Step {
         return thumbnailUrl;
     }
 
-    //    // Empty constructor needed by the Parceler library
-//    public Step() {
-//    }
-//
+        // Empty constructor needed by the Parceler library
+    public Step() {
+    }
+
 //    public Step(int stepId, String shortDescription, String description,
 //                String videoUrl, String thumbnailUrl) {
 //        this.stepId = stepId;

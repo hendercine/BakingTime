@@ -12,7 +12,7 @@ import com.hendercine.android.bakinbuns.data.models.Ingredient;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 import com.hendercine.android.bakinbuns.data.models.Step;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -27,15 +27,17 @@ public interface RecipeService {
     String URL_ENDPOINT = "topher/2017/May/59121517_baking/baking.json";
 
     @GET(URL_ENDPOINT)
-    Observable<List<Recipe>> getRecipes(@Path("id") int id);
+    Observable<ArrayList<Recipe>> getRecipes(@Path("id") int id);
 
     @GET(URL_ENDPOINT)
-    Observable<List<Ingredient>> getIngredients(@Path("ingredients") String ingredients);
+    Observable<ArrayList<Ingredient>> getIngredients(@Path("ingredients") String
+                                                         ingredients);
 
     @GET(URL_ENDPOINT)
-    Observable<List<Step>> getSteps(@Path("steps") String steps);
+    Observable<ArrayList<Step>> getSteps(@Path("steps") String steps);
 
-    @GET(URL_ENDPOINT)
-    Observable<List<Step>> getVideoUrl(@Path("videoURL") String videoURL);
+// TODO: Remove the following if unnecessary
+//    @GET(URL_ENDPOINT)
+//    Observable<ArrayList<Step>> getVideoUrl(@Path("videoURL") String videoURL);
 }
 
