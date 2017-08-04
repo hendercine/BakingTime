@@ -8,7 +8,6 @@
 
 package com.hendercine.android.bakinbuns.data.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +19,7 @@ import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,44 +31,16 @@ import butterknife.ButterKnife;
 public class MainRecyclerViewGridAdapter extends RecyclerView
         .Adapter<MainRecyclerViewGridAdapter.MainGridViewHolder> {
 
-    private ArrayList<Recipe> recipeArrayList = new ArrayList<>();
-    private LayoutInflater mInflater;
+    private List<Recipe> list;
     private ItemClickListener mClickListener;
 
-    public MainRecyclerViewGridAdapter(Context context, ArrayList<Recipe> arrayList) {
-        this.mInflater = LayoutInflater.from(context);
-        this.recipeArrayList = arrayList;
-    }
-
-    @Override
-    public int getItemCount() {
-        return recipeArrayList.size();
-    }
-
-    public Recipe getItem(int position) {
-        if (position < 0 || position >= recipeArrayList.size()) {
-            return null;
-        } else {
-            return recipeArrayList.get(position);
-        }
-    }
-
-    public long getItemId(int position) {
-        return position;
-    }
-
-    public void setRecipeArrayList(ArrayList<Recipe> recipes) {
-        if (recipes == null) {
-            return;
-        }
-        recipeArrayList.clear();
-        recipeArrayList.addAll(recipes);
-        notifyDataSetChanged();
+    public MainRecyclerViewGridAdapter(List<Recipe> list) {
+        this.list = list;
     }
 
     @Override
     public MainGridViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater
+        View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.main_rv_grid_item, parent, false);
         return new MainGridViewHolder(view);
     }
@@ -76,11 +48,37 @@ public class MainRecyclerViewGridAdapter extends RecyclerView
     @Override
     public void onBindViewHolder(MainGridViewHolder holder, int position) {
 
-        Recipe recipeIndex = recipeArrayList.get(position);
-        String recipeName = recipeIndex.recipeName;
-        String servings = String.valueOf(recipeIndex.servings);
-        holder.setRecipeName(recipeName);
-        holder.setServings(servings);
+        Recipe recipe = list.get(position);
+        holder.mTitleTextView.setText(recipe.getRecipeName());
+        holder.mServingsTextView.setText(String.valueOf(recipe.getServings()));
+//        holder.setRecipeMainCard(getItem(position));
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
+    public Recipe getItem(int position) {
+        if (position < 0 || position >= list.size()) {
+            return null;
+        } else {
+            return list.get(position);
+        }
+    }
+
+    public long getItemId(int position) {
+        return position;
+    }
+
+    public void setList(ArrayList<Recipe> recipes) {
+        if (recipes == null) {
+            return;
+        }
+        list.clear();
+        list.addAll(recipes);
+        notifyDataSetChanged();
     }
 
     class MainGridViewHolder extends RecyclerView.ViewHolder implements
@@ -99,14 +97,15 @@ public class MainRecyclerViewGridAdapter extends RecyclerView
             itemView.setOnClickListener(this);
         }
 
-        public void setRecipeName(String recipeName) {
-            mTitleTextView.setText(recipeName);
+        public void setRecipeMainCard(Recipe recipe) {
+            mTitleTextView.setText(recipe.recipeName);
+            mServingsTextView.setText(recipe.servings);
 
         }
 
-        public void setServings(String servings) {
-            mServingsTextView.setText(servings);
-        }
+//        public void setServings(String servings) {
+//            mServingsTextView.setText(servings);
+//        }
 
         @Override
         public void onClick(View v) {

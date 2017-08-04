@@ -63,24 +63,124 @@ public class Recipe {
     @SerializedName("name")
     public String recipeName;
 
-    @SerializedName("ingredients")
-    public Ingredient ingredients;
+    @SerializedName("quantity")
+    public int ingredientQuantity;
 
-    @SerializedName("steps")
-    public Step steps;
+    @SerializedName("measure")
+    public String ingredientMeasure;
+
+    @SerializedName("ingredient")
+    public String ingredientName;
+
+    @SerializedName("shortDescription")
+    public String shortDescription;
+
+    @SerializedName("description")
+    public String description;
+
+    @SerializedName("videoURL")
+    public String videoURL;
+
+    @SerializedName("thumbnailURL")
+    public String thumbnailURL;
 
     @SerializedName("servings")
     public int servings;
 
         // Empty constructor needed by the Parceler library
-    public Recipe () {
+    public Recipe() {
     }
 
-    public Recipe(int recipeId, String recipeName, Ingredient ingredients, Step steps, int servings) {
+//    public Recipe(int recipeId, String recipeName, int ingredientQuantity, String ingredientMeasure, String ingredientName, String shortDescription, String description, String videoURL, String thumbnailURL, int servings) {
+//        this.recipeId = recipeId;
+//        this.recipeName = recipeName;
+//        this.ingredientQuantity = ingredientQuantity;
+//        this.ingredientMeasure = ingredientMeasure;
+//        this.ingredientName = ingredientName;
+//        this.shortDescription = shortDescription;
+//        this.description = description;
+//        this.videoURL = videoURL;
+//        this.thumbnailURL = thumbnailURL;
+//        this.servings = servings;
+//    }
+
+    public int getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(int recipeId) {
         this.recipeId = recipeId;
+    }
+
+    public String getRecipeName() {
+        return recipeName;
+    }
+
+    public void setRecipeName(String recipeName) {
         this.recipeName = recipeName;
-        this.ingredients = ingredients;
-        this.steps = steps;
+    }
+
+    public int getIngredientQuantity() {
+        return ingredientQuantity;
+    }
+
+    public void setIngredientQuantity(int ingredientQuantity) {
+        this.ingredientQuantity = ingredientQuantity;
+    }
+
+    public String getIngredientMeasure() {
+        return ingredientMeasure;
+    }
+
+    public void setIngredientMeasure(String ingredientMeasure) {
+        this.ingredientMeasure = ingredientMeasure;
+    }
+
+    public String getIngredientName() {
+        return ingredientName;
+    }
+
+    public void setIngredientName(String ingredientName) {
+        this.ingredientName = ingredientName;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getVideoURL() {
+        return videoURL;
+    }
+
+    public void setVideoURL(String videoURL) {
+        this.videoURL = videoURL;
+    }
+
+    public String getThumbnailURL() {
+        return thumbnailURL;
+    }
+
+    public void setThumbnailURL(String thumbnailURL) {
+        this.thumbnailURL = thumbnailURL;
+    }
+
+    public int getServings() {
+        return servings;
+    }
+
+    public void setServings(int servings) {
         this.servings = servings;
     }
 }

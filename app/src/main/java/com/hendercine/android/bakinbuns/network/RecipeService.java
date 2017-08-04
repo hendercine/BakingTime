@@ -8,14 +8,11 @@
 
 package com.hendercine.android.bakinbuns.network;
 
-import com.hendercine.android.bakinbuns.data.models.Ingredient;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
-import com.hendercine.android.bakinbuns.data.models.Step;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -24,20 +21,18 @@ import rx.Observable;
 
 public interface RecipeService {
 
-    String URL_ENDPOINT = "topher/2017/May/59121517_baking/baking.json";
+    @GET("android-baking-app-json")
+    Observable<List<Recipe>> getRecipeData();
 
-    @GET(URL_ENDPOINT)
-    Observable<ArrayList<Recipe>> getRecipes(@Path("id") int id);
-
-    @GET(URL_ENDPOINT)
-    Observable<ArrayList<Ingredient>> getIngredients(@Path("ingredients") String
-                                                         ingredients);
-
-    @GET(URL_ENDPOINT)
-    Observable<ArrayList<Step>> getSteps(@Path("steps") String steps);
+//    @GET(URL_ENDPOINT)
+//    Observable<ArrayList<Ingredient>>
+//    getIngredients(@Header("ingredients") String ingredients);
+//
+//
+//    @GET(URL_ENDPOINT)
+//    Observable<ArrayList<Step>> getSteps(@Header("steps") String steps);
 
 // TODO: Remove the following if unnecessary
 //    @GET(URL_ENDPOINT)
 //    Observable<ArrayList<Step>> getVideoUrl(@Path("videoURL") String videoURL);
 }
-
