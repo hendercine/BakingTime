@@ -21,18 +21,5 @@ import rx.Observable;
 
 public interface RecipeService {
 
-    @GET("android-baking-app-json")
-    Observable<List<Recipe>> getRecipeData();
-
-//    @GET(URL_ENDPOINT)
-//    Observable<ArrayList<Ingredient>>
-//    getIngredients(@Header("ingredients") String ingredients);
-//
-//
-//    @GET(URL_ENDPOINT)
-//    Observable<ArrayList<Step>> getSteps(@Header("steps") String steps);
-
-// TODO: Remove the following if unnecessary
-//    @GET(URL_ENDPOINT)
-//    Observable<ArrayList<Step>> getVideoUrl(@Path("videoURL") String videoURL);
+    @GET("android-baking-app-json") Observable<List<Recipe>> getRecipeData();
 }

@@ -51,7 +51,6 @@ public class MainRecyclerViewGridAdapter extends RecyclerView
         Recipe recipe = list.get(position);
         holder.mTitleTextView.setText(recipe.getRecipeName());
         holder.mServingsTextView.setText(String.valueOf(recipe.getServings()));
-//        holder.setRecipeMainCard(getItem(position));
 
     }
 
@@ -96,16 +95,6 @@ public class MainRecyclerViewGridAdapter extends RecyclerView
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
-
-        public void setRecipeMainCard(Recipe recipe) {
-            mTitleTextView.setText(recipe.recipeName);
-            mServingsTextView.setText(recipe.servings);
-
-        }
-
-//        public void setServings(String servings) {
-//            mServingsTextView.setText(servings);
-//        }
 
         @Override
         public void onClick(View v) {

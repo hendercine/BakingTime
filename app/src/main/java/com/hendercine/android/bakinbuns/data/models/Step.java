@@ -23,6 +23,10 @@ public class Step {
     String videoUrl;
     String thumbnailUrl;
 
+    // Empty constructor needed by the Parceler library
+    public Step() {
+    }
+
     public int getStepId() {
         return stepId;
     }
@@ -43,56 +47,23 @@ public class Step {
         return thumbnailUrl;
     }
 
-        // Empty constructor needed by the Parceler library
-    public Step() {
+    public void setStepId(int stepId) {
+        this.stepId = stepId;
     }
 
-//    public Step(int stepId, String shortDescription, String description,
-//                String videoUrl, String thumbnailUrl) {
-//        this.stepId = stepId;
-//        this.shortDescription = shortDescription;
-//        this.description = description;
-//        this.videoUrl = videoUrl;
-//        this.thumbnailUrl = thumbnailUrl;
-//    }
-//
-//    public int getStepId() {
-//        return stepId;
-//    }
-//
-//    public void setStepId(int stepId) {
-//        this.stepId = stepId;
-//    }
-//
-//    public String getShortDescription() {
-//        return shortDescription;
-//    }
-//
-//    public void setShortDescription(String shortDescription) {
-//        this.shortDescription = shortDescription;
-//    }
-//
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
-//
-//    public String getVideoUrl() {
-//        return videoUrl;
-//    }
-//
-//    public void setVideoUrl(String videoUrl) {
-//        this.videoUrl = videoUrl;
-//    }
-//
-//    public String getThumbnailUrl() {
-//        return thumbnailUrl;
-//    }
-//
-//    public void setThumbnailUrl(String thumbnailUrl) {
-//        this.thumbnailUrl = thumbnailUrl;
-//    }
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
 }

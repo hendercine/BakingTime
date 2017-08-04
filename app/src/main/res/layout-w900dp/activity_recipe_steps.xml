@@ -9,7 +9,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context="com.hendercine.android.bakinbuns.RecipeStepsActivity">
+    tools:context="com.hendercine.android.bakinbuns.ui.RecipeStepsActivity">
 
     <!--
     This layout is a two-pane layout for the Recipes
@@ -19,14 +19,14 @@
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/recipe_list"
+        android:id="@+id/steps_list"
         android:name="com.example.hendercine.bakinbuns.RecipeListFragment"
         android:layout_width="@dimen/item_width"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context="com.hendercine.android.bakinbuns.RecipeStepsActivity"
+        tools:context="com.hendercine.android.bakinbuns.ui.RecipeStepsActivity"
         tools:listitem="@layout/recipe_step_content" />
 
     <FrameLayout

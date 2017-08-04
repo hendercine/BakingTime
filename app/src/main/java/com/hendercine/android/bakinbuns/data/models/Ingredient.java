@@ -21,6 +21,10 @@ public class Ingredient {
     String measure;
     String ingredientName;
 
+    // Empty constructor needed by the Parceler library
+    public Ingredient() {
+    }
+
     public int getQuantity() {
         return quantity;
     }
@@ -33,39 +37,15 @@ public class Ingredient {
         return ingredientName;
     }
 
-        // Empty constructor needed by the Parceler library
-    public Ingredient() {
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
-    public Ingredient(int quantity, String measure, String ingredientName) {
-        this.quantity = quantity;
+    public void setMeasure(String measure) {
         this.measure = measure;
+    }
+
+    public void setIngredientName(String ingredientName) {
         this.ingredientName = ingredientName;
     }
-
-    //@AutoValue
-//public abstract class Ingredient implements Parcelable {
-//    public abstract int quantity();
-//    public abstract String measure();
-//    public abstract String ingredientName();
-//
-//    public static Ingredient create(int quantity, String measure, String ingredientName) {
-//        return builder()
-//                .quantity(quantity)
-//                .measure(measure)
-//                .ingredientName(ingredientName)
-//                .build();
-//    }
-//
-//    @AutoValue.Builder
-//    public interface Builder {
-//        Builder quantity(int x);
-//        Builder measure(String x);
-//        Builder ingredientName(String x);
-//        Ingredient build();
-//    }
-//
-//    public static Builder builder() {
-//        return new AutoValue_Ingredient.Builder();
-//    }
 }

@@ -88,55 +88,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
         getRecipeData();
     }
 
-//        String recipeName = mRecipe.recipeName;
-//        list = new ArrayList<>();
-//        if (list.isEmpty()) {
-//            Timber.i("mRecipeList is Empty");
-//            getRecipeItems(recipeName);
-//            Timber.i("Got recipe items?", recipeName);
-//        }
-
-//        ArrayList<String> data = new ArrayList<>(Arrays.asList("Banana Bread",
-//                "Serves 8", "Poop Pie", "Serves 4",
-//                        "5", "6", "7",
-//                        "8", "9",
-//                        "10", "11",
-//                        "12", "13", "14", "15", "16", "17", "18", "19", "20",
-//                        "21", "22", "23", "24", "25", "26", "27", "28", "29",
-//                        "30", "31", "32", "33", "34", "35", "36", "37", "38",
-//                        "39", "40", "41", "42", "43", "44", "45", "46", "47",
-//                        "48"));
-
-
-//
-//            subscription = RecipeClient.getInstance()
-//                    .getRecipeJsonStr()
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new Observer<ArrayList<Recipe>>() {
-//                        @Override
-//                        public void onCompleted() {
-//                            Timber.d("In onCompleted()");
-//                        }
-//
-//                        @Override
-//                        public void onError(Throwable e) {
-//                            e.printStackTrace();
-//                            Timber.d("In onError()");
-//
-//                        }
-//
-//                        @Override
-//                        public void onNext(ArrayList<Recipe> recipes) {
-//                            Timber.d("In onNext()");
-//                            mAdapter.setList(recipes);
-//                        }
-//                    });
-//
-//
-//        }
-//    }
-
     public void getRecipeData() {
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -163,7 +114,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
             @Override
             public void onNext(List<Recipe> recipes) {
-
+                Timber.d("In onNext()");
                 list = new ArrayList<>();
                 for (int i = 0; i < recipes.size(); i++) {
 
@@ -175,7 +126,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
                 int spanCount;
                 int spacingInPixels = 50;
                 RecyclerView convertView;
-
+                Timber.d("In onError()");
                 if (mIsDualPane) {
                     convertView = dualPaneGridCards;
                     spanCount = 3;
@@ -187,6 +138,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
                     convertView.setLayoutManager(new GridLayoutManager
                             (MainSelectionActivity.this, spanCount));
                     mAdapter = new MainRecyclerViewGridAdapter(list);
+                    mAdapter.setClickListener(MainSelectionActivity.this);
                     convertView.setAdapter(mAdapter);
             }
                 assert convertView != null;

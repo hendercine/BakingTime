@@ -91,19 +91,6 @@ public class Recipe {
     public Recipe() {
     }
 
-//    public Recipe(int recipeId, String recipeName, int ingredientQuantity, String ingredientMeasure, String ingredientName, String shortDescription, String description, String videoURL, String thumbnailURL, int servings) {
-//        this.recipeId = recipeId;
-//        this.recipeName = recipeName;
-//        this.ingredientQuantity = ingredientQuantity;
-//        this.ingredientMeasure = ingredientMeasure;
-//        this.ingredientName = ingredientName;
-//        this.shortDescription = shortDescription;
-//        this.description = description;
-//        this.videoURL = videoURL;
-//        this.thumbnailURL = thumbnailURL;
-//        this.servings = servings;
-//    }
-
     public int getRecipeId() {
         return recipeId;
     }
