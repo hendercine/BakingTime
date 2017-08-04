@@ -47,7 +47,7 @@ public class RecipeStepsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        View recyclerView = findViewById(R.id.recipe_list);
+        View recyclerView = findViewById(R.id.steps_list);
         assert recyclerView != null;
 //        setupRecyclerView((RecyclerView) recyclerView);
 

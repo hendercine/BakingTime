@@ -8,6 +8,9 @@
 
 package com.hendercine.android.bakinbuns.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.widget.RecyclerView;
 
 import butterknife.ButterKnife;
@@ -33,6 +36,13 @@ public class Utils {
                     view.setEnabled(value);
                 }
             };
+
+    boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
 
 //    public static ArrayList<Recipe> getRecipeDataFromJson(String recipeJsonStr)
 //            throws JSONException {

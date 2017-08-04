@@ -19,6 +19,7 @@ import android.view.View;
 import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.adapters.MainRecyclerViewGridAdapter;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
+import com.hendercine.android.bakinbuns.network.RecipeClient;
 import com.hendercine.android.bakinbuns.network.RecipeService;
 import com.hendercine.android.bakinbuns.utils.GridSpacingItemDecoration;
 import com.squareup.leakcanary.LeakCanary;
@@ -30,10 +31,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.Icepick;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -90,17 +87,19 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
     public void getRecipeData() {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://go.udacity.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
-        RecipeService recipeService = retrofit.create(RecipeService.class);
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("http://go.udacity.com/")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                .build();
+//        service = retrofit.create(RecipeService.class);
 
-        Observable<List<Recipe>> observable = recipeService.getRecipeData()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread());
-        observable.subscribe(new Observer<List<Recipe>>() {
+//        Observable<List<Recipe>> observable = service.getRecipeData()
+          subscription = RecipeClient.getInstance()
+                  .getRecipeFromJson()
+                  .subscribeOn(Schedulers.newThread())
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(new Observer<List<Recipe>>() {
             @Override
             public void onCompleted() {
                 Timber.d("In onCompleted()");
@@ -118,10 +117,10 @@ public class MainSelectionActivity extends AppCompatActivity implements
                 list = new ArrayList<>();
                 for (int i = 0; i < recipes.size(); i++) {
 
-                    Recipe recipe = new Recipe();
-                    recipe.setRecipeName(recipes.get(i).getRecipeName());
-                    recipe.setServings(recipes.get(i).getServings());
-                    list.add(recipe);
+                    mRecipe = new Recipe();
+                    mRecipe.setRecipeName(recipes.get(i).getRecipeName());
+                    mRecipe.setServings(recipes.get(i).getServings());
+                    list.add(mRecipe);
                 }
                 int spanCount;
                 int spacingInPixels = 50;
