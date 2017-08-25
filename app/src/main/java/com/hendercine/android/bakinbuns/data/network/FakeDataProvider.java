@@ -6,7 +6,7 @@
  * Last modified 7/24/17 4:50 PM
  */
 
-package com.hendercine.android.bakinbuns.network;
+package com.hendercine.android.bakinbuns.data.network;
 
 /**
  * BakinBuns created by hendercine on 7/24/17.

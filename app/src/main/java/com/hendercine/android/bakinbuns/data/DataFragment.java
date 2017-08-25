@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hendercine.android.bakinbuns.data.models.Recipe;
-import com.hendercine.android.bakinbuns.network.RecipeClient;
 
 import java.util.List;
 

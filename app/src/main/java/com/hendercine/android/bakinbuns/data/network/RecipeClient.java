@@ -6,7 +6,7 @@
  * Last modified 7/25/17 6:17 PM
  */
 
-package com.hendercine.android.bakinbuns.network;
+package com.hendercine.android.bakinbuns.data.network;
 
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 
