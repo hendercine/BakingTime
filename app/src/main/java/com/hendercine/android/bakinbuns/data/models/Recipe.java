@@ -72,6 +72,9 @@ public class Recipe {
     @SerializedName("ingredient")
     public String ingredientName;
 
+    @SerializedName("step_id")
+    public String stepId;
+
     @SerializedName("shortDescription")
     public String shortDescription;
 
@@ -107,6 +110,14 @@ public class Recipe {
         this.recipeName = recipeName;
     }
 
+    public int getServings() {
+        return servings;
+    }
+
+    public void setServings(int servings) {
+        this.servings = servings;
+    }
+
     public int getIngredientQuantity() {
         return ingredientQuantity;
     }
@@ -129,6 +140,14 @@ public class Recipe {
 
     public void setIngredientName(String ingredientName) {
         this.ingredientName = ingredientName;
+    }
+
+    public String getStepId() {
+        return stepId;
+    }
+
+    public void setStepId(String stepId) {
+        this.stepId = stepId;
     }
 
     public String getShortDescription() {
@@ -163,11 +182,4 @@ public class Recipe {
         this.thumbnailURL = thumbnailURL;
     }
 
-    public int getServings() {
-        return servings;
-    }
-
-    public void setServings(int servings) {
-        this.servings = servings;
-    }
 }
