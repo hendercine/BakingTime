@@ -8,7 +8,7 @@
              tools:ignore="MergeRootFrame">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/dual_pane_rv_recipe_cards"
+        android:id="@+id/tablet_rv_recipe_cards"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:numColumns="3"

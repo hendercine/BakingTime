@@ -18,9 +18,9 @@ import android.view.View;
 
 import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.adapters.MainRecyclerViewGridAdapter;
+import com.hendercine.android.bakinbuns.data.db.RecipeDbHandler;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 import com.hendercine.android.bakinbuns.data.network.RecipeClient;
-import com.hendercine.android.bakinbuns.data.network.RecipeService;
 import com.hendercine.android.bakinbuns.utils.GridSpacingItemDecoration;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -44,17 +44,17 @@ public class MainSelectionActivity extends AppCompatActivity implements
     private MainRecyclerViewGridAdapter mAdapter;
     List<Recipe> list;
     Recipe mRecipe;
-    RecipeService service;
+    RecipeDbHandler dbHandler;
     private Subscription subscription;
 
     @Nullable
-    @BindView(R.id.dual_pane_rv_recipe_cards)
-    RecyclerView dualPaneGridCards;
+    @BindView(R.id.tablet_rv_recipe_cards)
+    RecyclerView tabletGridCards;
 
     @Nullable
-    @BindView(R.id.single_pane_rv_recipe_cards)
-    RecyclerView singlePaneGridCards;
-    boolean mIsDualPane;
+    @BindView(R.id.hand_held_rv_recipe_cards)
+    RecyclerView handHeldGridCards;
+    boolean mIsTablet;
 
     // Create the LeakCanary watcher
     public static RefWatcher getRefWatcher(Context context) {
@@ -79,8 +79,8 @@ public class MainSelectionActivity extends AppCompatActivity implements
         ButterKnife.bind(this);
         Timber.tag("LifeCycles");
         Timber.d("Activity Created");
-        mIsDualPane = dualPaneGridCards != null &&
-                dualPaneGridCards.getVisibility() == View.VISIBLE;
+        mIsTablet = tabletGridCards != null &&
+                tabletGridCards.getVisibility() == View.VISIBLE;
 
         getRecipeData();
     }
@@ -95,57 +95,59 @@ public class MainSelectionActivity extends AppCompatActivity implements
 //        service = retrofit.create(RecipeService.class);
 
 //        Observable<List<Recipe>> observable = service.getRecipeData()
-          subscription = RecipeClient.getInstance()
-                  .getRecipeFromJson()
-                  .subscribeOn(Schedulers.newThread())
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe(new Observer<List<Recipe>>() {
-            @Override
-            public void onCompleted() {
-                Timber.d("In onCompleted()");
-            }
 
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-                Timber.d("In onError()");
-            }
+        dbHandler = new RecipeDbHandler(this);
+        subscription = RecipeClient.getInstance()
+                .getRecipeFromJson()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Recipe>>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("In onCompleted()");
+                    }
 
-            @Override
-            public void onNext(List<Recipe> recipes) {
-                Timber.d("In onNext()");
-                list = new ArrayList<>();
-                for (int i = 0; i < recipes.size(); i++) {
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        Timber.d("In onError()");
+                    }
 
-                    mRecipe = new Recipe();
-                    mRecipe.setRecipeName(recipes.get(i).getRecipeName());
-                    mRecipe.setServings(recipes.get(i).getServings());
-                    list.add(mRecipe);
-                }
-                int spanCount;
-                int spacingInPixels = 50;
-                RecyclerView convertView;
-                Timber.d("In onError()");
-                if (mIsDualPane) {
-                    convertView = dualPaneGridCards;
-                    spanCount = 3;
-                } else {
-                    convertView = singlePaneGridCards;
-                    spanCount = 1;
-                }
-                if (convertView != null) {
-                    convertView.setLayoutManager(new GridLayoutManager
-                            (MainSelectionActivity.this, spanCount));
-                    mAdapter = new MainRecyclerViewGridAdapter(list);
-                    mAdapter.setClickListener(MainSelectionActivity.this);
-                    convertView.setAdapter(mAdapter);
-            }
-                assert convertView != null;
-                convertView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
-                        spacingInPixels, true));
-        }
+                    @Override
+                    public void onNext(List<Recipe> recipes) {
+                        Timber.d("In onNext()");
+                        list = new ArrayList<>();
+                        for (int i = 0; i < recipes.size(); i++) {
 
-    });
+                            mRecipe = new Recipe();
+                            mRecipe.setRecipeName(recipes.get(i).getRecipeName());
+                            mRecipe.setServings(recipes.get(i).getServings());
+                            list.add(mRecipe);
+                        }
+                        int spanCount;
+                        int spacingInPixels = 50;
+                        RecyclerView convertView;
+                        Timber.d("In onError()");
+                        if (mIsTablet) {
+                            convertView = tabletGridCards;
+                            spanCount = 3;
+                        } else {
+                            convertView = handHeldGridCards;
+                            spanCount = 1;
+                        }
+                        if (convertView != null) {
+                            convertView.setLayoutManager(new GridLayoutManager
+                                    (MainSelectionActivity.this, spanCount));
+                            mAdapter = new MainRecyclerViewGridAdapter(list);
+                            mAdapter.setClickListener(MainSelectionActivity.this);
+                            convertView.setAdapter(mAdapter);
+                        }
+                        assert convertView != null;
+                        convertView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
+                                spacingInPixels, true));
+                    }
+
+                });
     }
 
     @Override
