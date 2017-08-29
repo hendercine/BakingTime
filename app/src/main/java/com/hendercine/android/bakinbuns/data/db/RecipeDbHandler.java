@@ -14,7 +14,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.hendercine.android.bakinbuns.data.models.Ingredient;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
+import com.hendercine.android.bakinbuns.data.models.Step;
 
 import java.util.ArrayList;
 
@@ -29,14 +31,21 @@ public class RecipeDbHandler extends SQLiteOpenHelper {
     private static final String COLUMN_RECIPE_ID = "recipe_id";
     private static final String COLUMN_RECIPE_NAME = "name";
     private static final String COLUMN_SERVINGS = "servings";
+    private static final String COLUMN_INGREDIENT_KEY = "ingredient_key";
+    private static final String COLUMN_STEP_KEY = "step_key";
+
+    private static final String TABLE_NAME_INGREDIENTS = "ingredients";
     private static final String COLUMN_INGREDIENT_NAME = "ingredient";
     private static final String COLUMN_INGREDIENT_QUANTITY = "quantity";
     private static final String COLUMN_INGREDIENT_MEASURE = "measure";
+
+    private static final String TABLE_NAME_STEPS = "steps";
     private static final String COLUMN_STEP_ID = "step_id";
     private static final String COLUMN_SHORT_DESCRIPTION = "short_description";
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_VIDEO_URL = "video_url";
     private static final String COLUMN_THUMBNAIL_URL = "thumbnail_url";
+
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "recipes.db";
 
@@ -46,27 +55,48 @@ public class RecipeDbHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String SQL_CREATE_MOVIES_TABLE = "CREATE TABLE " + TABLE_NAME
-                + " (" +
+        final String SQL_CREATE_RECIPES_TABLE = "CREATE TABLE " +
+                TABLE_NAME + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COLUMN_RECIPE_ID + " TEXT NOT NULL, " +
                 COLUMN_RECIPE_NAME + " TEXT NOT NULL, " +
                 COLUMN_SERVINGS + " TEXT NOT NULL, " +
-                COLUMN_INGREDIENT_NAME + " TEXT NOT NULL, " +
+                COLUMN_INGREDIENT_KEY + " TEXT NOT NULL, " +
+                COLUMN_STEP_KEY + " TEXT" +
+                " FOREIGN KEY (" + COLUMN_INGREDIENT_KEY + ") REFERENCES " +
+                TABLE_NAME_INGREDIENTS + " (" + COLUMN_INGREDIENT_KEY + "), "
+                + " FOREIGN KEY (" + COLUMN_STEP_KEY + ") REFERENCES " +
+                TABLE_NAME_STEPS + " (" + COLUMN_STEP_KEY + ");";
+
+        final String SQL_CREATE_INGREDIENTS_TABLE = "CREATE TABLE " +
+                TABLE_NAME_INGREDIENTS + " (" +
+                COLUMN_INGREDIENT_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                COLUMN_RECIPE_ID + " TEXT NOT NULL, " +
                 COLUMN_INGREDIENT_QUANTITY + " TEXT NOT NULL, " +
                 COLUMN_INGREDIENT_MEASURE + " TEXT NOT NULL, " +
+                " );";
+
+        final String SQL_CREATE_STEPS_TABLE = "CREATE TABLE " +
+                TABLE_NAME_STEPS + " (" +
+                COLUMN_STEP_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                COLUMN_RECIPE_ID + " TEXT NOT NULL, " +
                 COLUMN_STEP_ID + " TEXT NOT NULL, " +
                 COLUMN_SHORT_DESCRIPTION + " TEXT NOT NULL, " +
                 COLUMN_DESCRIPTION + " TEXT, " +
                 COLUMN_VIDEO_URL + " TEXT" +
                 COLUMN_THUMBNAIL_URL + " TEXT" +
                 " );";
-        db.execSQL(SQL_CREATE_MOVIES_TABLE);
+
+        db.execSQL(SQL_CREATE_INGREDIENTS_TABLE);
+        db.execSQL(SQL_CREATE_STEPS_TABLE);
+        db.execSQL(SQL_CREATE_RECIPES_TABLE);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_INGREDIENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_STEPS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
 
@@ -78,17 +108,39 @@ public class RecipeDbHandler extends SQLiteOpenHelper {
 
         values.put(COLUMN_RECIPE_ID, recipe.getRecipeId());
         values.put(COLUMN_RECIPE_NAME, recipe.getRecipeName());
-        values.put(COLUMN_INGREDIENT_NAME, recipe.getIngredientName());
-        values.put(COLUMN_INGREDIENT_QUANTITY, recipe.getIngredientQuantity());
-        values.put(COLUMN_INGREDIENT_MEASURE, recipe.getIngredientMeasure());
         values.put(COLUMN_SERVINGS, recipe.getServings());
-        values.put(COLUMN_STEP_ID, recipe.getStepId());
-        values.put(COLUMN_SHORT_DESCRIPTION, recipe.getShortDescription());
-        values.put(COLUMN_DESCRIPTION, recipe.getDescription());
-        values.put(COLUMN_VIDEO_URL, recipe.getVideoURL());
-        values.put(COLUMN_THUMBNAIL_URL, recipe.getThumbnailURL());
+        values.put(COLUMN_INGREDIENT_KEY, recipe.getIngredientKey());
+        values.put(COLUMN_STEP_KEY, recipe.getStepKey());
         db.insert(TABLE_NAME, null, values);
         values.clear();
+        db.close();
+    }
+
+    public void addIngredients(Recipe recipe, Ingredient ingredient) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues ingredientValues = new ContentValues();
+
+        ingredientValues.put(COLUMN_RECIPE_ID, recipe.getRecipeId());
+        ingredientValues.put(COLUMN_INGREDIENT_NAME, ingredient.getIngredientName());
+        ingredientValues.put(COLUMN_INGREDIENT_QUANTITY, ingredient.getIngredientQuantity());
+        ingredientValues.put(COLUMN_INGREDIENT_MEASURE, ingredient.getIngredientMeasure());
+        db.insert(TABLE_NAME_INGREDIENTS, null, ingredientValues);
+        ingredientValues.clear();
+        db.close();
+    }
+
+    public void addSteps(Recipe recipe, Step step) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues stepValues = new ContentValues();
+
+        stepValues.put(COLUMN_RECIPE_ID, recipe.getRecipeId());
+        stepValues.put(COLUMN_STEP_ID, step.getStepId());
+        stepValues.put(COLUMN_SHORT_DESCRIPTION, step.getShortDescription());
+        stepValues.put(COLUMN_DESCRIPTION, step.getDescription());
+        stepValues.put(COLUMN_VIDEO_URL, step.getVideoURL());
+        stepValues.put(COLUMN_THUMBNAIL_URL, step.getThumbnailURL());
+        db.insert(TABLE_NAME_STEPS, null, stepValues);
+        stepValues.clear();
         db.close();
     }
 
@@ -139,26 +191,56 @@ public class RecipeDbHandler extends SQLiteOpenHelper {
                 .getString(cursor.getColumnIndex(COLUMN_RECIPE_ID))));
         recipe.setRecipeName(cursor
                 .getString(cursor.getColumnIndex(COLUMN_RECIPE_NAME)));
-        recipe.setIngredientName(cursor
-                .getString(cursor.getColumnIndex(COLUMN_INGREDIENT_NAME)));
-        recipe.setIngredientQuantity(Integer.parseInt(cursor
-                .getString(cursor.getColumnIndex(COLUMN_INGREDIENT_QUANTITY))));
-        recipe.setIngredientMeasure(cursor
-                .getString(cursor.getColumnIndex(COLUMN_INGREDIENT_MEASURE)));
         recipe.setServings(Integer.parseInt(cursor
                 .getString(cursor.getColumnIndex(COLUMN_SERVINGS))));
-        recipe.setStepId(cursor
-                .getString(cursor.getColumnIndex(COLUMN_STEP_ID)));
-        recipe.setShortDescription(cursor
-                .getString(cursor.getColumnIndex(COLUMN_SHORT_DESCRIPTION)));
-        recipe.setDescription(cursor
-                .getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)));
-        recipe.setVideoURL(cursor
-                .getString(cursor.getColumnIndex(COLUMN_VIDEO_URL)));
-        recipe.setThumbnailURL(cursor
-                .getString(cursor.getColumnIndex(COLUMN_THUMBNAIL_URL)));
+        recipe.setIngredientKey(String.valueOf(parseIngredients(cursor
+                .getString(cursor.getColumnIndex(COLUMN_INGREDIENT_KEY)))));
+        recipe.setStepKey(String.valueOf(parseSteps(cursor
+                .getString(cursor.getColumnIndex(COLUMN_STEP_KEY)))));
         cursor.close();
         db.close();
         return recipe;
+    }
+
+    private Step parseSteps(String id) {
+        String listQuery = "SELECT * FROM " + TABLE_NAME_STEPS + " WHERE "
+                + COLUMN_RECIPE_ID + " = '" + id + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(listQuery, null);
+        Step steps = new Step();
+
+        cursor.moveToFirst();
+        steps.setStepId(cursor
+                .getString(cursor.getColumnIndex(COLUMN_STEP_ID)));
+        steps.setShortDescription(cursor
+                .getString(cursor.getColumnIndex(COLUMN_SHORT_DESCRIPTION)));
+        steps.setDescription(cursor
+                .getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)));
+        steps.setVideoURL(cursor
+                .getString(cursor.getColumnIndex(COLUMN_VIDEO_URL)));
+        steps.setThumbnailURL(cursor
+                .getString(cursor.getColumnIndex(COLUMN_THUMBNAIL_URL)));
+        cursor.close();
+        db.close();
+        return steps;
+    }
+
+    private Ingredient parseIngredients(String id) {
+        String listQuery = "SELECT * FROM " + TABLE_NAME_INGREDIENTS + " WHERE "
+        + COLUMN_RECIPE_ID + " = '" + id + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(listQuery, null);
+        Ingredient ingredients = new Ingredient();
+
+        cursor.moveToFirst();
+        ingredients.setIngredientName(cursor
+                .getString(cursor.getColumnIndex(COLUMN_INGREDIENT_NAME)));
+        ingredients.setIngredientQuantity(Integer.parseInt(cursor
+                .getString(cursor.getColumnIndex(COLUMN_INGREDIENT_QUANTITY))));
+        ingredients.setIngredientMeasure(cursor
+                .getString(cursor.getColumnIndex(COLUMN_INGREDIENT_MEASURE)));
+        cursor.close();
+        db.close();
+        return ingredients;
     }
 }

@@ -16,43 +16,6 @@ import org.parceler.Parcel;
  * BakinBuns created by hendercine on 7/10/17.
  */
 
-//@AutoValue
-//public abstract class Recipe implements Parcelable {
-//
-//    public abstract int recipeId();
-//    public abstract String recipeName();
-//    public abstract ArrayList<Ingredient> ingredients();
-//    public abstract ArrayList<Step> steps();
-//    public abstract int servings();
-//
-//    public static Recipe create(int recipeId, ArrayList<Ingredient> ingredients,
-//                                String recipeName,
-//                                ArrayList<Step> steps, int servings) {
-//        return builder()
-//                .recipeId(recipeId)
-//                .recipeName(recipeName)
-//                .ingredients(ingredients)
-//                .steps(steps)
-//                .servings(servings)
-//                .build();
-//    }
-//
-//    public static Builder builder() {
-//        return new AutoValue_Recipe.Builder();
-//    }
-//
-//    @AutoValue.Builder
-//    public interface Builder {
-//
-//        Builder recipeId(int x);
-//        Builder recipeName(String s);
-//        Builder ingredients(ArrayList<Ingredient> g);
-//        Builder steps(ArrayList<Step> p);
-//        Builder servings(int x);
-//
-//        Recipe build();
-//    }
-
 @Parcel
 public class Recipe {
 
@@ -63,32 +26,14 @@ public class Recipe {
     @SerializedName("name")
     public String recipeName;
 
-    @SerializedName("quantity")
-    public int ingredientQuantity;
-
-    @SerializedName("measure")
-    public String ingredientMeasure;
-
-    @SerializedName("ingredient")
-    public String ingredientName;
-
-    @SerializedName("step_id")
-    public String stepId;
-
-    @SerializedName("shortDescription")
-    public String shortDescription;
-
-    @SerializedName("description")
-    public String description;
-
-    @SerializedName("videoURL")
-    public String videoURL;
-
-    @SerializedName("thumbnailURL")
-    public String thumbnailURL;
-
     @SerializedName("servings")
     public int servings;
+
+    @SerializedName("step_key")
+    public String stepKey;
+
+    @SerializedName("ingredient_key")
+    public String ingredientKey;
 
         // Empty constructor needed by the Parceler library
     public Recipe() {
@@ -118,68 +63,19 @@ public class Recipe {
         this.servings = servings;
     }
 
-    public int getIngredientQuantity() {
-        return ingredientQuantity;
+    public String getStepKey() {
+        return stepKey;
     }
 
-    public void setIngredientQuantity(int ingredientQuantity) {
-        this.ingredientQuantity = ingredientQuantity;
+    public void setStepKey(String stepKey) {
+        this.stepKey = stepKey;
     }
 
-    public String getIngredientMeasure() {
-        return ingredientMeasure;
+    public String getIngredientKey() {
+        return ingredientKey;
     }
 
-    public void setIngredientMeasure(String ingredientMeasure) {
-        this.ingredientMeasure = ingredientMeasure;
+    public void setIngredientKey(String ingredientKey) {
+        this.ingredientKey = ingredientKey;
     }
-
-    public String getIngredientName() {
-        return ingredientName;
-    }
-
-    public void setIngredientName(String ingredientName) {
-        this.ingredientName = ingredientName;
-    }
-
-    public String getStepId() {
-        return stepId;
-    }
-
-    public void setStepId(String stepId) {
-        this.stepId = stepId;
-    }
-
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getVideoURL() {
-        return videoURL;
-    }
-
-    public void setVideoURL(String videoURL) {
-        this.videoURL = videoURL;
-    }
-
-    public String getThumbnailURL() {
-        return thumbnailURL;
-    }
-
-    public void setThumbnailURL(String thumbnailURL) {
-        this.thumbnailURL = thumbnailURL;
-    }
-
 }

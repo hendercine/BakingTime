@@ -8,6 +8,8 @@
 
 package com.hendercine.android.bakinbuns.data.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
 
 /**
@@ -17,53 +19,62 @@ import org.parceler.Parcel;
 @Parcel
 public class Step {
 
-    int stepId;
-    String shortDescription;
-    String description;
-    String videoUrl;
-    String thumbnailUrl;
+    @SerializedName("step_id")
+    public String stepId;
+
+    @SerializedName("shortDescription")
+    public String shortDescription;
+
+    @SerializedName("description")
+    public String description;
+
+    @SerializedName("videoURL")
+    public String videoURL;
+
+    @SerializedName("thumbnailURL")
+    public String thumbnailURL;
 
     // Empty constructor needed by the Parceler library
     public Step() {
     }
 
-    public int getStepId() {
+    public String getStepId() {
         return stepId;
+    }
+
+    public void setStepId(String stepId) {
+        this.stepId = stepId;
     }
 
     public String getShortDescription() {
         return shortDescription;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getVideoUrl() {
-        return videoUrl;
-    }
-
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public void setStepId(int stepId) {
-        this.stepId = stepId;
-    }
-
     public void setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
+    public String getVideoURL() {
+        return videoURL;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public void setVideoURL(String videoURL) {
+        this.videoURL = videoURL;
+    }
+
+    public String getThumbnailURL() {
+        return thumbnailURL;
+    }
+
+    public void setThumbnailURL(String thumbnailURL) {
+        this.thumbnailURL = thumbnailURL;
     }
 }

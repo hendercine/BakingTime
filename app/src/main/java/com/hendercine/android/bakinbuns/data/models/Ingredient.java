@@ -8,6 +8,8 @@
 
 package com.hendercine.android.bakinbuns.data.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
 
 /**
@@ -17,32 +19,37 @@ import org.parceler.Parcel;
 @Parcel
 public class Ingredient {
 
-    int quantity;
-    String measure;
-    String ingredientName;
+    @SerializedName("quantity")
+    public int ingredientQuantity;
+
+    @SerializedName("measure")
+    public String ingredientMeasure;
+
+    @SerializedName("ingredient")
+    public String ingredientName;
 
     // Empty constructor needed by the Parceler library
     public Ingredient() {
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getIngredientQuantity() {
+        return ingredientQuantity;
     }
 
-    public String getMeasure() {
-        return measure;
+    public void setIngredientQuantity(int ingredientQuantity) {
+        this.ingredientQuantity = ingredientQuantity;
+    }
+
+    public String getIngredientMeasure() {
+        return ingredientMeasure;
+    }
+
+    public void setIngredientMeasure(String ingredientMeasure) {
+        this.ingredientMeasure = ingredientMeasure;
     }
 
     public String getIngredientName() {
         return ingredientName;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public void setMeasure(String measure) {
-        this.measure = measure;
     }
 
     public void setIngredientName(String ingredientName) {
