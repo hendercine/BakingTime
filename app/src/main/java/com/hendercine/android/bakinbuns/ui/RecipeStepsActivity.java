@@ -43,13 +43,13 @@ public class RecipeStepsActivity extends AppCompatActivity {
         Icepick.restoreInstanceState(this, savedInstanceState);
         setContentView(R.layout.activity_recipe_steps);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        toolbar.setTitle(getTitle());
 
         View recyclerView = findViewById(R.id.steps_list);
         assert recyclerView != null;
-//        setupRecyclerView((RecyclerView) recyclerView);
+
 
         if (detailsContainer != null) {
             // The detail container view will be present only in the
@@ -60,73 +60,4 @@ public class RecipeStepsActivity extends AppCompatActivity {
         }
     }
 
-//
-//    public class SimpleItemRecyclerViewAdapter
-//            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
-//
-//        private final List<DummyContent.RecipeItem> mValues;
-//
-//        public SimpleItemRecyclerViewAdapter(List<DummyContent.RecipeItem> items) {
-//            mValues = items;
-//        }
-//
-//        @Override
-//        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//            View view = LayoutInflater.from(parent.getContext())
-//                    .inflate(R.layout.recipe_step_content, parent, false);
-//            return new ViewHolder(view);
-//        }
-//
-//        @Override
-//        public void onBindViewHolder(final ViewHolder holder, int position) {
-//            holder.mItem = mValues.get(position);
-//            holder.mIdView.setText(mValues.get(position).id);
-//            holder.mContentView.setText(mValues.get(position).content);
-//
-//            holder.mView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (mTwoPane) {
-//                        Bundle arguments = new Bundle();
-//                        arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-//                        RecipeDetailFragment fragment = new RecipeDetailFragment();
-//                        fragment.setArguments(arguments);
-//                        getSupportFragmentManager().beginTransaction()
-//                                .replace(R.id.recipe_detail_container, fragment)
-//                                .commit();
-//                    } else {
-//                        Context context = v.getContext();
-//                        Intent intent = new Intent(context, RecipeDetailActivity.class);
-//                        intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-//
-//                        context.startActivity(intent);
-//                    }
-//                }
-//            });
-//        }
-//
-//        @Override
-//        public int getItemCount() {
-//            return mValues.size();
-//        }
-//
-//        public class ViewHolder extends RecyclerView.ViewHolder {
-//            public final View mView;
-//            public final TextView mIdView;
-//            public final TextView mContentView;
-//            public DummyContent.RecipeItem mItem;
-//
-//            public ViewHolder(View view) {
-//                super(view);
-//                mView = view;
-//                mIdView = (TextView) view.findViewById(R.id.id);
-//                mContentView = (TextView) view.findViewById(R.id.content);
-//            }
-//
-//            @Override
-//            public String toString() {
-//                return super.toString() + " '" + mContentView.getText() + "'";
-//            }
-//        }
-//    }
 }

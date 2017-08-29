@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hendercine.android.bakinbuns.R;
-import com.hendercine.android.bakinbuns.data.models.Recipe;
+import com.hendercine.android.bakinbuns.data.models.Step;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +29,10 @@ import butterknife.ButterKnife;
 
 public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecyclerViewAdapter.StepsListViewHolder> {
 
-    private List<Recipe> list;
+    private List<Step> list;
     private StepsRecyclerViewAdapter.ItemClickListener mClickListener;
 
-    public StepsRecyclerViewAdapter(List<Recipe> list) {
+    public StepsRecyclerViewAdapter(List<Step> list) {
         this.list = list;
     }
 
@@ -49,8 +49,8 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
     public void onBindViewHolder(StepsRecyclerViewAdapter.StepsListViewHolder holder, int
             position) {
 
-        Recipe recipe = list.get(position);
-        holder.mStepListTextView.setText(recipe.getShortDescription());
+        Step step = list.get(position);
+        holder.mStepListTextView.setText(step.getShortDescription());
 
     }
 
@@ -59,7 +59,7 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
         return list.size();
     }
 
-    public Recipe getItem(int position) {
+    public Step getItem(int position) {
         if (position < 0 || position >= list.size()) {
             return null;
         } else {
@@ -71,12 +71,12 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
         return position;
     }
 
-    public void setList(ArrayList<Recipe> recipes) {
-        if (recipes == null) {
+    public void setList(ArrayList<Step> steps) {
+        if (steps == null) {
             return;
         }
         list.clear();
-        list.addAll(recipes);
+        list.addAll(steps);
         notifyDataSetChanged();
     }
 
@@ -84,7 +84,7 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
             View.OnClickListener {
 
 
-        @BindView(R.id.step_description)
+        @BindView(R.id.step_description_btn)
         TextView mStepListTextView;
 
         StepsListViewHolder(View itemView) {

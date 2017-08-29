@@ -13,6 +13,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.widget.RecyclerView;
 
+import com.hendercine.android.bakinbuns.data.models.Ingredient;
+import com.hendercine.android.bakinbuns.data.models.Step;
+
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 
 /**
@@ -37,11 +42,47 @@ public class Utils {
                 }
             };
 
-    boolean isNetworkAvailable(Context context) {
+    public boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    public ArrayList<Ingredient> getIngredientData(ArrayList<Ingredient> ingredients) {
+
+        Ingredient ingredient;
+        ArrayList<Ingredient> ingredientsList = new ArrayList<>();
+
+        for (int i = 0; i < ingredients.size(); ++i) {
+            ingredient = new Ingredient();
+            ingredient.setIngredientName(ingredients.get(i).getIngredientName());
+            ingredient.setIngredientQuantity(ingredients.get(i).getIngredientQuantity());
+            ingredient.setIngredientMeasure(ingredients.get(i).getIngredientMeasure());
+
+            ingredientsList.add(ingredient);
+        }
+
+        return ingredientsList;
+    }
+
+    public ArrayList<Step> getStepData(ArrayList<Step> steps) {
+
+        Step step;
+        ArrayList<Step> stepsList = new ArrayList<>();
+
+        for (int i = 0; i < steps.size(); ++i) {
+            step = new Step();
+            step.setStepId(steps.get(i).getStepId());
+            step.setShortDescription(steps.get(i).getShortDescription());
+            step.setDescription(steps.get(i).getDescription());
+            step.setVideoURL(steps.get(i).getVideoURL());
+            step.setThumbnailURL(steps.get(i).getThumbnailURL());
+
+            stepsList.add(step);
+        }
+
+        return stepsList;
     }
 
 //    public static ArrayList<Recipe> getRecipeDataFromJson(String recipeJsonStr)

@@ -12,6 +12,8 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
+
 /**
  * BakinBuns created by hendercine on 7/10/17.
  */
@@ -32,8 +34,14 @@ public class Recipe {
     @SerializedName("step_key")
     public String stepKey;
 
+    @SerializedName("step_list")
+    public ArrayList<Step> stepList;
+
     @SerializedName("ingredient_key")
     public String ingredientKey;
+
+    @SerializedName("ingredient_list")
+    public ArrayList<Ingredient> ingredientList;
 
         // Empty constructor needed by the Parceler library
     public Recipe() {
@@ -69,6 +77,22 @@ public class Recipe {
 
     public void setStepKey(String stepKey) {
         this.stepKey = stepKey;
+    }
+
+    public ArrayList<Step> getStepList() {
+        return stepList;
+    }
+
+    public void setStepList(ArrayList<Step> stepList) {
+        this.stepList = stepList;
+    }
+
+    public ArrayList<Ingredient> getIngredientList() {
+        return ingredientList;
+    }
+
+    public void setIngredientList(ArrayList<Ingredient> ingredientList) {
+        this.ingredientList = ingredientList;
     }
 
     public String getIngredientKey() {

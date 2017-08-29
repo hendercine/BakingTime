@@ -9,6 +9,7 @@
 package com.hendercine.android.bakinbuns.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,12 +19,21 @@ import android.view.View;
 
 import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.adapters.MainRecyclerViewGridAdapter;
+import com.hendercine.android.bakinbuns.data.bundlers.IngredientBundler;
+import com.hendercine.android.bakinbuns.data.bundlers.RecipeBundler;
+import com.hendercine.android.bakinbuns.data.bundlers.RecipeListBundler;
+import com.hendercine.android.bakinbuns.data.bundlers.StepBundler;
 import com.hendercine.android.bakinbuns.data.db.RecipeDbHandler;
+import com.hendercine.android.bakinbuns.data.models.Ingredient;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
+import com.hendercine.android.bakinbuns.data.models.Step;
 import com.hendercine.android.bakinbuns.data.network.RecipeClient;
 import com.hendercine.android.bakinbuns.utils.GridSpacingItemDecoration;
+import com.hendercine.android.bakinbuns.utils.Utils;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +41,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.Icepick;
+import icepick.State;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -42,10 +53,17 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
     private RefWatcher refWatcher;
     private MainRecyclerViewGridAdapter mAdapter;
+    @State(RecipeListBundler.class)
     List<Recipe> list;
+    @State(RecipeBundler.class)
     Recipe mRecipe;
+    @State(StepBundler.class)
+    Step mStep;
+    @State(IngredientBundler.class)
+    Ingredient mIngredient;
     RecipeDbHandler dbHandler;
-    private Subscription subscription;
+    Subscription subscription;
+    Utils mUtils;
 
     @Nullable
     @BindView(R.id.tablet_rv_recipe_cards)
@@ -54,6 +72,8 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @Nullable
     @BindView(R.id.hand_held_rv_recipe_cards)
     RecyclerView handHeldGridCards;
+
+    @State
     boolean mIsTablet;
 
     // Create the LeakCanary watcher
@@ -82,21 +102,11 @@ public class MainSelectionActivity extends AppCompatActivity implements
         mIsTablet = tabletGridCards != null &&
                 tabletGridCards.getVisibility() == View.VISIBLE;
 
-        getRecipeData();
+            getRecipeData();
     }
 
     public void getRecipeData() {
 
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("http://go.udacity.com/")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-//                .build();
-//        service = retrofit.create(RecipeService.class);
-
-//        Observable<List<Recipe>> observable = service.getRecipeData()
-
-        dbHandler = new RecipeDbHandler(this);
         subscription = RecipeClient.getInstance()
                 .getRecipeFromJson()
                 .subscribeOn(Schedulers.newThread())
@@ -105,6 +115,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
                     @Override
                     public void onCompleted() {
                         Timber.d("In onCompleted()");
+
                     }
 
                     @Override
@@ -120,8 +131,18 @@ public class MainSelectionActivity extends AppCompatActivity implements
                         for (int i = 0; i < recipes.size(); i++) {
 
                             mRecipe = new Recipe();
+
                             mRecipe.setRecipeName(recipes.get(i).getRecipeName());
                             mRecipe.setServings(recipes.get(i).getServings());
+//                            mRecipe.setIngredientList(mUtils
+//                                    .getIngredientData(recipes
+//                                            .get(i)
+//                                            .getIngredientList()));
+//                            mRecipe.setStepList(mUtils
+//                                    .getStepData(recipes
+//                                            .get(i)
+//                                            .getStepList()));
+
                             list.add(mRecipe);
                         }
                         int spanCount;
@@ -166,11 +187,15 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
     @Override
     public void onItemClick(View view, int position) {
-        Timber.i("TAG", "You clicked number "
-                + mAdapter.getItem(position)
-                + ", "
-                + "which is at cell position: "
-                + position);
+//        Timber.i("TAG", "You clicked number "
+//                + mAdapter.getItem(position)
+//                + ", "
+//                + "which is at cell position: "
+//                + position);
+        Intent intent = new Intent(MainSelectionActivity.this,
+                RecipeStepsActivity.class);
+        intent.putExtra("recipe", Parcels.wrap(list));
+        startActivity(intent);
     }
 
     // TODO: Remove or uncomment and modify the following code.
