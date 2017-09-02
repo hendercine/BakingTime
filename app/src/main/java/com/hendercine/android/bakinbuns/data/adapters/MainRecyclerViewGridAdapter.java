@@ -19,7 +19,6 @@ import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,10 +30,10 @@ import butterknife.ButterKnife;
 public class MainRecyclerViewGridAdapter extends RecyclerView
         .Adapter<MainRecyclerViewGridAdapter.MainGridViewHolder> {
 
-    private List<Recipe> list;
+    private ArrayList<Recipe> list;
     private ItemClickListener mClickListener;
 
-    public MainRecyclerViewGridAdapter(List<Recipe> list) {
+    public MainRecyclerViewGridAdapter(ArrayList<Recipe> list) {
         this.list = list;
     }
 

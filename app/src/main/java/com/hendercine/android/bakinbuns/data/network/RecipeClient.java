@@ -10,7 +10,7 @@ package com.hendercine.android.bakinbuns.data.network;
 
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -45,7 +45,7 @@ public class RecipeClient {
         return instance;
     }
 
-    public Observable<List<Recipe>> getRecipeFromJson() {
+    public Observable<ArrayList<Recipe>> getRecipeFromJson() {
         return recipeService.getRecipeData();
     }
 }

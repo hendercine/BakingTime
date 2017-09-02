@@ -14,7 +14,7 @@ import com.hendercine.android.bakinbuns.data.models.Recipe;
 
 import org.parceler.Parcels;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import icepick.Bundler;
 
@@ -22,15 +22,15 @@ import icepick.Bundler;
  * BakinBuns created by hendercine on 8/29/17.
  */
 
-public class RecipeListBundler implements Bundler<List<Recipe>> {
+public class RecipeListBundler implements Bundler<ArrayList<Recipe>> {
 
     @Override
-    public void put(String s, List<Recipe> recipes, Bundle bundle) {
+    public void put(String s, ArrayList<Recipe> recipes, Bundle bundle) {
         bundle.putParcelable(s, Parcels.wrap(recipes));
     }
 
     @Override
-    public List<Recipe> get(String s, Bundle bundle) {
+    public ArrayList<Recipe> get(String s, Bundle bundle) {
         return Parcels.unwrap(bundle.getParcelable(s));
     }
 }

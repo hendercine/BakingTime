@@ -23,13 +23,13 @@ import icepick.State;
 //import android.support.v7.app.ActionBar;
 //import android.view.MenuItem;
 
-public class RecipeStepsFragment extends Fragment implements
+public class StepsDetailFragment extends Fragment implements
         StepsRecyclerViewAdapter.ItemClickListener{
 
     @State boolean mIsDualPane;
     private Recipe mRecipe = new Recipe();
 
-    public RecipeStepsFragment() {}
+    public StepsDetailFragment() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class RecipeStepsFragment extends Fragment implements
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View stepsListView = inflater.inflate(R.layout.activity_recipe_steps, container, false);
+        View stepsListView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
 
         return stepsListView;
     }

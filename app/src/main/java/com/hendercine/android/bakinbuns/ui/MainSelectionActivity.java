@@ -36,7 +36,6 @@ import com.squareup.leakcanary.RefWatcher;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,14 +52,13 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
     private RefWatcher refWatcher;
     private MainRecyclerViewGridAdapter mAdapter;
-    @State(RecipeListBundler.class)
-    List<Recipe> list;
-    @State(RecipeBundler.class)
-    Recipe mRecipe;
-    @State(StepBundler.class)
-    Step mStep;
-    @State(IngredientBundler.class)
-    Ingredient mIngredient;
+
+    @State(RecipeListBundler.class) ArrayList<Recipe> recipeList;
+
+    @State(RecipeBundler.class) Recipe mRecipe;
+    @State(StepBundler.class) Step mStep;
+    @State(IngredientBundler.class) Ingredient mIngredient;
+
     RecipeDbHandler dbHandler;
     Subscription subscription;
     Utils mUtils;
@@ -111,7 +109,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
                 .getRecipeFromJson()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Recipe>>() {
+                .subscribe(new Observer<ArrayList<Recipe>>() {
                     @Override
                     public void onCompleted() {
                         Timber.d("In onCompleted()");
@@ -125,30 +123,23 @@ public class MainSelectionActivity extends AppCompatActivity implements
                     }
 
                     @Override
-                    public void onNext(List<Recipe> recipes) {
+                    public void onNext(ArrayList<Recipe> recipes) {
                         Timber.d("In onNext()");
-                        list = new ArrayList<>();
+                        recipeList = new ArrayList<>();
                         for (int i = 0; i < recipes.size(); i++) {
 
                             mRecipe = new Recipe();
 
                             mRecipe.setRecipeName(recipes.get(i).getRecipeName());
                             mRecipe.setServings(recipes.get(i).getServings());
-//                            mRecipe.setIngredientList(mUtils
-//                                    .getIngredientData(recipes
-//                                            .get(i)
-//                                            .getIngredientList()));
-//                            mRecipe.setStepList(mUtils
-//                                    .getStepData(recipes
-//                                            .get(i)
-//                                            .getStepList()));
+                            mRecipe.setStepList(recipes.get(i).getStepList());
 
-                            list.add(mRecipe);
+                            recipeList.add(mRecipe);
                         }
                         int spanCount;
                         int spacingInPixels = 50;
                         RecyclerView convertView;
-                        Timber.d("In onError()");
+
                         if (mIsTablet) {
                             convertView = tabletGridCards;
                             spanCount = 3;
@@ -159,7 +150,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
                         if (convertView != null) {
                             convertView.setLayoutManager(new GridLayoutManager
                                     (MainSelectionActivity.this, spanCount));
-                            mAdapter = new MainRecyclerViewGridAdapter(list);
+                            mAdapter = new MainRecyclerViewGridAdapter(recipeList);
                             mAdapter.setClickListener(MainSelectionActivity.this);
                             convertView.setAdapter(mAdapter);
                         }
@@ -194,7 +185,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
 //                + position);
         Intent intent = new Intent(MainSelectionActivity.this,
                 RecipeStepsActivity.class);
-        intent.putExtra("recipe", Parcels.wrap(list));
+        intent.putExtra("recipe", Parcels.wrap(mRecipe));
         startActivity(intent);
     }
 

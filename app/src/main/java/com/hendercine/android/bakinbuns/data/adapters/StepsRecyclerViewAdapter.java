@@ -8,6 +8,7 @@
 
 package com.hendercine.android.bakinbuns.data.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,11 +30,13 @@ import butterknife.ButterKnife;
 
 public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecyclerViewAdapter.StepsListViewHolder> {
 
-    private List<Step> list;
+    private List<Step> mStepList;
+    Context mContext;
     private StepsRecyclerViewAdapter.ItemClickListener mClickListener;
 
-    public StepsRecyclerViewAdapter(List<Step> list) {
-        this.list = list;
+    public StepsRecyclerViewAdapter(List<Step> stepList) {
+        mStepList = stepList;
+//        mContext = context;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
             (ViewGroup parent, int
             viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_recipe_steps, parent, false);
+                .inflate(R.layout.recipe_step_list_item, parent, false);
         return new StepsRecyclerViewAdapter.StepsListViewHolder(view);
     }
 
@@ -49,21 +52,21 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
     public void onBindViewHolder(StepsRecyclerViewAdapter.StepsListViewHolder holder, int
             position) {
 
-        Step step = list.get(position);
+        Step step = mStepList.get(position);
         holder.mStepListTextView.setText(step.getShortDescription());
 
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return mStepList.size();
     }
 
     public Step getItem(int position) {
-        if (position < 0 || position >= list.size()) {
+        if (position < 0 || position >= mStepList.size()) {
             return null;
         } else {
-            return list.get(position);
+            return mStepList.get(position);
         }
     }
 
@@ -71,12 +74,12 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
         return position;
     }
 
-    public void setList(ArrayList<Step> steps) {
+    public void setStepList(ArrayList<Step> steps) {
         if (steps == null) {
             return;
         }
-        list.clear();
-        list.addAll(steps);
+        mStepList.clear();
+        mStepList.addAll(steps);
         notifyDataSetChanged();
     }
 

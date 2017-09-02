@@ -83,8 +83,9 @@ public class Recipe {
         return stepList;
     }
 
-    public void setStepList(ArrayList<Step> stepList) {
+    public ArrayList<Step> setStepList(ArrayList<Step> stepList) {
         this.stepList = stepList;
+        return null;
     }
 
     public ArrayList<Ingredient> getIngredientList() {

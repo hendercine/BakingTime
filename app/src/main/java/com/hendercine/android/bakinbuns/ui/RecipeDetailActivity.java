@@ -13,7 +13,7 @@
 ///**
 // * An activity representing a single Recipe detail screen. This
 // * activity is only used narrow width devices. On tablet-size devices,
-// * item details are presented side-by-side with a list of items
+// * item details are presented side-by-side with a recipeList of items
 // * in a {@link RecipeStepsActivity}.
 // */
 //public class RecipeDetailActivity extends AppCompatActivity {

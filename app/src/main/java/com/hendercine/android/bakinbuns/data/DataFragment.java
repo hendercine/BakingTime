@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 import com.hendercine.android.bakinbuns.data.network.RecipeClient;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -32,7 +32,7 @@ import rx.schedulers.Schedulers;
 
 public class DataFragment extends Fragment {
 
-    private Observable<List<Recipe>> recipeModel;
+    private Observable<ArrayList<Recipe>> recipeModel;
 
     @Override
     public void onAttach(Context context) {
@@ -54,7 +54,7 @@ public class DataFragment extends Fragment {
         return null;
     }
 
-    public Observable<List<Recipe>> getRecipeModel() {
+    public Observable<ArrayList<Recipe>> getRecipeModel() {
         if (recipeModel == null) {
             recipeModel = RecipeClient.getInstance()
                     .getRecipeFromJson()

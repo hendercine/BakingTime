@@ -10,7 +10,7 @@ package com.hendercine.android.bakinbuns.data.network;
 
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import retrofit2.http.GET;
 import rx.Observable;
@@ -21,5 +21,5 @@ import rx.Observable;
 
 public interface RecipeService {
 
-    @GET("android-baking-app-json") Observable<List<Recipe>> getRecipeData();
+    @GET("android-baking-app-json") Observable<ArrayList<Recipe>> getRecipeData();
 }
