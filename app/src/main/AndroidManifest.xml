@@ -23,7 +23,7 @@
         </activity>
 
         <activity
-            android:name="com.hendercine.android.bakinbuns.ui.RecipeStepsActivity"
+            android:name="com.hendercine.android.bakinbuns.ui.StepsListActivity"
             android:parentActivityName=".ui.MainSelectionActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -34,11 +34,11 @@
         <!--<activity-->
         <!--android:name="com.hendercine.android.bakinbuns.ui.RecipeDetailActivity"-->
         <!--android:label="@string/title_recipe_detail"-->
-        <!--android:parentActivityName="com.hendercine.android.bakinbuns.ui.RecipeStepsActivity"-->
-        <!--android:theme="@style/AppTheme.NoActionBar">-->
+        <!--android:parentActivityName="com.hendercine.android.bakinbuns.ui.StepsListActivity->
+        <!-android:theme="@style/AppTheme.NoActionBar">-->
         <!--<meta-data-->
         <!--android:name="android.support.PARENT_ACTIVITY"-->
-        <!--android:value="com.hendercine.android.bakinbuns.ui.RecipeStepsActivity" />-->
+        <!--android:value="com.hendercine.android.bakinbuns.ui.StepsListActivity/>-->
         <!--</activity>-->
 
     </application>

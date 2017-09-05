@@ -9,7 +9,7 @@
               android:divider="?android:attr/dividerHorizontal"
               android:orientation="horizontal"
               android:showDividers="middle"
-              tools:context="com.hendercine.android.bakinbuns.ui.RecipeStepsActivity">
+              tools:context="com.hendercine.android.bakinbuns.ui.StepsListActivity">
 
     <!--
     This layout is a two-pane layout for the Recipes
@@ -43,8 +43,8 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:layoutManager="LinearLayoutManager"
-            tools:context="com.hendercine.android.bakinbuns.ui.RecipeStepsActivity"
-            tools:listitem="@layout/recipe_step_list_item"/>
+            tools:context="com.hendercine.android.bakinbuns.ui.StepsListActivity"
+            tools:listitem="@layout/step_list_item"/>
     </LinearLayout>
 
 

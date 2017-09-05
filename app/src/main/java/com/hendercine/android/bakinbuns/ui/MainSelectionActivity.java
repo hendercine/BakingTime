@@ -23,7 +23,6 @@ import com.hendercine.android.bakinbuns.data.bundlers.IngredientBundler;
 import com.hendercine.android.bakinbuns.data.bundlers.RecipeBundler;
 import com.hendercine.android.bakinbuns.data.bundlers.RecipeListBundler;
 import com.hendercine.android.bakinbuns.data.bundlers.StepBundler;
-import com.hendercine.android.bakinbuns.data.db.RecipeDbHandler;
 import com.hendercine.android.bakinbuns.data.models.Ingredient;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 import com.hendercine.android.bakinbuns.data.models.Step;
@@ -64,7 +63,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @State(IngredientBundler.class)
     Ingredient mIngredient;
 
-    RecipeDbHandler dbHandler;
     Subscription subscription;
     Utils mUtils;
 
@@ -139,11 +137,9 @@ public class MainSelectionActivity extends AppCompatActivity implements
                             mRecipe.setStepList(recipes.get(i).getStepList());
                             mRecipe.setIngredientList(recipes.get(i).getIngredientList());
 
-//                            Bundle bundle = new Bundle();
-//                            bundle.putParcelable("recipe", Parcels.wrap(mRecipe));
                             intent = new Intent(
                                     MainSelectionActivity.this,
-                                    RecipeStepsActivity.class);
+                                    StepsListActivity.class);
                             intent.putExtra("recipe", Parcels.wrap(mRecipe));
 
                             recipeList.add(mRecipe);
