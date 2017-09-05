@@ -109,8 +109,6 @@ public class RecipeDbHandler extends SQLiteOpenHelper {
         values.put(COLUMN_RECIPE_ID, recipe.getRecipeId());
         values.put(COLUMN_RECIPE_NAME, recipe.getRecipeName());
         values.put(COLUMN_SERVINGS, recipe.getServings());
-        values.put(COLUMN_INGREDIENT_KEY, recipe.getIngredientKey());
-        values.put(COLUMN_STEP_KEY, recipe.getStepKey());
         db.insert(TABLE_NAME, null, values);
         values.clear();
         db.close();
@@ -193,10 +191,6 @@ public class RecipeDbHandler extends SQLiteOpenHelper {
                 .getString(cursor.getColumnIndex(COLUMN_RECIPE_NAME)));
         recipe.setServings(Integer.parseInt(cursor
                 .getString(cursor.getColumnIndex(COLUMN_SERVINGS))));
-        recipe.setIngredientKey(String.valueOf(parseIngredients(cursor
-                .getString(cursor.getColumnIndex(COLUMN_INGREDIENT_KEY)))));
-        recipe.setStepKey(String.valueOf(parseSteps(cursor
-                .getString(cursor.getColumnIndex(COLUMN_STEP_KEY)))));
         cursor.close();
         db.close();
         return recipe;

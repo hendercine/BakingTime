@@ -19,7 +19,6 @@ import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.models.Step;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,11 +29,11 @@ import butterknife.ButterKnife;
 
 public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecyclerViewAdapter.StepsListViewHolder> {
 
-    private List<Step> mStepList;
+    private ArrayList<Step> mStepList;
     Context mContext;
     private StepsRecyclerViewAdapter.ItemClickListener mClickListener;
 
-    public StepsRecyclerViewAdapter(List<Step> stepList) {
+    public StepsRecyclerViewAdapter(ArrayList<Step> stepList) {
         mStepList = stepList;
 //        mContext = context;
     }
@@ -59,7 +58,7 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
 
     @Override
     public int getItemCount() {
-        return mStepList.size();
+        return (mStepList == null) ? 0 : mStepList.size();
     }
 
     public Step getItem(int position) {

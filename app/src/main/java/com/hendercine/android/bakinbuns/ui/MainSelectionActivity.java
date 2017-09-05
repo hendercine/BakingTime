@@ -52,12 +52,17 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
     private RefWatcher refWatcher;
     private MainRecyclerViewGridAdapter mAdapter;
+    private Intent intent;
 
-    @State(RecipeListBundler.class) ArrayList<Recipe> recipeList;
+    @State(RecipeListBundler.class)
+    ArrayList<Recipe> recipeList;
 
-    @State(RecipeBundler.class) Recipe mRecipe;
-    @State(StepBundler.class) Step mStep;
-    @State(IngredientBundler.class) Ingredient mIngredient;
+    @State(RecipeBundler.class)
+    Recipe mRecipe;
+    @State(StepBundler.class)
+    Step mStep;
+    @State(IngredientBundler.class)
+    Ingredient mIngredient;
 
     RecipeDbHandler dbHandler;
     Subscription subscription;
@@ -100,7 +105,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
         mIsTablet = tabletGridCards != null &&
                 tabletGridCards.getVisibility() == View.VISIBLE;
 
-            getRecipeData();
+        getRecipeData();
     }
 
     public void getRecipeData() {
@@ -113,7 +118,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
                     @Override
                     public void onCompleted() {
                         Timber.d("In onCompleted()");
-
                     }
 
                     @Override
@@ -133,30 +137,38 @@ public class MainSelectionActivity extends AppCompatActivity implements
                             mRecipe.setRecipeName(recipes.get(i).getRecipeName());
                             mRecipe.setServings(recipes.get(i).getServings());
                             mRecipe.setStepList(recipes.get(i).getStepList());
+                            mRecipe.setIngredientList(recipes.get(i).getIngredientList());
+
+//                            Bundle bundle = new Bundle();
+//                            bundle.putParcelable("recipe", Parcels.wrap(mRecipe));
+                            intent = new Intent(
+                                    MainSelectionActivity.this,
+                                    RecipeStepsActivity.class);
+                            intent.putExtra("recipe", Parcels.wrap(mRecipe));
 
                             recipeList.add(mRecipe);
                         }
-                        int spanCount;
-                        int spacingInPixels = 50;
-                        RecyclerView convertView;
+                            int spanCount;
+                            int spacingInPixels = 50;
+                            RecyclerView convertView;
 
-                        if (mIsTablet) {
-                            convertView = tabletGridCards;
-                            spanCount = 3;
-                        } else {
-                            convertView = handHeldGridCards;
-                            spanCount = 1;
-                        }
-                        if (convertView != null) {
-                            convertView.setLayoutManager(new GridLayoutManager
-                                    (MainSelectionActivity.this, spanCount));
-                            mAdapter = new MainRecyclerViewGridAdapter(recipeList);
-                            mAdapter.setClickListener(MainSelectionActivity.this);
-                            convertView.setAdapter(mAdapter);
-                        }
-                        assert convertView != null;
-                        convertView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
-                                spacingInPixels, true));
+                            if (mIsTablet) {
+                                convertView = tabletGridCards;
+                                spanCount = 3;
+                            } else {
+                                convertView = handHeldGridCards;
+                                spanCount = 1;
+                            }
+                            if (convertView != null) {
+                                convertView.setLayoutManager(new GridLayoutManager
+                                        (MainSelectionActivity.this, spanCount));
+                                mAdapter = new MainRecyclerViewGridAdapter(recipeList);
+                                mAdapter.setClickListener(MainSelectionActivity.this);
+                                convertView.setAdapter(mAdapter);
+                            }
+                            assert convertView != null;
+                            convertView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
+                                    spacingInPixels, true));
                     }
 
                 });
@@ -183,9 +195,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
 //                + ", "
 //                + "which is at cell position: "
 //                + position);
-        Intent intent = new Intent(MainSelectionActivity.this,
-                RecipeStepsActivity.class);
-        intent.putExtra("recipe", Parcels.wrap(mRecipe));
         startActivity(intent);
     }
 

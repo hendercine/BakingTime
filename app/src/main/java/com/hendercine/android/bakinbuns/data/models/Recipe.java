@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * BakinBuns created by hendercine on 7/10/17.
  */
 
-@Parcel
+@Parcel(Parcel.Serialization.BEAN)
 public class Recipe {
 
         // Fields must be public
@@ -31,16 +31,10 @@ public class Recipe {
     @SerializedName("servings")
     public int servings;
 
-    @SerializedName("step_key")
-    public String stepKey;
-
-    @SerializedName("step_list")
+    @SerializedName("steps")
     public ArrayList<Step> stepList;
 
-    @SerializedName("ingredient_key")
-    public String ingredientKey;
-
-    @SerializedName("ingredient_list")
+    @SerializedName("ingredients")
     public ArrayList<Ingredient> ingredientList;
 
         // Empty constructor needed by the Parceler library
@@ -71,21 +65,13 @@ public class Recipe {
         this.servings = servings;
     }
 
-    public String getStepKey() {
-        return stepKey;
-    }
-
-    public void setStepKey(String stepKey) {
-        this.stepKey = stepKey;
-    }
 
     public ArrayList<Step> getStepList() {
         return stepList;
     }
 
-    public ArrayList<Step> setStepList(ArrayList<Step> stepList) {
+    public void setStepList(ArrayList<Step> stepList) {
         this.stepList = stepList;
-        return null;
     }
 
     public ArrayList<Ingredient> getIngredientList() {
@@ -96,11 +82,4 @@ public class Recipe {
         this.ingredientList = ingredientList;
     }
 
-    public String getIngredientKey() {
-        return ingredientKey;
-    }
-
-    public void setIngredientKey(String ingredientKey) {
-        this.ingredientKey = ingredientKey;
-    }
 }

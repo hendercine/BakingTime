@@ -16,11 +16,11 @@ import org.parceler.Parcel;
  * BakinBuns created by hendercine on 7/10/17.
  */
 
-@Parcel
+@Parcel(Parcel.Serialization.BEAN)
 public class Ingredient {
 
     @SerializedName("quantity")
-    public int ingredientQuantity;
+    public float ingredientQuantity;
 
     @SerializedName("measure")
     public String ingredientMeasure;
@@ -32,11 +32,11 @@ public class Ingredient {
     public Ingredient() {
     }
 
-    public int getIngredientQuantity() {
+    public float getIngredientQuantity() {
         return ingredientQuantity;
     }
 
-    public void setIngredientQuantity(int ingredientQuantity) {
+    public void setIngredientQuantity(float ingredientQuantity) {
         this.ingredientQuantity = ingredientQuantity;
     }
 

@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.adapters.StepsRecyclerViewAdapter;
 import com.hendercine.android.bakinbuns.data.bundlers.DetailFragmentBundler;
-import com.hendercine.android.bakinbuns.data.bundlers.RecipeListBundler;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 import com.hendercine.android.bakinbuns.data.models.Step;
 
@@ -36,13 +35,13 @@ public class RecipeStepsActivity extends AppCompatActivity implements StepsRecyc
 
     Recipe mRecipe;
     Step mStep;
-    ArrayList<Step> mStepShortDescriptionList;
-    @State(RecipeListBundler.class)
     ArrayList<Recipe> recipeList;
+    ArrayList<Step> mStepShortDescriptionList;
 
     @State(DetailFragmentBundler.class)
     StepsListFragment mStepsFragment;
     ArrayList<Step> mStepArrayList;
+
 
     @Nullable
     @BindView(R.id.recipe_detail_container)
@@ -65,12 +64,14 @@ public class RecipeStepsActivity extends AppCompatActivity implements StepsRecyc
         mIsDualPane = detailsContainerView != null &&
                 detailsContainerView.getVisibility() == View.VISIBLE;
 
-
         mRecipe = Parcels.unwrap(getIntent().getParcelableExtra("recipe"));
-        mStepArrayList = mRecipe.getStepList();
 
+        setTitle(mRecipe.getRecipeName());
+
+        mStepArrayList = new ArrayList<>();
         mStepShortDescriptionList = new ArrayList<>();
 
+        mStepArrayList = mRecipe.getStepList();
         if (mStepArrayList != null) {
             for (int i = 0; i < mStepArrayList.size(); i++) {
                 mStep = new Step();
@@ -94,8 +95,6 @@ public class RecipeStepsActivity extends AppCompatActivity implements StepsRecyc
 //        intent.putExtras(bundle);
 
         if (stepsListView != null) {
-            mStepShortDescriptionList = new ArrayList<>();
-
             stepsListView.setLayoutManager(new LinearLayoutManager
                     (RecipeStepsActivity.this));
             StepsRecyclerViewAdapter adapter = new StepsRecyclerViewAdapter
@@ -104,7 +103,7 @@ public class RecipeStepsActivity extends AppCompatActivity implements StepsRecyc
             adapter.setClickListener(RecipeStepsActivity.this);
             stepsListView.setAdapter(adapter);
         }
-}
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

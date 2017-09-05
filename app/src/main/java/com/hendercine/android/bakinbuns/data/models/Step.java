@@ -16,7 +16,7 @@ import org.parceler.Parcel;
  * BakinBuns created by hendercine on 7/10/17.
  */
 
-@Parcel
+@Parcel(Parcel.Serialization.BEAN)
 public class Step {
 
     @SerializedName("step_id")
