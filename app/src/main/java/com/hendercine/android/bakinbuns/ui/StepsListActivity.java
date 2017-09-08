@@ -1,6 +1,5 @@
 package com.hendercine.android.bakinbuns.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -63,18 +62,18 @@ public class StepsListActivity extends AppCompatActivity implements StepsRecycle
 
         mIsDualPane = detailsContainerView != null &&
                 detailsContainerView.getVisibility() == View.VISIBLE;
-
-        if (mIsDualPane) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.recipe_detail_container, mStepsDetailFragment)
-                    .commit();
-        } else {
-            Bundle bundle = new Bundle();
-
-            final Intent intent = new Intent(this, StepsDetailFragment.class);
-            intent.putExtras(bundle);
-        }
+//
+//        if (mIsDualPane) {
+//            getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.recipe_detail_container, mStepsDetailFragment)
+//                    .commit();
+//        } else {
+//            Bundle bundle = new Bundle();
+//
+//            final Intent intent = new Intent(this, StepsDetailFragment.class);
+//            intent.putExtras(bundle);
+//        }
 
         mRecipe = Parcels.unwrap(getIntent().getParcelableExtra("recipe"));
 

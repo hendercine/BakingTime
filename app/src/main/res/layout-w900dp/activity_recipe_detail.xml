@@ -1,3 +1,11 @@
+<!--
+  ~ Created by James Henderson on 2017
+  ~ Copyright (c) Hendercine Productions and James Henderson 2017.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 9/8/17 9:40 AM
+  -->
+
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,21 +25,24 @@
             android:id="@+id/exo_player_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="4"
             android:layout_margin="@dimen/detail_card_margin"/>
 
         <android.support.v7.widget.CardView
             android:id="@+id/step_description_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:layout_margin="@dimen/detail_card_margin">
 
             <TextView
                 android:id="@+id/step_description_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="@dimen/text_margin"/>
+                android:padding="@dimen/text_margin"
+                android:textAlignment="center"
+                android:gravity="center"
+                tools:text="Recipe Step Instructions"/>
         </android.support.v7.widget.CardView>
 
         <Button
@@ -39,7 +50,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_margin="@dimen/detail_card_margin"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
     </LinearLayout>
 
 
