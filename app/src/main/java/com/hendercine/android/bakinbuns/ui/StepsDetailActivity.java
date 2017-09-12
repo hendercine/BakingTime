@@ -23,6 +23,7 @@ public class StepsDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_step_detail);
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();

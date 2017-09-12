@@ -4,7 +4,7 @@
   ~ Copyright (c) Hendercine Productions and James Henderson 2017.
   ~ All rights reserved.
   ~
-  ~ Last modified 9/11/17 11:36 PM
+  ~ Last modified 9/12/17 3:00 PM
   -->
 
 <LinearLayout
@@ -25,7 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="@dimen/detail_card_margin"
-        android:layout_weight="3">
+        android:layout_weight="3"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/step_description_text_view"
@@ -39,5 +40,5 @@
         android:layout_height="0dp"
         android:layout_margin="@dimen/detail_card_margin"
         android:layout_weight="1"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 </LinearLayout>

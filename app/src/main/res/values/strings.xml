@@ -8,4 +8,10 @@
     <string name="card_text_place_holder">Recipe Name</string>
     <string name="recipe_ingredients_btn">Recipe Ingredients</string>
     <string name="video_not_found">Video not found!</string>
+    <string name="permission_denied">Permission denied!</string>
+    <string name="pause">Pause</string>
+    <string name="play">Play</string>
+    <string name="restart">Restart</string>
+    <string name="instructions">Instructions</string>
+    <string name="notification_text">Press play to watch the video</string>
 </resources>
