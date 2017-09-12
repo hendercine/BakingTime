@@ -20,7 +20,7 @@ import org.parceler.Parcel;
 public class Step {
 
     @SerializedName("step_id")
-    public String stepId;
+    public int stepId;
 
     @SerializedName("shortDescription")
     public String shortDescription;
@@ -38,11 +38,11 @@ public class Step {
     public Step() {
     }
 
-    public String getStepId() {
+    public int getStepId() {
         return stepId;
     }
 
-    public void setStepId(String stepId) {
+    public void setStepId(int stepId) {
         this.stepId = stepId;
     }
 

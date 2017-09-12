@@ -1,5 +1,6 @@
 package com.hendercine.android.bakinbuns.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,9 @@ import android.widget.FrameLayout;
 import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.adapters.StepsRecyclerViewAdapter;
 import com.hendercine.android.bakinbuns.data.bundlers.DetailFragmentBundler;
+import com.hendercine.android.bakinbuns.data.bundlers.RecipeBundler;
+import com.hendercine.android.bakinbuns.data.bundlers.StepBundler;
+import com.hendercine.android.bakinbuns.data.bundlers.StepListBundler;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 import com.hendercine.android.bakinbuns.data.models.Step;
 
@@ -27,20 +31,26 @@ import icepick.State;
 // * An activity representing a recipeList of Recipes. This activity
 // * has different presentations for handset and tablet-size devices. On
 // * handsets, the activity presents a recipeList of items, which when touched,
-// * lead to a {@link RecipeDetailActivity} representing
+// * lead to a {@link StepsDetailActivity} representing
 // * item details. On tablets, the activity presents the recipeList of items and
 // * item details side-by-side using two vertical panes.
 // */
 public class StepsListActivity extends AppCompatActivity implements StepsRecyclerViewAdapter.ItemClickListener {
 
+    @State(RecipeBundler.class)
     Recipe mRecipe;
+
+    @State(StepBundler.class)
     Step mStep;
-    ArrayList<Step> mStepShortDescriptionList;
 
     @State(DetailFragmentBundler.class)
     StepsDetailFragment mStepsDetailFragment;
-    ArrayList<Step> mStepArrayList;
 
+    @State(StepListBundler.class)
+    ArrayList<Step> mStepShortDescriptionList;
+
+    @State(StepListBundler.class)
+    ArrayList<Step> mStepArrayList;
 
     @Nullable
     @BindView(R.id.recipe_detail_container)
@@ -52,6 +62,7 @@ public class StepsListActivity extends AppCompatActivity implements StepsRecycle
 
     @State
     boolean mIsDualPane;
+    private Intent mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,18 +73,6 @@ public class StepsListActivity extends AppCompatActivity implements StepsRecycle
 
         mIsDualPane = detailsContainerView != null &&
                 detailsContainerView.getVisibility() == View.VISIBLE;
-//
-//        if (mIsDualPane) {
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .replace(R.id.recipe_detail_container, mStepsDetailFragment)
-//                    .commit();
-//        } else {
-//            Bundle bundle = new Bundle();
-//
-//            final Intent intent = new Intent(this, StepsDetailFragment.class);
-//            intent.putExtras(bundle);
-//        }
 
         mRecipe = Parcels.unwrap(getIntent().getParcelableExtra("recipe"));
 
@@ -87,6 +86,14 @@ public class StepsListActivity extends AppCompatActivity implements StepsRecycle
             for (int i = 0; i < mStepArrayList.size(); i++) {
                 mStep = new Step();
                 mStep.setShortDescription(mStepArrayList.get(i).getShortDescription());
+                mStep.setStepId(mStepArrayList.get(i).getStepId());
+                mStep.setDescription(mStepArrayList.get(i).getDescription());
+                mStep.setVideoURL(mStepArrayList.get(i).getVideoURL());
+                mStep.setThumbnailURL(mStepArrayList.get(i).getThumbnailURL());
+
+                mIntent = new Intent(this, StepsDetailFragment.class);
+                mIntent.putExtra("step_details", Parcels.wrap(mStep));
+
                 mStepShortDescriptionList.add(mStep);
             }
         }
@@ -110,10 +117,38 @@ public class StepsListActivity extends AppCompatActivity implements StepsRecycle
 
     @Override
     public void onItemClick(View view, int position) {
-//        mRecipeArrayList = Parcels.unwrap(getIntent().getParcelableExtra
-//                ("recipe_list"));
+
+//        ArrayList<Step> stepDetailList = new ArrayList<>();
+
+//        stepDetailList.add(mStep);
+
+        if (mIsDualPane) {
+            mStepsDetailFragment = new StepsDetailFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.recipe_detail_container, mStepsDetailFragment)
+                    .commit();
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("step_details", mIntent);
+            mStepsDetailFragment.setArguments(bundle);
+
+            Intent intent = new Intent(this, StepsDetailActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+
 //        Intent intent = new Intent(StepsListActivity.this,
-//                StepsDetailFragment.class);
-//        intent.putExtra("recipe_step", Parcels.wrap(mRecipeArrayList));
+//                StepsDetailActivity.class);
+//        intent.putExtra("steps", Parcels.wrap(mStep));
+
+//        Bundle arguments = new Bundle();
+//        arguments.putString(StepsDetailFragment.ARG_ITEM_ID,
+//                getIntent().getStringExtra(StepsDetailFragment
+//                        .ARG_ITEM_ID));
+//        mStepsDetailFragment.setArguments(arguments);
+//        getSupportFragmentManager().beginTransaction()
+//                .add(R.id.recipe_detail_container, mStepsDetailFragment)
+//                .commit();
     }
 }

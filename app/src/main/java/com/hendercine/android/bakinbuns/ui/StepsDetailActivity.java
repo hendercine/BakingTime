@@ -2,6 +2,7 @@ package com.hendercine.android.bakinbuns.ui;
 //
 //import android.content.Intent;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,17 +18,23 @@ import com.hendercine.android.bakinbuns.R;
 // * item details are presented side-by-side with a recipeList of items
 // * in a {@link StepsListActivity}.
 // */
-public class RecipeDetailActivity extends AppCompatActivity {
+public class StepsDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipe_detail);
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        if (getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE) {
+
+            finish();
+            return;
         }
 
         // savedInstanceState is non-null when there is fragment state
@@ -42,31 +49,12 @@ public class RecipeDetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(StepsDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(StepsDetailFragment
-                            .ARG_ITEM_ID));
-            StepsDetailFragment fragment = new StepsDetailFragment();
-            fragment.setArguments(arguments);
+
+            StepsDetailFragment details = new StepsDetailFragment();
+            details.setArguments(getIntent().getBundleExtra("step_details"));
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.recipe_detail_container, fragment)
+                    .add(R.id.detail_portrait, details)
                     .commit();
         }
     }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == android.R.id.home) {
-//            // This ID represents the Home or Up button. In the case of this
-//            // activity, the Up button is shown. For
-//            // more details, see the Navigation pattern on Android Design:
-//            //
-//            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-//            //
-//            navigateUpTo(new Intent(this, StepsListActivity.class));
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 }
