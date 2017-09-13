@@ -50,6 +50,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.hendercine.android.bakinbuns.ui.StepsDetailActivity"/>
         </fragment>
+        <receiver
+            android:name=".ui.StepsDetailFragment$MediaReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+            </intent-filter>
+        </receiver>
 
     </application>
 

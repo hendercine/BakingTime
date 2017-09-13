@@ -2,11 +2,12 @@ package com.hendercine.android.bakinbuns.ui;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -40,7 +41,6 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -51,6 +51,7 @@ import com.hendercine.android.bakinbuns.data.models.Step;
 import org.parceler.Parcels;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import icepick.Icepick;
 import icepick.State;
@@ -82,20 +83,16 @@ public class StepsDetailFragment extends Fragment implements EventListener, Play
     @State
     Uri mStepVideoURLUrl;
 
-    private Handler mMainHandler;
     private SimpleExoPlayer mExoPlayer;
-    private DefaultTrackSelector mTrackSelector;
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
-
-    private DataSource.Factory mediaDataSourceFactory;
 
     @Nullable
     @BindView(R.id.step_description_text_view)
     TextView stepDescriptionView;
 
-//    @Nullable
-//    @BindView(R.id.exo_player_view)
+    @Nullable
+    @BindView(R.id.exo_player_view)
     SimpleExoPlayerView exoPlayerView;
 
     @Nullable
@@ -120,7 +117,9 @@ public class StepsDetailFragment extends Fragment implements EventListener, Play
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
-        exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.exo_player_view);
+        ButterKnife.bind(rootView);
+//        exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.exo_player_view);
+//        stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
 
         mStep = Parcels.unwrap(getArguments().getParcelable("step_details"));
 
@@ -133,14 +132,16 @@ public class StepsDetailFragment extends Fragment implements EventListener, Play
                     .show();
         }
 
-//        assert exoPlayerView != null;
 //        exoPlayerView.setControllerVisibilityListener(this);
 //        exoPlayerView.requestFocus();
 
-        initializePlayer(mStepVideoURLUrl);
+        if (exoPlayerView != null) {
+            initializePlayer(mStepVideoURLUrl);
+        }
 
-        assert stepDescriptionView != null;
-        stepDescriptionView.setText(mStep.getDescription());
+        if (stepDescriptionView != null) {
+            stepDescriptionView.setText(mStep.getDescription());
+        }
 
         return rootView;
     }
@@ -239,11 +240,12 @@ public class StepsDetailFragment extends Fragment implements EventListener, Play
 
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
 
-            assert exoPlayerView != null;
-            exoPlayerView.setPlayer(mExoPlayer);
+            if (exoPlayerView != null) {
+                exoPlayerView.setPlayer(mExoPlayer);
+            }
 
             // Set the ExoPlayer.EventListener to this activity.
-            mExoPlayer.addListener((EventListener) getContext());
+            mExoPlayer.addListener(this);
 
             // Prepare the MediaSource.
             String userAgent = Util.getUserAgent(getContext(), "BakinBuns");
@@ -389,6 +391,20 @@ public class StepsDetailFragment extends Fragment implements EventListener, Play
         @Override
         public void onSkipToPrevious() {
             mExoPlayer.seekToDefaultPosition();
+        }
+    }
+
+    /**
+     * Broadcast Receiver registered to receive the MEDIA_BUTTON intent coming from clients.
+     */
+    public static class MediaReceiver extends BroadcastReceiver {
+
+        public MediaReceiver() {
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            MediaButtonReceiver.handleIntent(mMediaSession, intent);
         }
     }
 }
