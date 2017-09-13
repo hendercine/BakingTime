@@ -23,10 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.Player.EventListener;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -65,7 +64,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 // * on handsets.
 // */
 
-public class StepsDetailFragment extends Fragment implements EventListener, PlaybackControlView.VisibilityListener {
+public class StepsDetailFragment extends Fragment implements ExoPlayer.EventListener, PlaybackControlView.VisibilityListener {
 
     /**
      * The fragment argument representing the item ID that this fragment
@@ -81,18 +80,18 @@ public class StepsDetailFragment extends Fragment implements EventListener, Play
     Step mStep;
 
     @State
-    Uri mStepVideoURLUrl;
+    Uri mStepVideoURL;
 
     private SimpleExoPlayer mExoPlayer;
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
 
-    @Nullable
-    @BindView(R.id.step_description_text_view)
+    //    @Nullable
+//    @BindView(R.id.step_description_text_view)
     TextView stepDescriptionView;
 
-    @Nullable
-    @BindView(R.id.exo_player_view)
+    //    @Nullable
+//    @BindView(R.id.exo_player_view)
     SimpleExoPlayerView exoPlayerView;
 
     @Nullable
@@ -118,16 +117,16 @@ public class StepsDetailFragment extends Fragment implements EventListener, Play
 
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
         ButterKnife.bind(rootView);
-//        exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.exo_player_view);
-//        stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
+        exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.exo_player_view);
+        stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
 
         mStep = Parcels.unwrap(getArguments().getParcelable("step_details"));
 
         initializeMediaSession();
 
-        mStepVideoURLUrl = Uri.parse(mStep.getVideoURL());
+        mStepVideoURL = Uri.parse(mStep.getVideoURL());
 
-        if (mStepVideoURLUrl == null) {
+        if (mStepVideoURL == null) {
             Toast.makeText(getContext(), R.string.video_not_found, Toast.LENGTH_SHORT)
                     .show();
         }
@@ -136,7 +135,7 @@ public class StepsDetailFragment extends Fragment implements EventListener, Play
 //        exoPlayerView.requestFocus();
 
         if (exoPlayerView != null) {
-            initializePlayer(mStepVideoURLUrl);
+            initializePlayer(mStepVideoURL);
         }
 
         if (stepDescriptionView != null) {
@@ -149,13 +148,13 @@ public class StepsDetailFragment extends Fragment implements EventListener, Play
     @Override
     public void onStart() {
         super.onStart();
-        initializePlayer(mStepVideoURLUrl);
+        initializePlayer(mStepVideoURL);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        initializePlayer(mStepVideoURLUrl);
+        initializePlayer(mStepVideoURL);
     }
 
     @Override
@@ -180,7 +179,7 @@ public class StepsDetailFragment extends Fragment implements EventListener, Play
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            initializePlayer(mStepVideoURLUrl);
+            initializePlayer(mStepVideoURL);
         } else {
             Toast.makeText(getContext(), R.string.permission_denied, Toast
                     .LENGTH_SHORT)
@@ -341,20 +340,15 @@ public class StepsDetailFragment extends Fragment implements EventListener, Play
      */
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if ((playbackState == Player.STATE_READY) && playWhenReady) {
+        if ((playbackState == ExoPlayer.STATE_READY) && playWhenReady) {
             mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
                     mExoPlayer.getCurrentPosition(), 1f);
-        } else if ((playbackState == Player.STATE_READY)) {
+        } else if ((playbackState == ExoPlayer.STATE_READY)) {
             mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
                     mExoPlayer.getCurrentPosition(), 1f);
         }
         mMediaSession.setPlaybackState(mStateBuilder.build());
         showNotification(mStateBuilder.build());
-    }
-
-    @Override
-    public void onRepeatModeChanged(int repeatMode) {
-
     }
 
     @Override
