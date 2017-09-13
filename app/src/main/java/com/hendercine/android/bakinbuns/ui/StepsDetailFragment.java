@@ -51,7 +51,6 @@ import com.hendercine.android.bakinbuns.data.models.Step;
 import org.parceler.Parcels;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import icepick.Icepick;
 import icepick.State;
@@ -95,8 +94,8 @@ public class StepsDetailFragment extends Fragment implements EventListener, Play
     @BindView(R.id.step_description_text_view)
     TextView stepDescriptionView;
 
-    @Nullable
-    @BindView(R.id.exo_player_view)
+//    @Nullable
+//    @BindView(R.id.exo_player_view)
     SimpleExoPlayerView exoPlayerView;
 
     @Nullable
@@ -114,16 +113,16 @@ public class StepsDetailFragment extends Fragment implements EventListener, Play
         super.onActivityCreated(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
 
-        mStep = Parcels.unwrap(getArguments().getParcelable(ARG_ITEM_ID));
-
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        View stepsDetailView = inflater.inflate(R.layout.fragment_step_detail, container, false);
-        ButterKnife.bind(this, stepsDetailView);
+        View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
+        exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.exo_player_view);
+
+        mStep = Parcels.unwrap(getArguments().getParcelable("step_details"));
 
         initializeMediaSession();
 
@@ -134,16 +133,16 @@ public class StepsDetailFragment extends Fragment implements EventListener, Play
                     .show();
         }
 
-        assert exoPlayerView != null;
-        exoPlayerView.setControllerVisibilityListener(this);
-        exoPlayerView.requestFocus();
+//        assert exoPlayerView != null;
+//        exoPlayerView.setControllerVisibilityListener(this);
+//        exoPlayerView.requestFocus();
 
         initializePlayer(mStepVideoURLUrl);
 
         assert stepDescriptionView != null;
         stepDescriptionView.setText(mStep.getDescription());
 
-        return stepsDetailView;
+        return rootView;
     }
 
     @Override

@@ -31,7 +31,7 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
 
     private ArrayList<Step> mStepList;
     Context mContext;
-    private StepsRecyclerViewAdapter.ItemClickListener mClickListener;
+    private OnItemClickListener mClickListener;
 
     public StepsRecyclerViewAdapter(ArrayList<Step> stepList) {
         mStepList = stepList;
@@ -51,8 +51,14 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
     public void onBindViewHolder(StepsRecyclerViewAdapter.StepsListViewHolder holder, int
             position) {
 
-        Step step = mStepList.get(position);
+        final Step step = mStepList.get(position);
         holder.mStepListTextView.setText(step.getShortDescription());
+        holder.mStepListTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClickListener.onItemClick(step);
+            }
+        });
 
     }
 
@@ -82,8 +88,7 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
         notifyDataSetChanged();
     }
 
-    class StepsListViewHolder extends RecyclerView.ViewHolder implements
-            View.OnClickListener {
+    class StepsListViewHolder extends RecyclerView.ViewHolder {
 
 
         @BindView(R.id.step_description_btn)
@@ -92,21 +97,21 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
         StepsListViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
+//            itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View v) {
-            if (mClickListener != null)
-                mClickListener.onItemClick(v, getAdapterPosition());
-        }
+//        @Override
+//        public void onClick(View v) {
+//            if (mClickListener != null)
+//                mClickListener.onItemClick(step);
+//        }
     }
 
-    public void setClickListener(StepsRecyclerViewAdapter.ItemClickListener itemClickListener) {
+    public void setClickListener(OnItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
+    public interface OnItemClickListener {
+        void onItemClick(Step step);
     }
 }

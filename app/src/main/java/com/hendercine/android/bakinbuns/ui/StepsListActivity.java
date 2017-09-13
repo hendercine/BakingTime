@@ -35,7 +35,7 @@ import icepick.State;
 // * item details. On tablets, the activity presents the recipeList of items and
 // * item details side-by-side using two vertical panes.
 // */
-public class StepsListActivity extends AppCompatActivity implements StepsRecyclerViewAdapter.ItemClickListener {
+public class StepsListActivity extends AppCompatActivity implements StepsRecyclerViewAdapter.OnItemClickListener {
 
     @State(RecipeBundler.class)
     Recipe mRecipe;
@@ -91,8 +91,8 @@ public class StepsListActivity extends AppCompatActivity implements StepsRecycle
                 mStep.setVideoURL(mStepArrayList.get(i).getVideoURL());
                 mStep.setThumbnailURL(mStepArrayList.get(i).getThumbnailURL());
 
-                mIntent = new Intent(this, StepsDetailFragment.class);
-                mIntent.putExtra("step_details", Parcels.wrap(mStep));
+//                mIntent = new Intent(this, StepsDetailFragment.class);
+//                mIntent.putExtra("step_details", Parcels.wrap(mStep));
 
                 mStepShortDescriptionList.add(mStep);
             }
@@ -116,22 +116,23 @@ public class StepsListActivity extends AppCompatActivity implements StepsRecycle
     }
 
     @Override
-    public void onItemClick(View view, int position) {
+    public void onItemClick(Step step) {
 
 //        ArrayList<Step> stepDetailList = new ArrayList<>();
 
 //        stepDetailList.add(mStep);
 
+        mStepsDetailFragment = new StepsDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("step_details", Parcels.wrap(step));
+        mStepsDetailFragment.setArguments(bundle);
+
         if (mIsDualPane) {
-            mStepsDetailFragment = new StepsDetailFragment();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.recipe_detail_container, mStepsDetailFragment)
                     .commit();
         } else {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("step_details", mIntent);
-            mStepsDetailFragment.setArguments(bundle);
 
             Intent intent = new Intent(this, StepsDetailActivity.class);
             intent.putExtras(bundle);
