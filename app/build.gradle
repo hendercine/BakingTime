@@ -51,9 +51,9 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    // IcePick
-    compile "frankiesardo:icepick:3.2.0"
-    provided "frankiesardo:icepick-processor:3.2.0"
+//    // IcePick
+//    compile "frankiesardo:icepick:3.2.0"
+//    provided "frankiesardo:icepick-processor:3.2.0"
     // Parceler
     compile 'org.parceler:parceler-api:1.1.6'
     annotationProcessor 'org.parceler:parceler:1.1.6'
@@ -61,10 +61,10 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'io.reactivex:rxjava:1.1.4'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    // Dagger2
-    compile "com.google.dagger:dagger:2.9"
-    annotationProcessor "com.google.dagger:dagger-compiler:2.9"
-    provided 'javax.annotation:jsr250-api:1.0'
+//    // Dagger2
+//    compile "com.google.dagger:dagger:2.9"
+//    annotationProcessor "com.google.dagger:dagger-compiler:2.9"
+//    provided 'javax.annotation:jsr250-api:1.0'
     // ExoPlayer
     compile 'com.google.android.exoplayer:exoplayer:r2.4.0'
     // Schematic

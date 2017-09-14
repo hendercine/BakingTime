@@ -44,7 +44,6 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.hendercine.android.bakinbuns.R;
-import com.hendercine.android.bakinbuns.data.bundlers.StepBundler;
 import com.hendercine.android.bakinbuns.data.models.Step;
 
 import org.parceler.Parcels;
@@ -52,8 +51,6 @@ import org.parceler.Parcels;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import icepick.Icepick;
-import icepick.State;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -74,12 +71,12 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 
     private static final String TAG = StepsDetailFragment.class.getSimpleName();
 
-    @State
+//    @State
     boolean mIsDualPane;
-    @State(StepBundler.class)
+//    @State(StepBundler.class)
     Step mStep;
 
-    @State
+//    @State
     Uri mStepVideoURL;
 
     private SimpleExoPlayer mExoPlayer;
@@ -107,7 +104,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Icepick.restoreInstanceState(this, savedInstanceState);
+//        Icepick.restoreInstanceState(this, savedInstanceState);
 
     }
 

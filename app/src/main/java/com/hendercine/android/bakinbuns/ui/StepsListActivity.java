@@ -11,10 +11,6 @@ import android.widget.FrameLayout;
 
 import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.adapters.StepsRecyclerViewAdapter;
-import com.hendercine.android.bakinbuns.data.bundlers.DetailFragmentBundler;
-import com.hendercine.android.bakinbuns.data.bundlers.RecipeBundler;
-import com.hendercine.android.bakinbuns.data.bundlers.StepBundler;
-import com.hendercine.android.bakinbuns.data.bundlers.StepListBundler;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 import com.hendercine.android.bakinbuns.data.models.Step;
 
@@ -24,8 +20,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import icepick.Icepick;
-import icepick.State;
 
 ///**
 // * An activity representing a recipeList of Recipes. This activity
@@ -37,19 +31,19 @@ import icepick.State;
 // */
 public class StepsListActivity extends AppCompatActivity implements StepsRecyclerViewAdapter.OnItemClickListener {
 
-    @State(RecipeBundler.class)
+//    @State(RecipeBundler.class)
     Recipe mRecipe;
 
-    @State(StepBundler.class)
+//    @State(StepBundler.class)
     Step mStep;
 
-    @State(DetailFragmentBundler.class)
+//    @State(DetailFragmentBundler.class)
     StepsDetailFragment mStepsDetailFragment;
 
-    @State(StepListBundler.class)
+//    @State(StepListBundler.class)
     ArrayList<Step> mStepShortDescriptionList;
 
-    @State(StepListBundler.class)
+//    @State(StepListBundler.class)
     ArrayList<Step> mStepArrayList;
 
     @Nullable
@@ -60,14 +54,14 @@ public class StepsListActivity extends AppCompatActivity implements StepsRecycle
     @BindView(R.id.steps_list)
     RecyclerView stepsListView;
 
-    @State
+//    @State
     boolean mIsDualPane;
     private Intent mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Icepick.restoreInstanceState(this, savedInstanceState);
+//        Icepick.restoreInstanceState(this, savedInstanceState);
         setContentView(R.layout.activity_steps_list);
         ButterKnife.bind(this);
 
@@ -112,7 +106,7 @@ public class StepsListActivity extends AppCompatActivity implements StepsRecycle
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
+//        Icepick.saveInstanceState(this, outState);
     }
 
     @Override

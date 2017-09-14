@@ -12,17 +12,18 @@ import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import icepick.State;
-
 /**
  * BakinBuns created by hendercine on 7/20/17.
  */
 
 public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
-    @State int spanCount;
-    @State int spacing;
-    @State boolean includeEdge;
+//    @State
+    int spanCount;
+//    @State
+    int spacing;
+//    @State
+    boolean includeEdge;
 
     public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
         this.spanCount = spanCount;

@@ -8,27 +8,19 @@
 
 package com.hendercine.android.bakinbuns.data.bundlers;
 
-import android.os.Bundle;
-
-import com.hendercine.android.bakinbuns.data.models.Recipe;
-
-import org.parceler.Parcels;
-
-import icepick.Bundler;
-
 /**
  * BakinBuns created by hendercine on 8/7/17.
  */
 
-public class RecipeBundler implements Bundler<Recipe> {
-
-    @Override
-    public void put(String s, Recipe recipe, Bundle bundle) {
-        bundle.putParcelable(s, Parcels.wrap(recipe));
-    }
-
-    @Override
-    public Recipe get(String s, Bundle bundle) {
-        return Parcels.unwrap(bundle.getParcelable(s));
-    }
-}
+//public class RecipeBundler implements Bundler<Recipe> {
+//
+//    @Override
+//    public void put(String s, Recipe recipe, Bundle bundle) {
+//        bundle.putParcelable(s, Parcels.wrap(recipe));
+//    }
+//
+//    @Override
+//    public Recipe get(String s, Bundle bundle) {
+//        return Parcels.unwrap(bundle.getParcelable(s));
+//    }
+//}

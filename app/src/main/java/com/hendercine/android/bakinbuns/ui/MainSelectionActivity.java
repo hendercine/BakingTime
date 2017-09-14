@@ -20,10 +20,6 @@ import android.view.View;
 
 import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.adapters.MainRecyclerViewGridAdapter;
-import com.hendercine.android.bakinbuns.data.bundlers.IngredientBundler;
-import com.hendercine.android.bakinbuns.data.bundlers.RecipeBundler;
-import com.hendercine.android.bakinbuns.data.bundlers.RecipeListBundler;
-import com.hendercine.android.bakinbuns.data.bundlers.StepBundler;
 import com.hendercine.android.bakinbuns.data.models.Ingredient;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 import com.hendercine.android.bakinbuns.data.models.Step;
@@ -39,8 +35,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import icepick.Icepick;
-import icepick.State;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -54,14 +48,14 @@ public class MainSelectionActivity extends AppCompatActivity implements
     private MainRecyclerViewGridAdapter mAdapter;
     private Intent intent;
 
-    @State(RecipeListBundler.class)
+//    @State(RecipeListBundler.class)
     ArrayList<Recipe> recipeList;
 
-    @State(RecipeBundler.class)
+//    @State(RecipeBundler.class)
     Recipe mRecipe;
-    @State(StepBundler.class)
+//    @State(StepBundler.class)
     Step mStep;
-    @State(IngredientBundler.class)
+//    @State(IngredientBundler.class)
     Ingredient mIngredient;
 
     Subscription subscription;
@@ -75,7 +69,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @BindView(R.id.hand_held_rv_recipe_cards)
     RecyclerView handHeldGridCards;
 
-    @State
+//    @State
     boolean mIsTablet;
 
     // Create the LeakCanary watcher
@@ -87,7 +81,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Icepick.restoreInstanceState(this, savedInstanceState);
+//        Icepick.restoreInstanceState(this, savedInstanceState);
 
         // Install the LeakCanary watcher
         if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -188,7 +182,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
+//        Icepick.saveInstanceState(this, outState);
     }
 
     @Override
