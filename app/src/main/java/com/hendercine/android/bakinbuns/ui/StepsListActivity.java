@@ -127,10 +127,10 @@ public class StepsListActivity extends AppCompatActivity implements StepsRecycle
                     .replace(R.id.recipe_detail_container, mStepsDetailFragment)
                     .commit();
         } else {
-
-            Intent intent = new Intent(this, StepsDetailActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.step_frame, mStepsDetailFragment)
+                    .commit();
         }
 
 //        Intent intent = new Intent(StepsListActivity.this,
