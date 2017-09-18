@@ -20,12 +20,11 @@ import android.view.View;
 
 import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.adapters.MainRecyclerViewGridAdapter;
-import com.hendercine.android.bakinbuns.data.models.Ingredient;
+import com.hendercine.android.bakinbuns.data.bundlers.RecipeBundler;
+import com.hendercine.android.bakinbuns.data.bundlers.RecipeListBundler;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
-import com.hendercine.android.bakinbuns.data.models.Step;
 import com.hendercine.android.bakinbuns.data.network.RecipeClient;
 import com.hendercine.android.bakinbuns.utils.GridSpacingItemDecoration;
-import com.hendercine.android.bakinbuns.utils.Utils;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -35,6 +34,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import icepick.Icepick;
+import icepick.State;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -48,18 +49,14 @@ public class MainSelectionActivity extends AppCompatActivity implements
     private MainRecyclerViewGridAdapter mAdapter;
     private Intent intent;
 
-//    @State(RecipeListBundler.class)
+    Subscription subscription;
+    RecyclerView convertView;
+
+    @State(RecipeListBundler.class)
     ArrayList<Recipe> recipeList;
 
-//    @State(RecipeBundler.class)
+    @State(RecipeBundler.class)
     Recipe mRecipe;
-//    @State(StepBundler.class)
-    Step mStep;
-//    @State(IngredientBundler.class)
-    Ingredient mIngredient;
-
-    Subscription subscription;
-    Utils mUtils;
 
     @Nullable
     @BindView(R.id.tablet_rv_recipe_cards)
@@ -69,7 +66,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @BindView(R.id.hand_held_rv_recipe_cards)
     RecyclerView handHeldGridCards;
 
-//    @State
+    @State
     boolean mIsTablet;
 
     // Create the LeakCanary watcher
@@ -81,7 +78,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Icepick.restoreInstanceState(this, savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
 
         // Install the LeakCanary watcher
         if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -105,6 +102,31 @@ public class MainSelectionActivity extends AppCompatActivity implements
                 tabletGridCards.getVisibility() == View.VISIBLE;
 
         getRecipeData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        position = convertView.getChildLayoutPosition(view);
+        Recipe recipeItem = recipeList.get(position);
+        intent = new Intent(
+                MainSelectionActivity.this,
+                StepsListActivity.class);
+        intent.putExtra("recipe", Parcels.wrap(recipeItem));
+        startActivity(intent);
     }
 
     public void getRecipeData() {
@@ -133,65 +155,37 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
                             mRecipe = new Recipe();
 
+                            mRecipe.setRecipeId(recipes.get(i).getRecipeId());
                             mRecipe.setRecipeName(recipes.get(i).getRecipeName());
                             mRecipe.setServings(recipes.get(i).getServings());
                             mRecipe.setStepList(recipes.get(i).getStepList());
                             mRecipe.setIngredientList(recipes.get(i).getIngredientList());
 
-                            intent = new Intent(
-                                    MainSelectionActivity.this,
-                                    StepsListActivity.class);
-                            intent.putExtra("recipe", Parcels.wrap(mRecipe));
-
                             recipeList.add(mRecipe);
-                        }
-                            int spanCount;
-                            int spacingInPixels = 50;
-                            RecyclerView convertView;
 
-                            if (mIsTablet) {
-                                convertView = tabletGridCards;
-                                spanCount = 3;
-                            } else {
-                                convertView = handHeldGridCards;
-                                spanCount = 1;
-                            }
-                            if (convertView != null) {
-                                convertView.setLayoutManager(new GridLayoutManager
-                                        (MainSelectionActivity.this, spanCount));
-                                mAdapter = new MainRecyclerViewGridAdapter(recipeList);
-                                mAdapter.setClickListener(MainSelectionActivity.this);
-                                convertView.setAdapter(mAdapter);
-                            }
-                            assert convertView != null;
-                            convertView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
-                                    spacingInPixels, true));
+                        }
+                        int spanCount;
+                        int spacingInPixels = 50;
+
+                        if (mIsTablet) {
+                            convertView = tabletGridCards;
+                            spanCount = 3;
+                        } else {
+                            convertView = handHeldGridCards;
+                            spanCount = 1;
+                        }
+                        if (convertView != null) {
+                            convertView.setLayoutManager(new GridLayoutManager
+                                    (MainSelectionActivity.this, spanCount));
+                            mAdapter = new MainRecyclerViewGridAdapter(recipeList);
+                            mAdapter.setClickListener(MainSelectionActivity.this);
+                            convertView.setAdapter(mAdapter);
+                        }
+                        assert convertView != null;
+                        convertView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
+                                spacingInPixels, true));
                     }
 
                 });
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
-        super.onDestroy();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        Icepick.saveInstanceState(this, outState);
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
-//        Timber.i("TAG", "You clicked number "
-//                + mAdapter.getItem(position)
-//                + ", "
-//                + "which is at cell position: "
-//                + position);
-        startActivity(intent);
     }
 }

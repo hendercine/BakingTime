@@ -49,13 +49,14 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.hendercine.android.bakinbuns.R;
+import com.hendercine.android.bakinbuns.data.bundlers.StepBundler;
 import com.hendercine.android.bakinbuns.data.models.Step;
 
 import org.parceler.Parcels;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import icepick.Icepick;
+import icepick.State;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -68,46 +69,22 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class StepsDetailFragment extends Fragment implements ExoPlayer.EventListener, PlaybackControlView.VisibilityListener {
 
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
-    public static final String ARG_ITEM_ID = "step_details";
-
-    private static final String TAG = StepsDetailFragment.class.getSimpleName();
-
-//    @State
-    boolean mIsDualPane;
-//    @State(StepBundler.class)
-    Step mStep;
-
-//    @State
-    Uri mStepVideoURL;
-
-    Uri mStepThumbnailURL;
-
-    private SimpleExoPlayer mExoPlayer;
-    private static MediaSessionCompat mMediaSession;
-    private PlaybackStateCompat.Builder mStateBuilder;
-
-    //    @Nullable
-//    @BindView(R.id.step_description_text_view)
     TextView stepDescriptionView;
-
-    //    @Nullable
-//    @BindView(R.id.exo_player_view)
     SimpleExoPlayerView exoPlayerView;
-
     ImageView stepThumbnailView;
-
     TextView noVidOrThumbView;
-
-    @Nullable
-    @BindView(R.id.step_description_btn)
     Button mNextButton;
 
-    private Unbinder mUnbinder;
+    private static final String TAG = StepsDetailFragment.class.getSimpleName();
+    private static MediaSessionCompat mMediaSession;
+    private SimpleExoPlayer mExoPlayer;
+    private PlaybackStateCompat.Builder mStateBuilder;
     private NotificationManager mNotificationManager;
+
+    @State(StepBundler.class) Step mStep;
+    @State Uri mStepVideoURL;
+    @State Uri mStepThumbnailURL;
+    @State boolean mIsDualPane;
 
     public StepsDetailFragment() {
     }
@@ -115,7 +92,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        Icepick.restoreInstanceState(this, savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
 
     }
 
@@ -129,8 +106,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
         stepThumbnailView = (ImageView) rootView.findViewById(R.id.step_thumbnail_view);
         noVidOrThumbView = (TextView) rootView.findViewById(R.id.no_vid_no_thumb_view);
-
-
 
         mStep = Parcels.unwrap(getArguments().getParcelable("step_details"));
         mStepVideoURL = Uri.parse(mStep.getVideoURL());
@@ -161,28 +136,34 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        initializePlayer(mStepVideoURL);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        initializePlayer(mStepVideoURL);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        releasePlayer();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        releasePlayer();
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        initializePlayer(mStepVideoURL);
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        initializePlayer(mStepVideoURL);
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        releasePlayer();
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        releasePlayer();
+//    }
 
     @Override
     public void onDestroy() {
