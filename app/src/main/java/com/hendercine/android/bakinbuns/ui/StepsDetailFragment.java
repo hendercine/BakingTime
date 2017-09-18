@@ -19,13 +19,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -79,6 +84,8 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 //    @State
     Uri mStepVideoURL;
 
+    Uri mStepThumbnailURL;
+
     private SimpleExoPlayer mExoPlayer;
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
@@ -90,6 +97,10 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     //    @Nullable
 //    @BindView(R.id.exo_player_view)
     SimpleExoPlayerView exoPlayerView;
+
+    ImageView stepThumbnailView;
+
+    TextView noVidOrThumbView;
 
     @Nullable
     @BindView(R.id.step_description_btn)
@@ -116,24 +127,31 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         ButterKnife.bind(rootView);
         exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.exo_player_view);
         stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
+        stepThumbnailView = (ImageView) rootView.findViewById(R.id.step_thumbnail_view);
+        noVidOrThumbView = (TextView) rootView.findViewById(R.id.no_vid_no_thumb_view);
+
+
 
         mStep = Parcels.unwrap(getArguments().getParcelable("step_details"));
+        mStepVideoURL = Uri.parse(mStep.getVideoURL());
 
         initializeMediaSession();
 
-        mStepVideoURL = Uri.parse(mStep.getVideoURL());
+            if (exoPlayerView != null && mStepVideoURL != null) {
+                initializePlayer(mStepVideoURL);
 
-        if (mStepVideoURL == null) {
-            Toast.makeText(getContext(), R.string.video_not_found, Toast.LENGTH_SHORT)
-                    .show();
-        }
+            } else if (mStepThumbnailURL != null) {
+                exoPlayerView.setVisibility(View.GONE);
+                stepThumbnailView.setVisibility(View.VISIBLE);
 
-//        exoPlayerView.setControllerVisibilityListener(this);
-//        exoPlayerView.requestFocus();
-
-        if (exoPlayerView != null) {
-            initializePlayer(mStepVideoURL);
-        }
+            } else {
+                exoPlayerView.setVisibility(View.GONE);
+                stepThumbnailView.setVisibility(View.GONE);
+                noVidOrThumbView.setVisibility(View.VISIBLE);
+                Toast.makeText(getContext(),
+                        R.string.video_not_found,
+                        Toast.LENGTH_SHORT).show();
+            }
 
         if (stepDescriptionView != null) {
             stepDescriptionView.setText(mStep.getDescription());
@@ -233,8 +251,13 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                     AdaptiveTrackSelection.Factory(bandwidthMeter);
 
             TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+            RenderersFactory renderersFactory = new DefaultRenderersFactory(getContext());
+            LoadControl loadControl = new DefaultLoadControl();
 
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
+            mExoPlayer = ExoPlayerFactory.newSimpleInstance(
+                    renderersFactory,
+                    trackSelector,
+                    loadControl);
 
             if (exoPlayerView != null) {
                 exoPlayerView.setPlayer(mExoPlayer);

@@ -15,12 +15,39 @@
     tools:context=".ui.StepsDetailActivity"
     android:orientation="vertical">
 
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:id="@+id/exo_player_view"
+    <android.support.v7.widget.CardView
+        android:id="@+id/exo_player_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/detail_card_margin"
-        android:layout_weight="3"/>
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:layout_margin="@dimen/detail_card_margin">
+
+        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+            android:id="@+id/exo_player_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/step_thumbnail_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+
+        <TextView
+            android:id="@+id/no_vid_no_thumb_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="64sp"
+            android:text="@string/video_not_found"
+            tools:text="@string/video_not_found"
+            android:visibility="gone"/>
+
+    </android.support.v7.widget.CardView>
+
 
     <android.support.v7.widget.CardView
         android:id="@+id/step_description_card_view"

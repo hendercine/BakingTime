@@ -8,9 +8,11 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/steps_list_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <TextView
             android:layout_width="match_parent"
@@ -40,5 +42,11 @@
             tools:listitem="@layout/step_list_item"/>
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/recipe_detail_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 </FrameLayout>
 

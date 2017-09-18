@@ -131,6 +131,7 @@ public class StepsListActivity extends AppCompatActivity implements StepsRecycle
                     .beginTransaction()
                     .replace(R.id.step_frame, mStepsDetailFragment)
                     .commit();
+            findViewById(R.id.steps_list_layout).setVisibility(View.GONE);
         }
 
 //        Intent intent = new Intent(StepsListActivity.this,
