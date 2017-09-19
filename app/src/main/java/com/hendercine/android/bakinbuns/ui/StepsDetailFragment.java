@@ -82,7 +82,9 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private NotificationManager mNotificationManager;
 
     @State(StepBundler.class) Step mStep;
+    @State String mStepVideoURLStr;
     @State Uri mStepVideoURL;
+    @State String mStepThumbnailURLStr;
     @State Uri mStepThumbnailURL;
     @State boolean mIsDualPane;
 
@@ -108,11 +110,28 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         noVidOrThumbView = (TextView) rootView.findViewById(R.id.no_vid_no_thumb_view);
 
         mStep = Parcels.unwrap(getArguments().getParcelable("step_details"));
-        mStepVideoURL = Uri.parse(mStep.getVideoURL());
+        mStepVideoURLStr = mStep.getVideoURL();
+        mStepThumbnailURLStr = mStep.getThumbnailURL();
+        String emptyUriStr = "";
+
+        if (mStepVideoURLStr.equals(emptyUriStr)) {
+            mStepVideoURL = null;
+
+        } else {
+            mStepVideoURL = Uri.parse(mStepVideoURLStr);
+        }
+
+        if (mStepThumbnailURLStr.equals(emptyUriStr)) {
+            mStepThumbnailURL = null;
+
+        } else {
+            mStepThumbnailURL = Uri.parse(mStepThumbnailURLStr);
+        }
 
         initializeMediaSession();
 
-            if (exoPlayerView != null && mStepVideoURL != null) {
+        if (exoPlayerView != null) {
+            if (mStepVideoURL != null) {
                 initializePlayer(mStepVideoURL);
 
             } else if (mStepThumbnailURL != null) {
@@ -127,6 +146,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                         R.string.video_not_found,
                         Toast.LENGTH_SHORT).show();
             }
+        }
 
         if (stepDescriptionView != null) {
             stepDescriptionView.setText(mStep.getDescription());
@@ -310,10 +330,12 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     }
 
     private void releasePlayer() {
-        mNotificationManager.cancelAll();
-        mExoPlayer.stop();
-        mExoPlayer.release();
-        mExoPlayer = null;
+        if (mExoPlayer != null) {
+            mNotificationManager.cancelAll();
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
     }
 
     @Override
