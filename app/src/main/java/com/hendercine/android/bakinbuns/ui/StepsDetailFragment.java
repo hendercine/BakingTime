@@ -135,8 +135,15 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                 initializePlayer(mStepVideoURL);
 
             } else if (mStepThumbnailURL != null) {
-                exoPlayerView.setVisibility(View.GONE);
-                stepThumbnailView.setVisibility(View.VISIBLE);
+                initializePlayer(mStepThumbnailURL);
+// TODO: The commented code below is how this should be handled, but the JSON
+// has no Thumbnail Image URLs except for one with is actually an mp4, hence
+// initializing the player above.
+//                exoPlayerView.setVisibility(View.GONE);
+//                stepThumbnailView.setVisibility(View.VISIBLE);
+//                Glide.with(this)
+//                        .load(mStepThumbnailURL)
+//                        .into(stepThumbnailView);
 
             } else {
                 exoPlayerView.setVisibility(View.GONE);
