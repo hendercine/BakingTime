@@ -18,11 +18,13 @@ import android.support.v7.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -81,12 +83,14 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private PlaybackStateCompat.Builder mStateBuilder;
     private NotificationManager mNotificationManager;
 
-    @State(StepBundler.class) Step mStep;
-    @State String mStepVideoURLStr;
-    @State Uri mStepVideoURL;
-    @State String mStepThumbnailURLStr;
-    @State Uri mStepThumbnailURL;
-    @State boolean mIsDualPane;
+    @State(StepBundler.class)
+    Step mStep;
+    @State
+    Uri mStepVideoURL;
+    @State
+    Uri mStepThumbnailURL;
+    @State
+    boolean mIsDualPane;
 
     public StepsDetailFragment() {
     }
@@ -110,45 +114,30 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         noVidOrThumbView = (TextView) rootView.findViewById(R.id.no_vid_no_thumb_view);
 
         mStep = Parcels.unwrap(getArguments().getParcelable("step_details"));
-        mStepVideoURLStr = mStep.getVideoURL();
-        mStepThumbnailURLStr = mStep.getThumbnailURL();
-        String emptyUriStr = "";
 
-        if (mStepVideoURLStr.equals(emptyUriStr)) {
-            mStepVideoURL = null;
-
-        } else {
-            mStepVideoURL = Uri.parse(mStepVideoURLStr);
-        }
-
-        if (mStepThumbnailURLStr.equals(emptyUriStr)) {
-            mStepThumbnailURL = null;
-
-        } else {
-            mStepThumbnailURL = Uri.parse(mStepThumbnailURLStr);
-        }
+        mStepVideoURL = Uri.parse(mStep.getVideoURL());
+        mStepThumbnailURL = Uri.parse(mStep.getThumbnailURL());
 
         initializeMediaSession();
 
         if (exoPlayerView != null) {
-            if (mStepVideoURL != null) {
+            if (URLUtil.isNetworkUrl(mStepVideoURL.toString())) {
                 initializePlayer(mStepVideoURL);
-
-            } else if (mStepThumbnailURL != null) {
-                initializePlayer(mStepThumbnailURL);
-// TODO: The commented code below is how this should be handled, but the JSON
-// has no Thumbnail Image URLs except for one with is actually an mp4, hence
-// initializing the player above.
-//                exoPlayerView.setVisibility(View.GONE);
-//                stepThumbnailView.setVisibility(View.VISIBLE);
-//                Glide.with(this)
-//                        .load(mStepThumbnailURL)
-//                        .into(stepThumbnailView);
-
+            } else if (URLUtil.isNetworkUrl(mStepThumbnailURL.toString())) {
+                if (mStepThumbnailURL.toString().endsWith(".mp4")) {
+                    initializePlayer(mStepThumbnailURL);
+                } else {
+                    exoPlayerView.setVisibility(View.GONE);
+                    stepThumbnailView.setVisibility(View.VISIBLE);
+                    Glide.with(this)
+                            .load(mStepThumbnailURL)
+                            .into(stepThumbnailView);
+                }
             } else {
                 exoPlayerView.setVisibility(View.GONE);
                 stepThumbnailView.setVisibility(View.GONE);
                 noVidOrThumbView.setVisibility(View.VISIBLE);
+                noVidOrThumbView.setText(mStep.getDescription());
                 Toast.makeText(getContext(),
                         R.string.video_not_found,
                         Toast.LENGTH_SHORT).show();
