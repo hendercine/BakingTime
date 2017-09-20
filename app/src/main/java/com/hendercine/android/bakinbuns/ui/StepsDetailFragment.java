@@ -62,13 +62,6 @@ import icepick.State;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
-///**
-// * A fragment representing a single Recipe detail screen.
-// * This fragment is either contained in a {@link RecipeStepsActivity}
-// * in two-pane mode (on tablets) or a {@link StepsDetailActivity}
-// * on handsets.
-// */
-
 public class StepsDetailFragment extends Fragment implements ExoPlayer.EventListener, PlaybackControlView.VisibilityListener {
 
     TextView stepDescriptionView;
@@ -99,6 +92,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
+
 
     }
 

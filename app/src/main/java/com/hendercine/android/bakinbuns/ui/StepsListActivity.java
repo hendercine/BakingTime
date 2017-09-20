@@ -2,6 +2,7 @@ package com.hendercine.android.bakinbuns.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,15 +26,17 @@ import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.State;
 
-///**
-// * An activity representing a recipeList of Recipes. This activity
-// * has different presentations for handset and tablet-size devices. On
-// * handsets, the activity presents a recipeList of items, which when touched,
-// * lead to a {@link StepsDetailActivity} representing
-// * item details. On tablets, the activity presents the recipeList of items and
-// * item details side-by-side using two vertical panes.
-// */
-public class StepsListActivity extends AppCompatActivity implements StepsRecyclerViewAdapter.OnItemClickListener {
+/**
+ * // * An activity representing a recipeList of Recipes. This activity
+ * // * has different presentations for handset and tablet-size devices. On
+ * // * handsets, the activity presents a recipeList of items, which when touched,
+ * // * lead to a {@link StepsDetailFragment} representing
+ * // * item details. On tablets, the activity presents the recipeList of items and
+ * // * item details side-by-side using two vertical panes.
+ * //
+ */
+public class StepsListActivity extends AppCompatActivity
+        implements StepsRecyclerViewAdapter.OnItemClickListener {
 
     @State(RecipeBundler.class)
     Recipe mRecipe;
@@ -41,7 +44,7 @@ public class StepsListActivity extends AppCompatActivity implements StepsRecycle
     @State(StepBundler.class)
     Step mStep;
 
-//    @State(DetailFragmentBundler.class)
+    //    @State(DetailFragmentBundler.class)
     StepsDetailFragment mStepsDetailFragment;
 
     @State(StepListBundler.class)
@@ -58,7 +61,8 @@ public class StepsListActivity extends AppCompatActivity implements StepsRecycle
     @BindView(R.id.steps_list)
     RecyclerView stepsListView;
 
-    @State boolean mIsDualPane;
+    @State
+    boolean mIsDualPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,12 @@ public class StepsListActivity extends AppCompatActivity implements StepsRecycle
         Icepick.restoreInstanceState(this, savedInstanceState);
         setContentView(R.layout.activity_steps_list);
         ButterKnife.bind(this);
+
+        // Show the Up button in the action bar.
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         mIsDualPane = detailsContainerView != null &&
                 detailsContainerView.getVisibility() == View.VISIBLE;

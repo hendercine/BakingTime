@@ -12,6 +12,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
@@ -31,6 +32,7 @@ android {
         pickFirst 'project.clj'
         exclude 'META-INF/services/javax.annotation.processing.Processor'  // butterknife
     }
+
 }
 
 def AAVersion = '4.3.1'
@@ -63,6 +65,8 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'io.reactivex:rxjava:1.1.4'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    // RxNetwork
+    compile 'io.andref:Rx.Network:1.0.1'
 //    // Dagger2
 //    compile "com.google.dagger:dagger:2.9"
 //    annotationProcessor "com.google.dagger:dagger-compiler:2.9"

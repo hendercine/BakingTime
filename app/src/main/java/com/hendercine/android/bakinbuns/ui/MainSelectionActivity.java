@@ -10,13 +10,14 @@ package com.hendercine.android.bakinbuns.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.adapters.MainRecyclerViewGridAdapter;
@@ -25,6 +26,7 @@ import com.hendercine.android.bakinbuns.data.bundlers.RecipeListBundler;
 import com.hendercine.android.bakinbuns.data.models.Recipe;
 import com.hendercine.android.bakinbuns.data.network.RecipeClient;
 import com.hendercine.android.bakinbuns.utils.GridSpacingItemDecoration;
+import com.hendercine.android.bakinbuns.utils.Utils;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -36,10 +38,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.State;
+import io.andref.rx.network.RxNetwork;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 public class MainSelectionActivity extends AppCompatActivity implements
@@ -48,9 +53,10 @@ public class MainSelectionActivity extends AppCompatActivity implements
     private RefWatcher refWatcher;
     private MainRecyclerViewGridAdapter mAdapter;
     private Intent intent;
-
-    Subscription subscription;
-    RecyclerView convertView;
+    private Subscription subscription;
+    private CompositeSubscription mCompositeSubscription;
+    ConnectivityManager mConnectivityManager;
+    private RecyclerView convertView;
 
     @State(RecipeListBundler.class)
     ArrayList<Recipe> recipeList;
@@ -68,6 +74,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
     @State
     boolean mIsTablet;
+    private Utils mUtils;
 
     // Create the LeakCanary watcher
     public static RefWatcher getRefWatcher(Context context) {
@@ -88,11 +95,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
         }
         refWatcher = LeakCanary.install(getApplication());
 
-        // Show the Up button in the action bar.
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        mConnectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 
         setContentView(R.layout.activity_main_selection);
         ButterKnife.bind(this);
@@ -100,16 +103,47 @@ public class MainSelectionActivity extends AppCompatActivity implements
         Timber.d("Activity Created");
         mIsTablet = tabletGridCards != null &&
                 tabletGridCards.getVisibility() == View.VISIBLE;
+    }
 
-        getRecipeData();
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mCompositeSubscription.unsubscribe();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mCompositeSubscription = new CompositeSubscription();
+        mCompositeSubscription.add(
+                RxNetwork.connectivityChanges(this, mConnectivityManager)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<Boolean>() {
+                            @Override
+                            public void call(Boolean connected) {
+                                if (connected) {
+                                    getRecipeData();
+                                } else {
+                                    Toast.makeText(getApplicationContext(),
+                                            R.string.no_internet,
+                                            Toast.LENGTH_LONG)
+                                            .show();
+                                }
+                            }
+                        }));
     }
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
-        super.onDestroy();
+
+        if (mCompositeSubscription != null && !mCompositeSubscription.isUnsubscribed()) {
+            mCompositeSubscription.unsubscribe();
+        }
     }
 
     @Override
@@ -143,8 +177,14 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
                         Timber.d("In onError()");
+//                        if (e instanceof NoConnectivityException) {
+//                            Toast.makeText(getApplicationContext(),
+//                                    R.string.no_internet,
+//                                    Toast.LENGTH_LONG)
+//                                    .show();
+//                        }
+                        e.printStackTrace();
                     }
 
                     @Override
