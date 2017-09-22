@@ -15,4 +15,6 @@
     <string name="instructions">Instructions</string>
     <string name="notification_text">Press play to watch the video</string>
     <string name="no_internet">No network available, please check your WiFi or Data connection</string>
+    <string name="next_step_btn">Next Step</string>
+    <string name="previous_step_btn">Previous Step</string>
 </resources>

@@ -56,6 +56,8 @@ import com.hendercine.android.bakinbuns.data.models.Step;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.State;
@@ -68,7 +70,8 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     SimpleExoPlayerView exoPlayerView;
     ImageView stepThumbnailView;
     TextView noVidOrThumbView;
-    Button mNextButton;
+    Button nextStepButton;
+    Button prevStepButton;
 
     private static final String TAG = StepsDetailFragment.class.getSimpleName();
     private static MediaSessionCompat mMediaSession;
@@ -83,7 +86,12 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @State
     Uri mStepThumbnailURL;
     @State
+    String mStepDescription;
+    @State
     boolean mIsDualPane;
+    @State
+    ArrayList<Step> mStepDetailsList;
+    @State int step_index;
 
     public StepsDetailFragment() {
     }
@@ -93,6 +101,9 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         super.onActivityCreated(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
 
+        mStep = Parcels.unwrap(getArguments().getParcelable("step_details"));
+        mStepDetailsList = Parcels.unwrap(getArguments().getParcelable("steps_list"));
+        step_index = mStep.getStepId();
 
     }
 
@@ -103,19 +114,36 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
         ButterKnife.bind(rootView);
         exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.exo_player_view);
-        stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
         stepThumbnailView = (ImageView) rootView.findViewById(R.id.step_thumbnail_view);
         noVidOrThumbView = (TextView) rootView.findViewById(R.id.no_vid_no_thumb_view);
+        stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
 
-        mStep = Parcels.unwrap(getArguments().getParcelable("step_details"));
-
-        mStepVideoURL = Uri.parse(mStep.getVideoURL());
-        mStepThumbnailURL = Uri.parse(mStep.getThumbnailURL());
-
+        // Initialize the Media Session
         initializeMediaSession();
+
+        // Map the data to the views.
+        mapDataToUi();
+
+        if (!mIsDualPane) {
+            nextStepButton = (Button) rootView.findViewById(R.id.next_step_btn);
+            prevStepButton = (Button) rootView.findViewById(R.id.prev_step_btn);
+
+            // Initialize the Navigation Buttons
+            initializeNavButtons();
+        }
+
+        return rootView;
+    }
+
+    private void mapDataToUi() {
+
+        mStepVideoURL = Uri.parse(mStepDetailsList.get(step_index).getVideoURL());
+        mStepThumbnailURL = Uri.parse(mStepDetailsList.get(step_index).getThumbnailURL());
+        mStepDescription = mStepDetailsList.get(step_index).getDescription();
 
         if (exoPlayerView != null) {
             if (URLUtil.isNetworkUrl(mStepVideoURL.toString())) {
+                // Initialize the Media Player
                 initializePlayer(mStepVideoURL);
             } else if (URLUtil.isNetworkUrl(mStepThumbnailURL.toString())) {
                 if (mStepThumbnailURL.toString().endsWith(".mp4")) {
@@ -131,7 +159,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                 exoPlayerView.setVisibility(View.GONE);
                 stepThumbnailView.setVisibility(View.GONE);
                 noVidOrThumbView.setVisibility(View.VISIBLE);
-                noVidOrThumbView.setText(mStep.getDescription());
+                noVidOrThumbView.setText(mStepDescription);
                 Toast.makeText(getContext(),
                         R.string.video_not_found,
                         Toast.LENGTH_SHORT).show();
@@ -139,11 +167,45 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         }
 
         if (stepDescriptionView != null) {
-            stepDescriptionView.setText(mStep.getDescription());
+            stepDescriptionView.setText(mStepDescription);
         }
-
-        return rootView;
     }
+
+    /**
+     * Initialize navigation buttons
+     */
+    private void initializeNavButtons() {
+        if (nextStepButton != null && prevStepButton != null) {
+            prevStepButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (step_index > mStep.getStepId()) {
+                        step_index--;
+                        releasePlayer();
+                        mapDataToUi();
+                    }
+                }
+            });
+            nextStepButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (step_index < mStepDetailsList.size() - 1) {
+                        step_index++;
+                        releasePlayer();
+                        mapDataToUi();
+                    }
+                }
+            });
+        }
+    }
+
+//    private void refreshStepDetails() {
+//        releasePlayer();
+//        mStepVideoURL = Uri.parse(mStepDetailsList.get(step_index).getVideoURL());
+//        mStepThumbnailURL = Uri.parse(mStepDetailsList.get(step_index).getThumbnailURL());
+//        mStepDescription = mStepDetailsList.get(step_index).getDescription();
+//        mapDataToUi();
+//    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

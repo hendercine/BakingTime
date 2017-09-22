@@ -19,7 +19,7 @@
         android:id="@+id/exo_player_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="6"
         android:layout_margin="@dimen/detail_card_margin">
 
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
@@ -63,10 +63,29 @@
             android:padding="@dimen/text_margin"/>
     </android.support.v7.widget.CardView>
 
-    <Button
+    <LinearLayout
+        android:id="@+id/nav_btn_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/detail_card_margin"
         android:layout_weight="1"
-        android:visibility="visible"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/next_step_btn"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:minHeight="@dimen/min_btn_height"
+            android:visibility="visible"
+            android:text="@string/next_step_btn"/>
+        <Button
+            android:id="@+id/prev_step_btn"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:minHeight="@dimen/min_btn_height"
+            android:visibility="visible"
+            android:text="@string/previous_step_btn"/>
+    </LinearLayout>
+
 </LinearLayout>

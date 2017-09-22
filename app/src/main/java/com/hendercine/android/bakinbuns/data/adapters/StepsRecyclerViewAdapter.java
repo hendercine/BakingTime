@@ -8,7 +8,6 @@
 
 package com.hendercine.android.bakinbuns.data.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,12 +29,10 @@ import butterknife.ButterKnife;
 public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecyclerViewAdapter.StepsListViewHolder> {
 
     private ArrayList<Step> mStepList;
-    Context mContext;
     private OnItemClickListener mClickListener;
 
     public StepsRecyclerViewAdapter(ArrayList<Step> stepList) {
         mStepList = stepList;
-//        mContext = context;
     }
 
     @Override
@@ -48,15 +45,15 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
     }
 
     @Override
-    public void onBindViewHolder(StepsRecyclerViewAdapter.StepsListViewHolder holder, int
+    public void onBindViewHolder(StepsRecyclerViewAdapter.StepsListViewHolder holder, final int
             position) {
 
-        final Step step = mStepList.get(position);
+        final Step step = getItem(position);
         holder.mStepListTextView.setText(step.getShortDescription());
         holder.mStepListTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mClickListener.onItemClick(step);
+                mClickListener.onItemClick(mStepList);
             }
         });
 
@@ -97,14 +94,7 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
         StepsListViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-//            itemView.setOnClickListener(this);
         }
-
-//        @Override
-//        public void onClick(View v) {
-//            if (mClickListener != null)
-//                mClickListener.onItemClick(step);
-//        }
     }
 
     public void setClickListener(OnItemClickListener itemClickListener) {
@@ -112,6 +102,6 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Step step);
+        void onItemClick(ArrayList<Step> steps);
     }
 }

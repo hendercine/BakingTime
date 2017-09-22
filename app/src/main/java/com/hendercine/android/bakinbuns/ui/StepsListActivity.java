@@ -48,7 +48,7 @@ public class StepsListActivity extends AppCompatActivity
     StepsDetailFragment mStepsDetailFragment;
 
     @State(StepListBundler.class)
-    ArrayList<Step> mStepShortDescriptionList;
+    ArrayList<Step> mStepDetailsList;
 
     @State(StepListBundler.class)
     ArrayList<Step> mStepArrayList;
@@ -85,7 +85,7 @@ public class StepsListActivity extends AppCompatActivity
         setTitle(mRecipe.getRecipeName());
 
         mStepArrayList = new ArrayList<>();
-        mStepShortDescriptionList = new ArrayList<>();
+        mStepDetailsList = new ArrayList<>();
 
         mStepArrayList = mRecipe.getStepList();
         if (mStepArrayList != null) {
@@ -97,15 +97,20 @@ public class StepsListActivity extends AppCompatActivity
                 mStep.setVideoURL(mStepArrayList.get(i).getVideoURL());
                 mStep.setThumbnailURL(mStepArrayList.get(i).getThumbnailURL());
 
-                mStepShortDescriptionList.add(mStep);
+                mStepDetailsList.add(mStep);
             }
         }
+
+//        Intent intent = new Intent(
+//                StepsListActivity.this,
+//                StepsDetailFragment.class);
+//        intent.putExtra("steps_list", Parcels.wrap(mStepDetailsList));
 
         if (stepsListView != null) {
             stepsListView.setLayoutManager(new LinearLayoutManager
                     (StepsListActivity.this));
             StepsRecyclerViewAdapter adapter = new StepsRecyclerViewAdapter
-                    (mStepShortDescriptionList);
+                    (mStepDetailsList);
 
             adapter.setClickListener(StepsListActivity.this);
             stepsListView.setAdapter(adapter);
@@ -119,11 +124,11 @@ public class StepsListActivity extends AppCompatActivity
     }
 
     @Override
-    public void onItemClick(Step step) {
+    public void onItemClick(ArrayList<Step> stepArrayList) {
 
         mStepsDetailFragment = new StepsDetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("step_details", Parcels.wrap(step));
+        bundle.putParcelable("step_list", Parcels.wrap(stepArrayList));
         mStepsDetailFragment.setArguments(bundle);
 
         if (mIsDualPane) {
