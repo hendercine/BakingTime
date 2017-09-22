@@ -102,8 +102,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         Icepick.restoreInstanceState(this, savedInstanceState);
 
         mStep = Parcels.unwrap(getArguments().getParcelable("step_details"));
-        mStepDetailsList = Parcels.unwrap(getArguments().getParcelable("steps_list"));
-        step_index = mStep.getStepId();
 
     }
 

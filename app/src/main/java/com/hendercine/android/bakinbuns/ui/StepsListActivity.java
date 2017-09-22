@@ -1,5 +1,6 @@
 package com.hendercine.android.bakinbuns.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -101,11 +102,6 @@ public class StepsListActivity extends AppCompatActivity
             }
         }
 
-//        Intent intent = new Intent(
-//                StepsListActivity.this,
-//                StepsDetailFragment.class);
-//        intent.putExtra("steps_list", Parcels.wrap(mStepDetailsList));
-
         if (stepsListView != null) {
             stepsListView.setLayoutManager(new LinearLayoutManager
                     (StepsListActivity.this));
@@ -124,24 +120,25 @@ public class StepsListActivity extends AppCompatActivity
     }
 
     @Override
-    public void onItemClick(ArrayList<Step> stepArrayList) {
-
-        mStepsDetailFragment = new StepsDetailFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("step_list", Parcels.wrap(stepArrayList));
-        mStepsDetailFragment.setArguments(bundle);
+    public void onItemClick(Step selectedStep) {
 
         if (mIsDualPane) {
+            mStepsDetailFragment = new StepsDetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("step_details", Parcels.wrap(selectedStep));
+            mStepsDetailFragment.setArguments(bundle);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.recipe_detail_container, mStepsDetailFragment)
                     .commit();
         } else {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.step_frame, mStepsDetailFragment)
-                    .commit();
-            findViewById(R.id.steps_list_layout).setVisibility(View.GONE);
+            int stepIndex = mStepDetailsList.indexOf(selectedStep);
+            Intent intent = new Intent(
+                    StepsListActivity.this,
+                    StepsDetailActivity.class);
+            intent.putExtra("steps_list", Parcels.wrap(mStepDetailsList));
+            intent.putExtra("step_index", stepIndex);
+            startActivity(intent);
         }
 
     }

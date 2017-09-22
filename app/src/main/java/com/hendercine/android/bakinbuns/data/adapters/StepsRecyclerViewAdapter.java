@@ -53,7 +53,7 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
         holder.mStepListTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mClickListener.onItemClick(mStepList);
+                mClickListener.onItemClick(step);
             }
         });
 
@@ -102,6 +102,6 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
     }
 
     public interface OnItemClickListener {
-        void onItemClick(ArrayList<Step> steps);
+        void onItemClick(Step step);
     }
 }
