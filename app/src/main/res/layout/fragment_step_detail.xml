@@ -12,7 +12,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.StepsListActivity"
+    tools:context=".ui.StepsDetailActivity"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
@@ -62,5 +62,31 @@
             android:layout_height="match_parent"
             android:padding="@dimen/text_margin"/>
     </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/nav_btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/min_btn_height"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/next_step_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:minHeight="@dimen/min_btn_height"
+            android:text="@string/next_step_btn"
+            android:visibility="visible"/>
+
+        <Button
+            android:id="@+id/prev_step_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:minHeight="@dimen/min_btn_height"
+            android:text="@string/previous_step_btn"
+            android:visibility="visible"/>
+    </LinearLayout>
 
 </LinearLayout>

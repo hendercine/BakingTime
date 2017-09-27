@@ -91,7 +91,8 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     boolean mIsDualPane;
     @State
     ArrayList<Step> mStepDetailsList;
-    @State int step_index;
+    @State
+    int stepIndex;
 
     public StepsDetailFragment() {
     }
@@ -100,8 +101,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
-
-        mStep = Parcels.unwrap(getArguments().getParcelable("step_details"));
 
     }
 
@@ -116,11 +115,15 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         noVidOrThumbView = (TextView) rootView.findViewById(R.id.no_vid_no_thumb_view);
         stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
 
+        mStep = Parcels.unwrap(getArguments().getParcelable("current_step"));
+        mStepDetailsList = Parcels.unwrap(getArguments().getParcelable("steps_list"));
+        stepIndex = getArguments().getInt("step_index");
+
         // Initialize the Media Session
         initializeMediaSession();
 
         // Map the data to the views.
-        mapDataToUi();
+        showDetails();
 
         if (!mIsDualPane) {
             nextStepButton = (Button) rootView.findViewById(R.id.next_step_btn);
@@ -133,11 +136,13 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         return rootView;
     }
 
-    private void mapDataToUi() {
+    private void showDetails() {
 
-        mStepVideoURL = Uri.parse(mStepDetailsList.get(step_index).getVideoURL());
-        mStepThumbnailURL = Uri.parse(mStepDetailsList.get(step_index).getThumbnailURL());
-        mStepDescription = mStepDetailsList.get(step_index).getDescription();
+//        mStepDetailsList.add(mStep);
+
+        mStepVideoURL = Uri.parse(mStepDetailsList.get(stepIndex).getVideoURL());
+        mStepThumbnailURL = Uri.parse(mStepDetailsList.get(stepIndex).getThumbnailURL());
+        mStepDescription = mStepDetailsList.get(stepIndex).getDescription();
 
         if (exoPlayerView != null) {
             if (URLUtil.isNetworkUrl(mStepVideoURL.toString())) {
@@ -177,20 +182,20 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
             prevStepButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (step_index > mStep.getStepId()) {
-                        step_index--;
+                    if (stepIndex > mStep.getStepId()) {
+                        stepIndex--;
                         releasePlayer();
-                        mapDataToUi();
+                        showDetails();
                     }
                 }
             });
             nextStepButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (step_index < mStepDetailsList.size() - 1) {
-                        step_index++;
+                    if (stepIndex < mStepDetailsList.size() - 1) {
+                        stepIndex++;
                         releasePlayer();
-                        mapDataToUi();
+                        showDetails();
                     }
                 }
             });
@@ -199,10 +204,10 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 
 //    private void refreshStepDetails() {
 //        releasePlayer();
-//        mStepVideoURL = Uri.parse(mStepDetailsList.get(step_index).getVideoURL());
-//        mStepThumbnailURL = Uri.parse(mStepDetailsList.get(step_index).getThumbnailURL());
-//        mStepDescription = mStepDetailsList.get(step_index).getDescription();
-//        mapDataToUi();
+//        mStepVideoURL = Uri.parse(mStepDetailsList.get(stepIndex).getVideoURL());
+//        mStepThumbnailURL = Uri.parse(mStepDetailsList.get(stepIndex).getThumbnailURL());
+//        mStepDescription = mStepDetailsList.get(stepIndex).getDescription();
+//        showDetails();
 //    }
 
     @Override

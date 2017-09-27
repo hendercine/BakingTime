@@ -136,6 +136,7 @@ public class StepsListActivity extends AppCompatActivity
             Intent intent = new Intent(
                     StepsListActivity.this,
                     StepsDetailActivity.class);
+            intent.putExtra("current_step", Parcels.wrap(selectedStep));
             intent.putExtra("steps_list", Parcels.wrap(mStepDetailsList));
             intent.putExtra("step_index", stepIndex);
             startActivity(intent);

@@ -32,14 +32,24 @@
 
         </activity>
 
-        <fragment
-            android:name="com.hendercine.android.bakinbuns.ui.StepsDetailFragment"
-            android:label="@string/title_recipe_detail"
-            android:parentActivityName="com.hendercine.android.bakinbuns.ui.StepsListActivity"
+        <activity
+            android:name="com.hendercine.android.bakinbuns.ui.StepsDetailActivity"
+            android:parentActivityName=".ui.StepsListActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.hendercine.android.bakinbuns.ui.StepsListActivity"/>
+                android:value=".ui.StepsListActivity"/>
+
+        </activity>
+
+        <fragment
+            android:name="com.hendercine.android.bakinbuns.ui.StepsDetailFragment"
+            android:label="@string/title_recipe_detail"
+            android:parentActivityName="com.hendercine.android.bakinbuns.ui.StepsDetailActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.hendercine.android.bakinbuns.ui.StepsDetailActivity"/>
         </fragment>
         <receiver
             android:name=".ui.StepsDetailFragment$MediaReceiver">
