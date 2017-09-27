@@ -56,6 +56,8 @@ import com.hendercine.android.bakinbuns.data.models.Step;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.State;
@@ -84,6 +86,8 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     Uri mStepThumbnailURL;
     @State
     boolean mIsDualPane;
+    private int mStepIndex;
+    private ArrayList<Step> mStepList;
 
     public StepsDetailFragment() {
     }
@@ -107,7 +111,9 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         stepThumbnailView = (ImageView) rootView.findViewById(R.id.step_thumbnail_view);
         noVidOrThumbView = (TextView) rootView.findViewById(R.id.no_vid_no_thumb_view);
 
-        mStep = Parcels.unwrap(getArguments().getParcelable("step_details"));
+        mStep = Parcels.unwrap(getArguments().getParcelable("selected_step"));
+        mStepIndex = getArguments().getInt("step_index");
+        mStepList = Parcels.unwrap(getArguments().getParcelable("step_list"));
 
         mStepVideoURL = Uri.parse(mStep.getVideoURL());
         mStepThumbnailURL = Uri.parse(mStep.getThumbnailURL());
