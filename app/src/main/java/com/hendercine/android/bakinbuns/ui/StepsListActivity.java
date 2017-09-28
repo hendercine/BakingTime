@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 
 import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.adapters.StepsRecyclerViewAdapter;
+import com.hendercine.android.bakinbuns.data.bundlers.DetailFragmentBundler;
 import com.hendercine.android.bakinbuns.data.bundlers.RecipeBundler;
 import com.hendercine.android.bakinbuns.data.bundlers.StepBundler;
 import com.hendercine.android.bakinbuns.data.bundlers.StepListBundler;
@@ -44,11 +45,11 @@ public class StepsListActivity extends AppCompatActivity
     @State(StepBundler.class)
     Step mStep;
 
-    //    @State(DetailFragmentBundler.class)
+    @State(DetailFragmentBundler.class)
     StepsDetailFragment mStepsDetailFragment;
 
     @State(StepListBundler.class)
-    ArrayList<Step> mRecipeStepsList;
+    ArrayList<Step> mStepDetailsList;
 
     @State(StepListBundler.class)
     ArrayList<Step> mStepArrayList;
@@ -85,7 +86,7 @@ public class StepsListActivity extends AppCompatActivity
         setTitle(mRecipe.getRecipeName());
 
         mStepArrayList = new ArrayList<>();
-        mRecipeStepsList = new ArrayList<>();
+        mStepDetailsList = new ArrayList<>();
 
         mStepArrayList = mRecipe.getStepList();
         if (mStepArrayList != null) {
@@ -97,7 +98,7 @@ public class StepsListActivity extends AppCompatActivity
                 mStep.setVideoURL(mStepArrayList.get(i).getVideoURL());
                 mStep.setThumbnailURL(mStepArrayList.get(i).getThumbnailURL());
 
-                mRecipeStepsList.add(mStep);
+                mStepDetailsList.add(mStep);
             }
         }
 
@@ -105,7 +106,7 @@ public class StepsListActivity extends AppCompatActivity
             stepsListView.setLayoutManager(new LinearLayoutManager
                     (StepsListActivity.this));
             StepsRecyclerViewAdapter adapter = new StepsRecyclerViewAdapter
-                    (mRecipeStepsList);
+                    (mStepDetailsList);
 
             adapter.setClickListener(StepsListActivity.this);
             stepsListView.setAdapter(adapter);
@@ -121,13 +122,13 @@ public class StepsListActivity extends AppCompatActivity
     @Override
     public void onItemClick(Step selectedStep) {
 
+        int stepIndex = mStepDetailsList.indexOf(selectedStep);
+        Bundle extras = new Bundle();
+        extras.putParcelable("selected_step", Parcels.wrap(selectedStep));
+        extras.putParcelable("steps_list", Parcels.wrap(mStepDetailsList));
+        extras.putInt("step_index", stepIndex);
         mStepsDetailFragment = new StepsDetailFragment();
-        int stepIndex = mRecipeStepsList.indexOf(selectedStep);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("selected_step", Parcels.wrap(selectedStep));
-        bundle.putInt("step_index", stepIndex);
-        bundle.putParcelable("step_list", Parcels.wrap(mRecipeStepsList));
-        mStepsDetailFragment.setArguments(bundle);
+        mStepsDetailFragment.setArguments(extras);
 
         if (mIsDualPane) {
             getSupportFragmentManager()

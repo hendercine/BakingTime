@@ -16,10 +16,30 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile(
                     'proguard-android.txt'),
                     'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix ".debug"
+        }
+
+        /**
+         * The 'initWith' property allows you to copy configurations from other build types,
+         * so you don't have to configure one from the beginning. You can then configure
+         * just the settings you want to change. The following line initializes
+         * 'jnidebug' using the debug build type, and changes only the
+         * applicationIdSuffix and versionNameSuffix settings.
+         */
+
+        jnidebug {
+
+            // This copies the debuggable attribute and debug signing configurations.
+            initWith debug
+
+            applicationIdSuffix ".jnidebug"
+            jniDebuggable true
         }
     }
     lintOptions {
@@ -51,26 +71,24 @@ dependencies {
     // AndroidAnnotations
     annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
-    // Retrofit
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     // IcePick
     compile "frankiesardo:icepick:3.2.0"
     provided "frankiesardo:icepick-processor:3.2.0"
     // Parceler
     compile 'org.parceler:parceler-api:1.1.6'
     annotationProcessor 'org.parceler:parceler:1.1.6'
+    // Retrofit
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    // OkHttp Interceptor
+    compile 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     // RxJava
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'io.reactivex:rxjava:1.1.4'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     // RxNetwork
     compile 'io.andref:Rx.Network:1.0.1'
-//    // Dagger2
-//    compile "com.google.dagger:dagger:2.9"
-//    annotationProcessor "com.google.dagger:dagger-compiler:2.9"
-//    provided 'javax.annotation:jsr250-api:1.0'
     // ExoPlayer
     compile 'com.google.android.exoplayer:exoplayer:r2.4.0'
     // Schematic

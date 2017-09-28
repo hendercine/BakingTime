@@ -70,7 +70,8 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     SimpleExoPlayerView exoPlayerView;
     ImageView stepThumbnailView;
     TextView noVidOrThumbView;
-    Button mNextButton;
+    Button nextStepButton;
+    Button prevStepButton;
 
     private static final String TAG = StepsDetailFragment.class.getSimpleName();
     private static MediaSessionCompat mMediaSession;
@@ -85,9 +86,13 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @State
     Uri mStepThumbnailURL;
     @State
+    String mStepDescription;
+    @State
     boolean mIsDualPane;
-    private int mStepIndex;
-    private ArrayList<Step> mStepList;
+    @State
+    ArrayList<Step> mStepDetailsList;
+    @State
+    int mStepIndex;
 
     public StepsDetailFragment() {
     }
@@ -96,7 +101,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
-
 
     }
 
@@ -107,48 +111,113 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
         ButterKnife.bind(rootView);
         exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.exo_player_view);
-        stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
         stepThumbnailView = (ImageView) rootView.findViewById(R.id.step_thumbnail_view);
         noVidOrThumbView = (TextView) rootView.findViewById(R.id.no_vid_no_thumb_view);
+        stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
 
         mStep = Parcels.unwrap(getArguments().getParcelable("selected_step"));
+        mStepDetailsList = Parcels.unwrap(getArguments().getParcelable("steps_list"));
         mStepIndex = getArguments().getInt("step_index");
-        mStepList = Parcels.unwrap(getArguments().getParcelable("step_list"));
 
-        mStepVideoURL = Uri.parse(mStep.getVideoURL());
-        mStepThumbnailURL = Uri.parse(mStep.getThumbnailURL());
+        // Initialize data variables
+        initializeData(mStepIndex);
 
+        // Initialize the Media Session
         initializeMediaSession();
 
-        if (exoPlayerView != null) {
-            if (URLUtil.isNetworkUrl(mStepVideoURL.toString())) {
-                initializePlayer(mStepVideoURL);
-            } else if (URLUtil.isNetworkUrl(mStepThumbnailURL.toString())) {
-                if (mStepThumbnailURL.toString().endsWith(".mp4")) {
-                    initializePlayer(mStepThumbnailURL);
-                } else {
-                    exoPlayerView.setVisibility(View.GONE);
-                    stepThumbnailView.setVisibility(View.VISIBLE);
-                    Glide.with(this)
-                            .load(mStepThumbnailURL)
-                            .into(stepThumbnailView);
-                }
-            } else {
-                exoPlayerView.setVisibility(View.GONE);
-                stepThumbnailView.setVisibility(View.GONE);
-                noVidOrThumbView.setVisibility(View.VISIBLE);
-                noVidOrThumbView.setText(mStep.getDescription());
-                Toast.makeText(getContext(),
-                        R.string.video_not_found,
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
+        // Map the data to the views.
+        showDetails();
 
-        if (stepDescriptionView != null) {
-            stepDescriptionView.setText(mStep.getDescription());
+        if (!mIsDualPane) {
+            nextStepButton = (Button) rootView.findViewById(R.id.next_step_btn);
+            prevStepButton = (Button) rootView.findViewById(R.id.prev_step_btn);
+
+            // Initialize the Navigation Buttons
+            initializeNavButtons();
         }
 
         return rootView;
+    }
+
+    private void initializeData(int stepIndex) {
+        mStepVideoURL = Uri.parse(mStepDetailsList.get(stepIndex).getVideoURL());
+        mStepThumbnailURL = Uri.parse(mStepDetailsList.get(stepIndex).getThumbnailURL());
+        mStepDescription = mStepDetailsList.get(stepIndex).getDescription();
+
+    }
+
+    private void showDetails() {
+
+//        if (exoPlayerView != null) {
+        if (URLUtil.isNetworkUrl(mStepVideoURL.toString())) {
+            // Initialize the Media Player
+            initializePlayer(mStepVideoURL);
+        } else if (URLUtil.isNetworkUrl(mStepThumbnailURL.toString())) {
+            if (mStepThumbnailURL.toString().endsWith(".mp4")) {
+                initializePlayer(mStepThumbnailURL);
+            } else {
+                exoPlayerView.setVisibility(View.GONE);
+                stepThumbnailView.setVisibility(View.VISIBLE);
+                Glide.with(this)
+                        .load(mStepThumbnailURL)
+                        .into(stepThumbnailView);
+            }
+        } else {
+            exoPlayerView.setVisibility(View.GONE);
+            stepThumbnailView.setVisibility(View.GONE);
+            noVidOrThumbView.setVisibility(View.VISIBLE);
+            noVidOrThumbView.setText(mStepDescription);
+            Toast.makeText(getContext(),
+                    R.string.video_not_found,
+                    Toast.LENGTH_SHORT).show();
+        }
+//        }
+
+        if (stepDescriptionView != null) {
+            stepDescriptionView.setText(mStepDescription);
+        }
+    }
+
+    /**
+     * Initialize navigation buttons
+     */
+    private void initializeNavButtons() {
+        if (nextStepButton != null && prevStepButton != null) {
+            nextStepButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mStepIndex < mStepDetailsList.size() - 1) {
+                        mStepIndex++;
+                    }
+                    initializeData(mStepIndex);
+                    if (exoPlayerView.getVisibility() == View.VISIBLE) {
+                        releasePlayer();
+                    } else {
+                        exoPlayerView.setVisibility(View.VISIBLE);
+                        stepThumbnailView.setVisibility(View.GONE);
+                        noVidOrThumbView.setVisibility(View.GONE);
+                    }
+                    showDetails();
+                }
+            });
+            prevStepButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mStepIndex > mStep.getStepId()) {
+                        mStepIndex--;
+                    }
+                    initializeData(mStepIndex);
+                    if (exoPlayerView.getVisibility() == View.VISIBLE) {
+                        releasePlayer();
+                    } else {
+                        exoPlayerView.setVisibility(View.VISIBLE);
+                        stepThumbnailView.setVisibility(View.GONE);
+                        noVidOrThumbView.setVisibility(View.GONE);
+                    }
+                    showDetails();
+                }
+            });
+        }
     }
 
     @Override

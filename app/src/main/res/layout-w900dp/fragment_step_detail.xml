@@ -9,9 +9,10 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.StepsListActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
@@ -63,10 +64,4 @@
             android:padding="@dimen/text_margin"/>
     </android.support.v7.widget.CardView>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/detail_card_margin"
-        android:layout_weight="1"
-        android:visibility="gone"/>
 </LinearLayout>

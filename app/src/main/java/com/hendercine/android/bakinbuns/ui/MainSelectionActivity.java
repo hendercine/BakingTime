@@ -55,14 +55,11 @@ public class MainSelectionActivity extends AppCompatActivity implements
     private Intent intent;
     private Subscription subscription;
     private CompositeSubscription mCompositeSubscription;
-    ConnectivityManager mConnectivityManager;
+    private ConnectivityManager mConnectivityManager;
     private RecyclerView convertView;
-
-    @State(RecipeListBundler.class)
-    ArrayList<Recipe> recipeList;
-
-    @State(RecipeBundler.class)
-    Recipe mRecipe;
+    private int spanCount;
+    private int spacingInPixels = 50;
+    private Utils mUtils;
 
     @Nullable
     @BindView(R.id.tablet_rv_recipe_cards)
@@ -74,7 +71,12 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
     @State
     boolean mIsTablet;
-    private Utils mUtils;
+
+    @State(RecipeListBundler.class)
+    ArrayList<Recipe> recipeList;
+
+    @State(RecipeBundler.class)
+    Recipe mRecipe;
 
     // Create the LeakCanary watcher
     public static RefWatcher getRefWatcher(Context context) {
@@ -103,6 +105,18 @@ public class MainSelectionActivity extends AppCompatActivity implements
         Timber.d("Activity Created");
         mIsTablet = tabletGridCards != null &&
                 tabletGridCards.getVisibility() == View.VISIBLE;
+
+        if (mIsTablet) {
+            convertView = tabletGridCards;
+            spanCount = 3;
+        } else {
+            convertView = handHeldGridCards;
+            spanCount = 1;
+        }
+
+        assert convertView != null;
+        convertView.addItemDecoration(
+                new GridSpacingItemDecoration(spanCount, spacingInPixels, true));
     }
 
     @Override
@@ -178,12 +192,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
                     @Override
                     public void onError(Throwable e) {
                         Timber.d("In onError()");
-//                        if (e instanceof NoConnectivityException) {
-//                            Toast.makeText(getApplicationContext(),
-//                                    R.string.no_internet,
-//                                    Toast.LENGTH_LONG)
-//                                    .show();
-//                        }
                         e.printStackTrace();
                     }
 
@@ -204,16 +212,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
                             recipeList.add(mRecipe);
 
                         }
-                        int spanCount;
-                        int spacingInPixels = 50;
 
-                        if (mIsTablet) {
-                            convertView = tabletGridCards;
-                            spanCount = 3;
-                        } else {
-                            convertView = handHeldGridCards;
-                            spanCount = 1;
-                        }
                         if (convertView != null) {
                             convertView.setLayoutManager(new GridLayoutManager
                                     (MainSelectionActivity.this, spanCount));
@@ -221,9 +220,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
                             mAdapter.setClickListener(MainSelectionActivity.this);
                             convertView.setAdapter(mAdapter);
                         }
-                        assert convertView != null;
-                        convertView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
-                                spacingInPixels, true));
+
                     }
 
                 });
