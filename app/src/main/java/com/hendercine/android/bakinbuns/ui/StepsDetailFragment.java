@@ -92,7 +92,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @State
     ArrayList<Step> mStepDetailsList;
     @State
-    int stepIndex;
+    int mStepIndex;
 
     public StepsDetailFragment() {
     }
@@ -117,7 +117,10 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 
         mStep = Parcels.unwrap(getArguments().getParcelable("selected_step"));
         mStepDetailsList = Parcels.unwrap(getArguments().getParcelable("steps_list"));
-        stepIndex = getArguments().getInt("step_index");
+        mStepIndex = getArguments().getInt("step_index");
+
+        // Initialize data variables
+        initializeData(mStepIndex);
 
         // Initialize the Media Session
         initializeMediaSession();
@@ -136,38 +139,39 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         return rootView;
     }
 
-    private void showDetails() {
-
-//        mStepDetailsList.add(mStep);
-
+    private void initializeData(int stepIndex) {
         mStepVideoURL = Uri.parse(mStepDetailsList.get(stepIndex).getVideoURL());
         mStepThumbnailURL = Uri.parse(mStepDetailsList.get(stepIndex).getThumbnailURL());
         mStepDescription = mStepDetailsList.get(stepIndex).getDescription();
 
-        if (exoPlayerView != null) {
-            if (URLUtil.isNetworkUrl(mStepVideoURL.toString())) {
-                // Initialize the Media Player
-                initializePlayer(mStepVideoURL);
-            } else if (URLUtil.isNetworkUrl(mStepThumbnailURL.toString())) {
-                if (mStepThumbnailURL.toString().endsWith(".mp4")) {
-                    initializePlayer(mStepThumbnailURL);
-                } else {
-                    exoPlayerView.setVisibility(View.GONE);
-                    stepThumbnailView.setVisibility(View.VISIBLE);
-                    Glide.with(this)
-                            .load(mStepThumbnailURL)
-                            .into(stepThumbnailView);
-                }
+    }
+
+    private void showDetails() {
+
+//        if (exoPlayerView != null) {
+        if (URLUtil.isNetworkUrl(mStepVideoURL.toString())) {
+            // Initialize the Media Player
+            initializePlayer(mStepVideoURL);
+        } else if (URLUtil.isNetworkUrl(mStepThumbnailURL.toString())) {
+            if (mStepThumbnailURL.toString().endsWith(".mp4")) {
+                initializePlayer(mStepThumbnailURL);
             } else {
                 exoPlayerView.setVisibility(View.GONE);
-                stepThumbnailView.setVisibility(View.GONE);
-                noVidOrThumbView.setVisibility(View.VISIBLE);
-                noVidOrThumbView.setText(mStepDescription);
-                Toast.makeText(getContext(),
-                        R.string.video_not_found,
-                        Toast.LENGTH_SHORT).show();
+                stepThumbnailView.setVisibility(View.VISIBLE);
+                Glide.with(this)
+                        .load(mStepThumbnailURL)
+                        .into(stepThumbnailView);
             }
+        } else {
+            exoPlayerView.setVisibility(View.GONE);
+            stepThumbnailView.setVisibility(View.GONE);
+            noVidOrThumbView.setVisibility(View.VISIBLE);
+            noVidOrThumbView.setText(mStepDescription);
+            Toast.makeText(getContext(),
+                    R.string.video_not_found,
+                    Toast.LENGTH_SHORT).show();
         }
+//        }
 
         if (stepDescriptionView != null) {
             stepDescriptionView.setText(mStepDescription);
@@ -179,36 +183,42 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
      */
     private void initializeNavButtons() {
         if (nextStepButton != null && prevStepButton != null) {
-            prevStepButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (stepIndex > mStep.getStepId()) {
-                        stepIndex--;
-                        releasePlayer();
-                        showDetails();
-                    }
-                }
-            });
             nextStepButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (stepIndex < mStepDetailsList.size() - 1) {
-                        stepIndex++;
-                        releasePlayer();
-                        showDetails();
+                    if (mStepIndex < mStepDetailsList.size() - 1) {
+                        mStepIndex++;
                     }
+                    initializeData(mStepIndex);
+                    if (exoPlayerView.getVisibility() == View.VISIBLE) {
+                        releasePlayer();
+                    } else {
+                        exoPlayerView.setVisibility(View.VISIBLE);
+                        stepThumbnailView.setVisibility(View.GONE);
+                        noVidOrThumbView.setVisibility(View.GONE);
+                    }
+                    showDetails();
+                }
+            });
+            prevStepButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mStepIndex > mStep.getStepId()) {
+                        mStepIndex--;
+                    }
+                    initializeData(mStepIndex);
+                    if (exoPlayerView.getVisibility() == View.VISIBLE) {
+                        releasePlayer();
+                    } else {
+                        exoPlayerView.setVisibility(View.VISIBLE);
+                        stepThumbnailView.setVisibility(View.GONE);
+                        noVidOrThumbView.setVisibility(View.GONE);
+                    }
+                    showDetails();
                 }
             });
         }
     }
-
-//    private void refreshStepDetails() {
-//        releasePlayer();
-//        mStepVideoURL = Uri.parse(mStepDetailsList.get(stepIndex).getVideoURL());
-//        mStepThumbnailURL = Uri.parse(mStepDetailsList.get(stepIndex).getThumbnailURL());
-//        mStepDescription = mStepDetailsList.get(stepIndex).getDescription();
-//        showDetails();
-//    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
