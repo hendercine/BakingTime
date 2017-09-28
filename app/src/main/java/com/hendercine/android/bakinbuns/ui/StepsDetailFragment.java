@@ -115,7 +115,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         noVidOrThumbView = (TextView) rootView.findViewById(R.id.no_vid_no_thumb_view);
         stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
 
-        mStep = Parcels.unwrap(getArguments().getParcelable("current_step"));
+        mStep = Parcels.unwrap(getArguments().getParcelable("selected_step"));
         mStepDetailsList = Parcels.unwrap(getArguments().getParcelable("steps_list"));
         stepIndex = getArguments().getInt("step_index");
 

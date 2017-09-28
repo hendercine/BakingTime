@@ -1,6 +1,5 @@
 package com.hendercine.android.bakinbuns.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -122,24 +121,24 @@ public class StepsListActivity extends AppCompatActivity
     @Override
     public void onItemClick(Step selectedStep) {
 
+        int stepIndex = mStepDetailsList.indexOf(selectedStep);
+        Bundle extras = new Bundle();
+        extras.putParcelable("selected_step", Parcels.wrap(selectedStep));
+        extras.putParcelable("steps_list", Parcels.wrap(mStepDetailsList));
+        extras.putInt("step_index", stepIndex);
+        mStepsDetailFragment = new StepsDetailFragment();
+        mStepsDetailFragment.setArguments(extras);
         if (mIsDualPane) {
-            mStepsDetailFragment = new StepsDetailFragment();
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("step_details", Parcels.wrap(selectedStep));
-            mStepsDetailFragment.setArguments(bundle);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.recipe_detail_container, mStepsDetailFragment)
                     .commit();
         } else {
-            int stepIndex = mStepDetailsList.indexOf(selectedStep);
-            Intent intent = new Intent(
-                    StepsListActivity.this,
-                    StepsDetailActivity.class);
-            intent.putExtra("current_step", Parcels.wrap(selectedStep));
-            intent.putExtra("steps_list", Parcels.wrap(mStepDetailsList));
-            intent.putExtra("step_index", stepIndex);
-            startActivity(intent);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.step_frame, mStepsDetailFragment)
+                    .commit();
+            findViewById(R.id.steps_list_layout).setVisibility(View.GONE);
         }
 
     }
