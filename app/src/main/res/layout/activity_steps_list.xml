@@ -27,6 +27,7 @@
             android:scrollHorizontally="false"
             android:ellipsize="none"
             android:focusableInTouchMode="true"
+            android:background="@drawable/selector_row"
             android:text="@string/recipe_ingredients_btn"
             android:textAppearance="?attr/textAppearanceListItem"/>
 

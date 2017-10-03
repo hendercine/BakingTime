@@ -8,7 +8,6 @@
 
 package com.hendercine.android.bakinbuns.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -27,7 +26,6 @@ import com.hendercine.android.bakinbuns.data.models.Recipe;
 import com.hendercine.android.bakinbuns.data.network.RecipeClient;
 import com.hendercine.android.bakinbuns.utils.GridSpacingItemDecoration;
 import com.hendercine.android.bakinbuns.utils.Utils;
-import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
 import org.parceler.Parcels;
@@ -78,24 +76,24 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @State(RecipeBundler.class)
     Recipe mRecipe;
 
-    // Create the LeakCanary watcher
-    public static RefWatcher getRefWatcher(Context context) {
-        MainSelectionActivity activity = (MainSelectionActivity) context.getApplicationContext();
-        return activity.refWatcher;
-    }
+//    // Create the LeakCanary watcher
+//    public static RefWatcher getRefWatcher(Context context) {
+//        MainSelectionActivity activity = (MainSelectionActivity) context.getApplicationContext();
+//        return activity.refWatcher;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
 
-        // Install the LeakCanary watcher
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        refWatcher = LeakCanary.install(getApplication());
+//        // Install the LeakCanary watcher
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            // This process is dedicated to LeakCanary for heap analysis.
+//            // You should not init your app in this process.
+//            return;
+//        }
+//        refWatcher = LeakCanary.install(getApplication());
 
         mConnectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 

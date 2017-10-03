@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -44,6 +45,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
@@ -61,6 +63,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.State;
+import timber.log.Timber;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -88,36 +91,41 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @State
     String mStepDescription;
     @State
-    boolean mIsDualPane;
-    @State
     ArrayList<Step> mStepDetailsList;
     @State
     int mStepIndex;
+    @State
+    long mPosition;
+    @State
+    boolean mIsDualPane;
 
     public StepsDetailFragment() {
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Icepick.restoreInstanceState(this, savedInstanceState);
-
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
+        Icepick.restoreInstanceState(this, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
         ButterKnife.bind(rootView);
-        exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.exo_player_view);
-        stepThumbnailView = (ImageView) rootView.findViewById(R.id.step_thumbnail_view);
-        noVidOrThumbView = (TextView) rootView.findViewById(R.id.no_vid_no_thumb_view);
-        stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
+        if (savedInstanceState == null) {
+            exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.exo_player_view);
+            stepThumbnailView = (ImageView) rootView.findViewById(R.id.step_thumbnail_view);
+            noVidOrThumbView = (TextView) rootView.findViewById(R.id.no_vid_no_thumb_view);
+            stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
+
+            exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+        }
 
         mStep = Parcels.unwrap(getArguments().getParcelable("selected_step"));
         mStepDetailsList = Parcels.unwrap(getArguments().getParcelable("steps_list"));
         mStepIndex = getArguments().getInt("step_index");
+
+        if (savedInstanceState != null) {
+            mPosition = savedInstanceState
+                    .getLong(String.valueOf(mStepIndex), C.TIME_UNSET);
+
+        }
 
         // Initialize data variables
         initializeData(mStepIndex);
@@ -135,10 +143,97 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
             // Initialize the Navigation Buttons
             initializeNavButtons();
         }
-
         return rootView;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mStepVideoURL != null) {
+            showDetails();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        releasePlayer();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        releasePlayer();
+        mMediaSession.setActive(false);
+    }
+
+    @Override
+    public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+    }
+
+    @Override
+    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+    }
+
+    @Override
+    public void onLoadingChanged(boolean isLoading) {
+
+    }
+
+
+    @Override
+    public void onPlayerError(ExoPlaybackException error) {
+
+    }
+
+    @Override
+    public void onPositionDiscontinuity() {
+
+    }
+
+    @Override
+    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+    }
+
+    @Override
+    public void onVisibilityChange(int visibility) {
+
+    }
+
+    @Override
+    public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+        super.onMultiWindowModeChanged(isInMultiWindowMode);
+
+        Timber.i("onMultiWindowModeChanged was called!");
+    }
+
+    /**
+     * Check that permission have been granted.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            initializePlayer(mStepVideoURL);
+        } else {
+            Toast.makeText(getContext(), R.string.permission_denied, Toast
+                    .LENGTH_SHORT)
+                    .show();
+        }
+    }
+
+    /**
+     * Helper method to store the data step data
+     * @param stepIndex is the position of the Step item touched by the user.
+     */
     private void initializeData(int stepIndex) {
         mStepVideoURL = Uri.parse(mStepDetailsList.get(stepIndex).getVideoURL());
         mStepThumbnailURL = Uri.parse(mStepDetailsList.get(stepIndex).getThumbnailURL());
@@ -146,36 +241,38 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 
     }
 
-    private void showDetails() {
+    /**
+     * Initializes the Media Session to be enabled with media buttons, transport controls, callbacks
+     * and media controller.
+     */
+    private void initializeMediaSession() {
+        // Create a MediaSessionCompat.
+        mMediaSession = new MediaSessionCompat(getContext(), TAG);
 
-//        if (exoPlayerView != null) {
-        if (URLUtil.isNetworkUrl(mStepVideoURL.toString())) {
-            // Initialize the Media Player
-            initializePlayer(mStepVideoURL);
-        } else if (URLUtil.isNetworkUrl(mStepThumbnailURL.toString())) {
-            if (mStepThumbnailURL.toString().endsWith(".mp4")) {
-                initializePlayer(mStepThumbnailURL);
-            } else {
-                exoPlayerView.setVisibility(View.GONE);
-                stepThumbnailView.setVisibility(View.VISIBLE);
-                Glide.with(this)
-                        .load(mStepThumbnailURL)
-                        .into(stepThumbnailView);
-            }
-        } else {
-            exoPlayerView.setVisibility(View.GONE);
-            stepThumbnailView.setVisibility(View.GONE);
-            noVidOrThumbView.setVisibility(View.VISIBLE);
-            noVidOrThumbView.setText(mStepDescription);
-            Toast.makeText(getContext(),
-                    R.string.video_not_found,
-                    Toast.LENGTH_SHORT).show();
-        }
-//        }
+        // Enable callbacks from MediaButtons and TransportControls.
+        mMediaSession.setFlags(
+                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
+                        MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
-        if (stepDescriptionView != null) {
-            stepDescriptionView.setText(mStepDescription);
-        }
+        // Do not let MediaButtons restart the player when the app is not visible.
+        mMediaSession.setMediaButtonReceiver(null);
+
+        // Set an initial PlaybackState with ACTION_PLAY, so media buttons can start the player.
+        mStateBuilder = new PlaybackStateCompat.Builder()
+                .setActions(
+                        PlaybackStateCompat.ACTION_PLAY |
+                                PlaybackStateCompat.ACTION_PAUSE |
+                                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
+                                PlaybackStateCompat.ACTION_PLAY_PAUSE);
+
+        mMediaSession.setPlaybackState(mStateBuilder.build());
+
+
+        // MySessionCallback has methods that handle callbacks from a media controller.
+        mMediaSession.setCallback(new MySessionCallback());
+
+        // Start the Media Session since the activity is active.
+        mMediaSession.setActive(true);
     }
 
     /**
@@ -220,89 +317,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         }
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
-    }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        initializePlayer(mStepVideoURL);
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        initializePlayer(mStepVideoURL);
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        releasePlayer();
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        releasePlayer();
-//    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releasePlayer();
-        mMediaSession.setActive(false);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            initializePlayer(mStepVideoURL);
-        } else {
-            Toast.makeText(getContext(), R.string.permission_denied, Toast
-                    .LENGTH_SHORT)
-                    .show();
-        }
-    }
-
-    /**
-     * Initializes the Media Session to be enabled with media buttons, transport controls, callbacks
-     * and media controller.
-     */
-    private void initializeMediaSession() {
-        // Create a MediaSessionCompat.
-        mMediaSession = new MediaSessionCompat(getContext(), TAG);
-
-        // Enable callbacks from MediaButtons and TransportControls.
-        mMediaSession.setFlags(
-                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
-                        MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
-
-        // Do not let MediaButtons restart the player when the app is not visible.
-        mMediaSession.setMediaButtonReceiver(null);
-
-        // Set an initial PlaybackState with ACTION_PLAY, so media buttons can start the player.
-        mStateBuilder = new PlaybackStateCompat.Builder()
-                .setActions(
-                        PlaybackStateCompat.ACTION_PLAY |
-                                PlaybackStateCompat.ACTION_PAUSE |
-                                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
-                                PlaybackStateCompat.ACTION_PLAY_PAUSE);
-
-        mMediaSession.setPlaybackState(mStateBuilder.build());
-
-
-        // MySessionCallback has methods that handle callbacks from a media controller.
-        mMediaSession.setCallback(new MySessionCallback());
-
-        // Start the Media Session since the activity is active.
-        mMediaSession.setActive(true);
-    }
-
-
     /**
      * Initialize ExoPlayer.
      *
@@ -339,9 +353,83 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                     new DefaultExtractorsFactory(),
                     null,
                     null);
+            // Store the video position.
+            mPosition = mExoPlayer.getCurrentPosition();
+            if (mPosition != C.TIME_UNSET) mExoPlayer.seekTo(mPosition);
+
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
+
         }
+    }
+
+    /**
+     * Displays the video, thumbnail or step description.
+     */
+    private void showDetails() {
+
+//        if (exoPlayerView != null) {
+        if (URLUtil.isNetworkUrl(mStepVideoURL.toString())) {
+            // Initialize the Media Player
+            initializePlayer(mStepVideoURL);
+        } else if (URLUtil.isNetworkUrl(mStepThumbnailURL.toString())) {
+            if (mStepThumbnailURL.toString().endsWith(".mp4")) {
+                initializePlayer(mStepThumbnailURL);
+            } else {
+                exoPlayerView.setVisibility(View.GONE);
+                stepThumbnailView.setVisibility(View.VISIBLE);
+                Glide.with(this)
+                        .load(mStepThumbnailURL)
+                        .into(stepThumbnailView);
+            }
+        } else {
+            exoPlayerView.setVisibility(View.GONE);
+            stepThumbnailView.setVisibility(View.GONE);
+            noVidOrThumbView.setVisibility(View.VISIBLE);
+            noVidOrThumbView.setText(mStepDescription);
+            Toast.makeText(getContext(),
+                    R.string.video_not_found,
+                    Toast.LENGTH_SHORT).show();
+        }
+//        }
+
+        if (stepDescriptionView != null) {
+            stepDescriptionView.setText(mStepDescription);
+        }
+    }
+
+    /**
+     * Store the video position and then stop, release and nullify the player.
+     */
+    private void releasePlayer() {
+        if (mExoPlayer != null) {
+            mPosition = mExoPlayer.getCurrentPosition();
+            mNotificationManager.cancelAll();
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
+    }
+
+    /**
+     * Method that is called when the ExoPlayer state changes. Used to update the MediaSession
+     * PlayBackState to keep in sync, and post the media notification.
+     *
+     * @param playWhenReady true if ExoPlayer is playing, false if it's paused.
+     * @param playbackState int describing the state of ExoPlayer. Can be STATE_READY, STATE_IDLE,
+     *                      STATE_BUFFERING, or STATE_ENDED.
+     */
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        if ((playbackState == ExoPlayer.STATE_READY) && playWhenReady) {
+            mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
+                    mExoPlayer.getCurrentPosition(), 1f);
+        } else if ((playbackState == ExoPlayer.STATE_READY)) {
+            mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
+                    mExoPlayer.getCurrentPosition(), 1f);
+        }
+        mMediaSession.setPlaybackState(mStateBuilder.build());
+        showNotification(mStateBuilder.build());
     }
 
     /**
@@ -394,72 +482,11 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         mNotificationManager.notify(0, builder.build());
     }
 
-    private void releasePlayer() {
-        if (mExoPlayer != null) {
-            mNotificationManager.cancelAll();
-            mExoPlayer.stop();
-            mExoPlayer.release();
-            mExoPlayer = null;
-        }
-    }
-
-    @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {
-
-    }
-
-    @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-    }
-
-    @Override
-    public void onLoadingChanged(boolean isLoading) {
-
-    }
-
     /**
-     * Method that is called when the ExoPlayer state changes. Used to update the MediaSession
-     * PlayBackState to keep in sync, and post the media notification.
-     *
-     * @param playWhenReady true if ExoPlayer is playing, false if it's paused.
-     * @param playbackState int describing the state of ExoPlayer. Can be STATE_READY, STATE_IDLE,
-     *                      STATE_BUFFERING, or STATE_ENDED.
+     * Inner class to handle the media session callback.
      */
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if ((playbackState == ExoPlayer.STATE_READY) && playWhenReady) {
-            mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
-                    mExoPlayer.getCurrentPosition(), 1f);
-        } else if ((playbackState == ExoPlayer.STATE_READY)) {
-            mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
-                    mExoPlayer.getCurrentPosition(), 1f);
-        }
-        mMediaSession.setPlaybackState(mStateBuilder.build());
-        showNotification(mStateBuilder.build());
-    }
-
-    @Override
-    public void onPlayerError(ExoPlaybackException error) {
-
-    }
-
-    @Override
-    public void onPositionDiscontinuity() {
-
-    }
-
-    @Override
-    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-    }
-
-    @Override
-    public void onVisibilityChange(int visibility) {
-
-    }
-
     private class MySessionCallback extends MediaSessionCompat.Callback {
+
         @Override
         public void onPlay() {
             mExoPlayer.setPlayWhenReady(true);

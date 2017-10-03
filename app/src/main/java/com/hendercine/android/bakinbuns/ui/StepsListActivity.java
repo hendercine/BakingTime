@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 
 import com.hendercine.android.bakinbuns.R;
 import com.hendercine.android.bakinbuns.data.adapters.StepsRecyclerViewAdapter;
-import com.hendercine.android.bakinbuns.data.bundlers.DetailFragmentBundler;
 import com.hendercine.android.bakinbuns.data.bundlers.RecipeBundler;
 import com.hendercine.android.bakinbuns.data.bundlers.StepBundler;
 import com.hendercine.android.bakinbuns.data.bundlers.StepListBundler;
@@ -26,6 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.State;
+import timber.log.Timber;
 
 /**
  * // * An activity representing a recipeList of Recipes. This activity
@@ -44,9 +44,6 @@ public class StepsListActivity extends AppCompatActivity
 
     @State(StepBundler.class)
     Step mStep;
-
-    @State(DetailFragmentBundler.class)
-    StepsDetailFragment mStepsDetailFragment;
 
     @State(StepListBundler.class)
     ArrayList<Step> mStepDetailsList;
@@ -127,7 +124,7 @@ public class StepsListActivity extends AppCompatActivity
         extras.putParcelable("selected_step", Parcels.wrap(selectedStep));
         extras.putParcelable("steps_list", Parcels.wrap(mStepDetailsList));
         extras.putInt("step_index", stepIndex);
-        mStepsDetailFragment = new StepsDetailFragment();
+        StepsDetailFragment mStepsDetailFragment = new StepsDetailFragment();
         mStepsDetailFragment.setArguments(extras);
 
         if (mIsDualPane) {
@@ -143,5 +140,12 @@ public class StepsListActivity extends AppCompatActivity
             findViewById(R.id.steps_list_layout).setVisibility(View.GONE);
         }
 
+    }
+
+    @Override
+    public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+        super.onMultiWindowModeChanged(isInMultiWindowMode);
+
+        Timber.i("onMultiWindowModeChanged was called!");
     }
 }

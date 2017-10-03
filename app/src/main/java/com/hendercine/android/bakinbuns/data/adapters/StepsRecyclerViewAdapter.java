@@ -30,25 +30,25 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
 
     private ArrayList<Step> mStepList;
     private OnItemClickListener mClickListener;
+    private int focusedItem = RecyclerView.NO_POSITION;
 
     public StepsRecyclerViewAdapter(ArrayList<Step> stepList) {
         mStepList = stepList;
     }
 
     @Override
-    public StepsRecyclerViewAdapter.StepsListViewHolder onCreateViewHolder
-            (ViewGroup parent, int
-            viewType) {
+    public StepsRecyclerViewAdapter.StepsListViewHolder onCreateViewHolder(
+            ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.step_list_item, parent, false);
         return new StepsRecyclerViewAdapter.StepsListViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(StepsRecyclerViewAdapter.StepsListViewHolder holder, final int
-            position) {
-
+    public void onBindViewHolder(
+            StepsRecyclerViewAdapter.StepsListViewHolder holder, final int position) {
         final Step step = getItem(position);
+        holder.itemView.setSelected(focusedItem == position);
         holder.mStepListTextView.setText(step.getShortDescription());
         holder.mStepListTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,8 +85,8 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
         notifyDataSetChanged();
     }
 
-    class StepsListViewHolder extends RecyclerView.ViewHolder {
-
+    class StepsListViewHolder extends RecyclerView.ViewHolder implements
+            View.OnClickListener {
 
         @BindView(R.id.step_description_btn)
         TextView mStepListTextView;
@@ -94,7 +94,15 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
         StepsListViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+                    notifyItemChanged(focusedItem);
+                    focusedItem = getLayoutPosition();
+                    notifyItemChanged(focusedItem);
+                }
     }
 
     public void setClickListener(OnItemClickListener itemClickListener) {
