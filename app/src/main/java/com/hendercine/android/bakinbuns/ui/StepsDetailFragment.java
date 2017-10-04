@@ -1,5 +1,6 @@
 package com.hendercine.android.bakinbuns.ui;
 
+import android.app.ActionBar;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -60,6 +61,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.State;
@@ -69,14 +71,22 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class StepsDetailFragment extends Fragment implements ExoPlayer.EventListener, PlaybackControlView.VisibilityListener {
 
+    @BindView(R.id.step_description_text_view)
     TextView stepDescriptionView;
+    @BindView(R.id.exo_player_view)
     SimpleExoPlayerView exoPlayerView;
+    @BindView(R.id.step_thumbnail_view)
     ImageView stepThumbnailView;
+    @BindView(R.id.no_vid_no_thumb_view)
     TextView noVidOrThumbView;
+    @BindView(R.id.next_step_btn)
     Button nextStepButton;
+    @BindView(R.id.prev_step_btn)
     Button prevStepButton;
 
     private static final String TAG = StepsDetailFragment.class.getSimpleName();
+    private static final String SELECTED_POSITION = "SELECTED_POSITION";
+    private static final String STEP_INDEX = "STEP_INDEX";
     private static MediaSessionCompat mMediaSession;
     private SimpleExoPlayer mExoPlayer;
     private PlaybackStateCompat.Builder mStateBuilder;
@@ -95,11 +105,30 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @State
     int mStepIndex;
     @State
-    long mPosition;
+    long mSelectedPosition;
     @State
     boolean mIsDualPane;
 
     public StepsDetailFragment() {
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            mSelectedPosition = savedInstanceState.getLong(SELECTED_POSITION);
+            mStepIndex = savedInstanceState.getInt(STEP_INDEX);
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Show the Up button in the action bar.
+        ActionBar actionBar = getActivity().getActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Nullable
@@ -107,24 +136,23 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         Icepick.restoreInstanceState(this, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
-        ButterKnife.bind(rootView);
-        if (savedInstanceState == null) {
-            exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.exo_player_view);
-            stepThumbnailView = (ImageView) rootView.findViewById(R.id.step_thumbnail_view);
-            noVidOrThumbView = (TextView) rootView.findViewById(R.id.no_vid_no_thumb_view);
-            stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
-
-            exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
-        }
+        ButterKnife.bind(this, rootView);
+//        if (savedInstanceState == null) {
+//            exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.exo_player_view);
+//            stepThumbnailView = (ImageView) rootView.findViewById(R.id.step_thumbnail_view);
+//            noVidOrThumbView = (TextView) rootView.findViewById(R.id.no_vid_no_thumb_view);
+//            stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
+//        }
+        exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
 
         mStep = Parcels.unwrap(getArguments().getParcelable("selected_step"));
         mStepDetailsList = Parcels.unwrap(getArguments().getParcelable("steps_list"));
         mStepIndex = getArguments().getInt("step_index");
+        mSelectedPosition = C.TIME_UNSET;
 
         if (savedInstanceState != null) {
-            mPosition = savedInstanceState
-                    .getLong(String.valueOf(mStepIndex), C.TIME_UNSET);
-
+            mSelectedPosition = savedInstanceState
+                    .getLong(SELECTED_POSITION, C.TIME_UNSET);
         }
 
         // Initialize data variables
@@ -150,6 +178,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
+        outState.putLong(SELECTED_POSITION, mSelectedPosition);
     }
 
     @Override
@@ -232,6 +261,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 
     /**
      * Helper method to store the data step data
+     *
      * @param stepIndex is the position of the Step item touched by the user.
      */
     private void initializeData(int stepIndex) {
@@ -354,8 +384,9 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                     null,
                     null);
             // Store the video position.
-            mPosition = mExoPlayer.getCurrentPosition();
-            if (mPosition != C.TIME_UNSET) mExoPlayer.seekTo(mPosition);
+            mSelectedPosition = mExoPlayer.getCurrentPosition();
+            if (mSelectedPosition != C.TIME_UNSET)
+                mExoPlayer.seekTo(mSelectedPosition);
 
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
@@ -368,7 +399,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
      */
     private void showDetails() {
 
-//        if (exoPlayerView != null) {
         if (URLUtil.isNetworkUrl(mStepVideoURL.toString())) {
             // Initialize the Media Player
             initializePlayer(mStepVideoURL);
@@ -391,7 +421,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                     R.string.video_not_found,
                     Toast.LENGTH_SHORT).show();
         }
-//        }
 
         if (stepDescriptionView != null) {
             stepDescriptionView.setText(mStepDescription);
@@ -403,7 +432,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
      */
     private void releasePlayer() {
         if (mExoPlayer != null) {
-            mPosition = mExoPlayer.getCurrentPosition();
+            mSelectedPosition = mExoPlayer.getCurrentPosition();
             mNotificationManager.cancelAll();
             mExoPlayer.stop();
             mExoPlayer.release();

@@ -39,6 +39,9 @@ import timber.log.Timber;
 public class StepsListActivity extends AppCompatActivity
         implements StepsRecyclerViewAdapter.OnItemClickListener {
 
+    private StepsDetailFragment mStepsDetailFragment;
+    private static final String TAG = StepsListActivity.class.getSimpleName();
+
     @State(RecipeBundler.class)
     Recipe mRecipe;
 
@@ -69,18 +72,27 @@ public class StepsListActivity extends AppCompatActivity
         setContentView(R.layout.activity_steps_list);
         ButterKnife.bind(this);
 
-        // Show the Up button in the action bar.
+        // Check if the Activity is in dual pane mode.
+        mIsDualPane = detailsContainerView != null &&
+                detailsContainerView.getVisibility() == View.VISIBLE;
+
+        // If the state is being restored set recipe, else get the Recipe intent from MainSelectionActivity.
+        if (savedInstanceState != null) {
+            mRecipe = Parcels.unwrap(
+                    savedInstanceState.getParcelable("recipe"));
+            mStepsDetailFragment =
+                    (StepsDetailFragment) getSupportFragmentManager()
+                            .getFragment(savedInstanceState, TAG);
+        } else {
+            mRecipe = Parcels.unwrap(getIntent().getParcelableExtra("recipe"));
+        }
+
+        // Set the title and show the Up button in the action bar.
+        setTitle(mRecipe.getRecipeName());
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        mIsDualPane = detailsContainerView != null &&
-                detailsContainerView.getVisibility() == View.VISIBLE;
-
-        mRecipe = Parcels.unwrap(getIntent().getParcelableExtra("recipe"));
-
-        setTitle(mRecipe.getRecipeName());
 
         mStepArrayList = new ArrayList<>();
         mStepDetailsList = new ArrayList<>();
@@ -114,6 +126,8 @@ public class StepsListActivity extends AppCompatActivity
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
+        getSupportFragmentManager()
+                .putFragment(outState, TAG, mStepsDetailFragment);
     }
 
     @Override
@@ -124,7 +138,7 @@ public class StepsListActivity extends AppCompatActivity
         extras.putParcelable("selected_step", Parcels.wrap(selectedStep));
         extras.putParcelable("steps_list", Parcels.wrap(mStepDetailsList));
         extras.putInt("step_index", stepIndex);
-        StepsDetailFragment mStepsDetailFragment = new StepsDetailFragment();
+        mStepsDetailFragment = new StepsDetailFragment();
         mStepsDetailFragment.setArguments(extras);
 
         if (mIsDualPane) {
@@ -145,7 +159,12 @@ public class StepsListActivity extends AppCompatActivity
     @Override
     public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
         super.onMultiWindowModeChanged(isInMultiWindowMode);
+        Timber.tag("Master/Detail");
 
-        Timber.i("onMultiWindowModeChanged was called!");
+        if (isInMultiWindowMode) {
+            Timber.i("onMultiWindowModeChanged from single-pane to dual-pane!");
+        } else {
+            Timber.i("onMultiWindowModeChnaged from dual-pane to single-pane");
+        }
     }
 }
