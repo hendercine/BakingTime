@@ -96,13 +96,15 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     Button prevStepButton;
 
     private static final String TAG = StepsDetailFragment.class.getSimpleName();
-    private static final String SELECTED_POSITION = "SELECTED_POSITION";
+    private static final String CURRENT_VIDEO_POSITION = "CURRENT_VIDEO_POSITION";
     private static final String STEP_INDEX = "STEP_INDEX";
     private static final String VIDEO_VISIBLE = "VIDEO_VISIBLE";
     private static MediaSessionCompat mMediaSession;
     private SimpleExoPlayer mExoPlayer;
     private PlaybackStateCompat.Builder mStateBuilder;
     private NotificationManager mNotificationManager;
+
+    StepsDetailFragment stepsDetailFragment;
 
     @State(StepBundler.class)
     Step mStep;
@@ -130,9 +132,11 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            mVideoPosition = savedInstanceState.getLong(SELECTED_POSITION);
+            mVideoPosition = savedInstanceState.getLong(CURRENT_VIDEO_POSITION);
             mStepIndex = savedInstanceState.getInt(STEP_INDEX);
             mIsVideoVisible = savedInstanceState.getBoolean(VIDEO_VISIBLE);
+            stepsDetailFragment = (StepsDetailFragment) getFragmentManager()
+                    .getFragment(savedInstanceState, TAG);
         }
     }
 
@@ -163,7 +167,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 
         if (savedInstanceState != null) {
             mVideoPosition = savedInstanceState
-                    .getLong(SELECTED_POSITION, C.TIME_UNSET);
+                    .getLong(CURRENT_VIDEO_POSITION, C.TIME_UNSET);
         } else {
             mVideoPosition = C.TIME_UNSET;
         }
@@ -191,8 +195,13 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
-        outState.putLong(SELECTED_POSITION, mVideoPosition);
+        outState.putLong(CURRENT_VIDEO_POSITION, mVideoPosition);
         outState.putInt(STEP_INDEX, mStepIndex);
+        outState.putBoolean(VIDEO_VISIBLE, mIsVideoVisible);
+        if (stepsDetailFragment != null) {
+            getFragmentManager().putFragment(outState, TAG, stepsDetailFragment);
+        }
+
     }
 
     @Override
@@ -203,9 +212,9 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
             if (mVideoPosition != C.TIME_UNSET)
                 mExoPlayer.seekTo(mVideoPosition);
         }
-//        if (mStepVideoURL != null) {
-//            showStepInstructions();
-//        }
+        if (mStepVideoURL != null) {
+            showStepInstructions();
+        }
     }
 
     @Override
@@ -217,12 +226,12 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         releasePlayer();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releasePlayer();
-        mMediaSession.setActive(false);
-    }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        releasePlayer();
+//        mMediaSession.setActive(false);
+//    }
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
