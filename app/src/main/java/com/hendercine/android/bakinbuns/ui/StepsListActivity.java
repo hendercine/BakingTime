@@ -64,6 +64,7 @@ public class StepsListActivity extends AppCompatActivity
 
     @State
     boolean mIsDualPane;
+    private Step mSelectedStep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +79,12 @@ public class StepsListActivity extends AppCompatActivity
 
         // If the state is being restored set recipe, else get the Recipe intent from MainSelectionActivity.
         if (savedInstanceState != null) {
-            mRecipe = Parcels.unwrap(
-                    savedInstanceState.getParcelable("recipe"));
             mStepsDetailFragment =
                     (StepsDetailFragment) getSupportFragmentManager()
                             .getFragment(savedInstanceState, TAG);
-        } else {
-            mRecipe = Parcels.unwrap(getIntent().getParcelableExtra("recipe"));
         }
+
+        mRecipe = Parcels.unwrap(getIntent().getParcelableExtra("recipe"));
 
         // Set the title and show the Up button in the action bar.
         setTitle(mRecipe.getRecipeName());
@@ -126,14 +125,20 @@ public class StepsListActivity extends AppCompatActivity
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
-        getSupportFragmentManager()
-                .putFragment(outState, TAG, mStepsDetailFragment);
+        int stepIndex = mStepDetailsList.indexOf(mSelectedStep);
+        outState.putParcelable("selected_step", Parcels.wrap(mSelectedStep));
+        outState.putParcelable("steps_list", Parcels.wrap(mStepDetailsList));
+        outState.putInt("step_index", stepIndex);
+        if (mStepsDetailFragment != null) {
+            getSupportFragmentManager()
+                    .putFragment(outState, TAG, mStepsDetailFragment);
+        }
     }
 
     @Override
     public void onItemClick(Step selectedStep) {
-
-        int stepIndex = mStepDetailsList.indexOf(selectedStep);
+        this.mSelectedStep = selectedStep;
+        int stepIndex = mStepDetailsList.indexOf(mSelectedStep);
         Bundle extras = new Bundle();
         extras.putParcelable("selected_step", Parcels.wrap(selectedStep));
         extras.putParcelable("steps_list", Parcels.wrap(mStepDetailsList));

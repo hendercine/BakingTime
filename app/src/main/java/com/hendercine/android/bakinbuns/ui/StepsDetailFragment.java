@@ -71,22 +71,34 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class StepsDetailFragment extends Fragment implements ExoPlayer.EventListener, PlaybackControlView.VisibilityListener {
 
+    @Nullable
     @BindView(R.id.step_description_text_view)
     TextView stepDescriptionView;
+
+    @Nullable
     @BindView(R.id.exo_player_view)
     SimpleExoPlayerView exoPlayerView;
+
+    @Nullable
     @BindView(R.id.step_thumbnail_view)
     ImageView stepThumbnailView;
+
+    @Nullable
     @BindView(R.id.no_vid_no_thumb_view)
     TextView noVidOrThumbView;
+
+    @Nullable
     @BindView(R.id.next_step_btn)
     Button nextStepButton;
+
+    @Nullable
     @BindView(R.id.prev_step_btn)
     Button prevStepButton;
 
     private static final String TAG = StepsDetailFragment.class.getSimpleName();
     private static final String SELECTED_POSITION = "SELECTED_POSITION";
     private static final String STEP_INDEX = "STEP_INDEX";
+    private static final String VIDEO_VISIBLE = "VIDEO_VISIBLE";
     private static MediaSessionCompat mMediaSession;
     private SimpleExoPlayer mExoPlayer;
     private PlaybackStateCompat.Builder mStateBuilder;
@@ -105,9 +117,11 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @State
     int mStepIndex;
     @State
-    long mSelectedPosition;
+    long mVideoPosition;
     @State
     boolean mIsDualPane;
+    @State
+    boolean mIsVideoVisible;
 
     public StepsDetailFragment() {
     }
@@ -116,8 +130,9 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            mSelectedPosition = savedInstanceState.getLong(SELECTED_POSITION);
+            mVideoPosition = savedInstanceState.getLong(SELECTED_POSITION);
             mStepIndex = savedInstanceState.getInt(STEP_INDEX);
+            mIsVideoVisible = savedInstanceState.getBoolean(VIDEO_VISIBLE);
         }
     }
 
@@ -137,22 +152,20 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         Icepick.restoreInstanceState(this, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
         ButterKnife.bind(this, rootView);
-//        if (savedInstanceState == null) {
-//            exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.exo_player_view);
-//            stepThumbnailView = (ImageView) rootView.findViewById(R.id.step_thumbnail_view);
-//            noVidOrThumbView = (TextView) rootView.findViewById(R.id.no_vid_no_thumb_view);
-//            stepDescriptionView = (TextView) rootView.findViewById(R.id.step_description_text_view);
-//        }
-        exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+
+        if (exoPlayerView != null) {
+            exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+        }
 
         mStep = Parcels.unwrap(getArguments().getParcelable("selected_step"));
         mStepDetailsList = Parcels.unwrap(getArguments().getParcelable("steps_list"));
         mStepIndex = getArguments().getInt("step_index");
-        mSelectedPosition = C.TIME_UNSET;
 
         if (savedInstanceState != null) {
-            mSelectedPosition = savedInstanceState
+            mVideoPosition = savedInstanceState
                     .getLong(SELECTED_POSITION, C.TIME_UNSET);
+        } else {
+            mVideoPosition = C.TIME_UNSET;
         }
 
         // Initialize data variables
@@ -162,7 +175,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         initializeMediaSession();
 
         // Map the data to the views.
-        showDetails();
+        showStepInstructions();
 
         if (!mIsDualPane) {
             nextStepButton = (Button) rootView.findViewById(R.id.next_step_btn);
@@ -178,20 +191,29 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
-        outState.putLong(SELECTED_POSITION, mSelectedPosition);
+        outState.putLong(SELECTED_POSITION, mVideoPosition);
+        outState.putInt(STEP_INDEX, mStepIndex);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mStepVideoURL != null) {
-            showDetails();
+        if (mExoPlayer != null) {
+            mVideoPosition = mExoPlayer.getCurrentPosition();
+            if (mVideoPosition != C.TIME_UNSET)
+                mExoPlayer.seekTo(mVideoPosition);
         }
+//        if (mStepVideoURL != null) {
+//            showStepInstructions();
+//        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        if (mExoPlayer != null) {
+            mVideoPosition = mExoPlayer.getCurrentPosition();
+        }
         releasePlayer();
     }
 
@@ -306,7 +328,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     }
 
     /**
-     * Initialize navigation buttons
+     * Initializes navigation buttons for next and previous steps.
      */
     private void initializeNavButtons() {
         if (nextStepButton != null && prevStepButton != null) {
@@ -324,7 +346,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                         stepThumbnailView.setVisibility(View.GONE);
                         noVidOrThumbView.setVisibility(View.GONE);
                     }
-                    showDetails();
+                    showStepInstructions();
                 }
             });
             prevStepButton.setOnClickListener(new View.OnClickListener() {
@@ -341,41 +363,21 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                         stepThumbnailView.setVisibility(View.GONE);
                         noVidOrThumbView.setVisibility(View.GONE);
                     }
-                    showDetails();
+                    showStepInstructions();
                 }
             });
         }
     }
 
     /**
-     * Initialize ExoPlayer.
+     * Initialize ExoPlayer. Prep the MediaSource and create an instance of the
+     * player. Set the EventListener and the player to the view. Store the
+     * video time position and start the video at the current time position.
      *
      * @param mediaUri The URI of the video to play.
      */
     private void initializePlayer(Uri mediaUri) {
         if (mExoPlayer == null) {
-            // Create an instance of the ExoPlayer.
-            BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-
-            TrackSelection.Factory videoTrackSelectionFactory = new
-                    AdaptiveTrackSelection.Factory(bandwidthMeter);
-
-            TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-            RenderersFactory renderersFactory = new DefaultRenderersFactory(getContext());
-            LoadControl loadControl = new DefaultLoadControl();
-
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(
-                    renderersFactory,
-                    trackSelector,
-                    loadControl);
-
-            if (exoPlayerView != null) {
-                exoPlayerView.setPlayer(mExoPlayer);
-            }
-
-            // Set the ExoPlayer.EventListener to this activity.
-            mExoPlayer.addListener(this);
-
             // Prepare the MediaSource.
             String userAgent = Util.getUserAgent(getContext(), "BakinBuns");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri,
@@ -383,13 +385,28 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                     new DefaultExtractorsFactory(),
                     null,
                     null);
-            // Store the video position.
-            mSelectedPosition = mExoPlayer.getCurrentPosition();
-            if (mSelectedPosition != C.TIME_UNSET)
-                mExoPlayer.seekTo(mSelectedPosition);
-
+            // Create an instance of the ExoPlayer.
+            BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+            TrackSelection.Factory trackFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+            TrackSelector trackSelector = new DefaultTrackSelector(trackFactory);
+            RenderersFactory renderersFactory = new DefaultRenderersFactory(getContext());
+            LoadControl loadControl = new DefaultLoadControl();
+            mExoPlayer = ExoPlayerFactory.newSimpleInstance(
+                    renderersFactory,
+                    trackSelector,
+                    loadControl);
+            // Set the player to the view.
+            if (exoPlayerView != null) {
+                exoPlayerView.setPlayer(mExoPlayer);
+            }
+            // Set the ExoPlayer.EventListener to this activity.
+            mExoPlayer.addListener(this);
+            // Store the video's current time position.
+            mVideoPosition = mExoPlayer.getCurrentPosition();
+            // Start playing the video from the media source at the current position.
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.seekTo(mVideoPosition);
 
         }
     }
@@ -397,7 +414,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     /**
      * Displays the video, thumbnail or step description.
      */
-    private void showDetails() {
+    private void showStepInstructions() {
 
         if (URLUtil.isNetworkUrl(mStepVideoURL.toString())) {
             // Initialize the Media Player
@@ -432,7 +449,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
      */
     private void releasePlayer() {
         if (mExoPlayer != null) {
-            mSelectedPosition = mExoPlayer.getCurrentPosition();
+            mVideoPosition = mExoPlayer.getCurrentPosition();
             mNotificationManager.cancelAll();
             mExoPlayer.stop();
             mExoPlayer.release();
