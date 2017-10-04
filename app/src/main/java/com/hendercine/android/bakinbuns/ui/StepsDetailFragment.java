@@ -54,7 +54,6 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.hendercine.android.bakinbuns.R;
-import com.hendercine.android.bakinbuns.data.bundlers.StepBundler;
 import com.hendercine.android.bakinbuns.data.models.Step;
 
 import org.parceler.Parcels;
@@ -63,8 +62,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import icepick.Icepick;
-import icepick.State;
 import timber.log.Timber;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -106,23 +103,23 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 
     StepsDetailFragment stepsDetailFragment;
 
-    @State(StepBundler.class)
+//    @State(StepBundler.class)
     Step mStep;
-    @State
+//    @State
     Uri mStepVideoURL;
-    @State
+//    @State
     Uri mStepThumbnailURL;
-    @State
+//    @State
     String mStepDescription;
-    @State
+//    @State
     ArrayList<Step> mStepDetailsList;
-    @State
+//    @State
     int mStepIndex;
-    @State
+//    @State
     long mVideoPosition;
-    @State
+//    @State
     boolean mIsDualPane;
-    @State
+//    @State
     boolean mIsVideoVisible;
 
     public StepsDetailFragment() {
@@ -153,7 +150,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        Icepick.restoreInstanceState(this, savedInstanceState);
+//        Icepick.restoreInstanceState(this, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
         ButterKnife.bind(this, rootView);
 
@@ -194,7 +191,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
+//        Icepick.saveInstanceState(this, outState);
         outState.putLong(CURRENT_VIDEO_POSITION, mVideoPosition);
         outState.putInt(STEP_INDEX, mStepIndex);
         outState.putBoolean(VIDEO_VISIBLE, mIsVideoVisible);
@@ -207,13 +204,13 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public void onResume() {
         super.onResume();
+        if (mStepVideoURL != null) {
+            showStepInstructions();
+        }
         if (mExoPlayer != null) {
             mVideoPosition = mExoPlayer.getCurrentPosition();
             if (mVideoPosition != C.TIME_UNSET)
                 mExoPlayer.seekTo(mVideoPosition);
-        }
-        if (mStepVideoURL != null) {
-            showStepInstructions();
         }
     }
 
@@ -410,8 +407,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
             }
             // Set the ExoPlayer.EventListener to this activity.
             mExoPlayer.addListener(this);
-            // Store the video's current time position.
-            mVideoPosition = mExoPlayer.getCurrentPosition();
             // Start playing the video from the media source at the current position.
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
