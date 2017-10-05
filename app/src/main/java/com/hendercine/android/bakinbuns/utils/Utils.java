@@ -8,6 +8,7 @@
 
 package com.hendercine.android.bakinbuns.utils;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
 import butterknife.ButterKnife;
@@ -29,7 +30,7 @@ public class Utils {
     public static final ButterKnife.Setter<RecyclerView, Boolean> ENABLED =
             new ButterKnife.Setter<RecyclerView, Boolean>() {
                 @Override
-                public void set(RecyclerView view, Boolean value, int index) {
+                public void set(@NonNull RecyclerView view, Boolean value, int index) {
                     view.setEnabled(value);
                 }
             };

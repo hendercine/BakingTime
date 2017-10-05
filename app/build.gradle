@@ -91,9 +91,6 @@ dependencies {
     compile 'io.andref:Rx.Network:1.0.1'
     // ExoPlayer
     compile 'com.google.android.exoplayer:exoplayer:r2.4.0'
-    // Schematic
-    compile 'com.github.SimonVT.schematic:schematic:81b7df4'
-    annotationProcessor 'com.github.SimonVT.schematic:schematic-compiler:81b7df4'
     // AboutLibraries
     compile('com.mikepenz:aboutlibraries:5.9.6@aar') {transitive = true}
     // Timber
@@ -104,10 +101,6 @@ dependencies {
     compile 'com.google.gms:google-services:3.1.0'
 
     // Testing Dependencies
-    // LeakCanary
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     // Espresso
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2',
             {exclude group: 'com.android.support',

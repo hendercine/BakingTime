@@ -26,7 +26,6 @@ import com.hendercine.android.bakinbuns.data.models.Recipe;
 import com.hendercine.android.bakinbuns.data.network.RecipeClient;
 import com.hendercine.android.bakinbuns.utils.GridSpacingItemDecoration;
 import com.hendercine.android.bakinbuns.utils.Utils;
-import com.squareup.leakcanary.RefWatcher;
 
 import org.parceler.Parcels;
 
@@ -48,15 +47,12 @@ import timber.log.Timber;
 public class MainSelectionActivity extends AppCompatActivity implements
         MainRecyclerViewGridAdapter.ItemClickListener {
 
-    private RefWatcher refWatcher;
     private MainRecyclerViewGridAdapter mAdapter;
-    private Intent intent;
     private Subscription subscription;
     private CompositeSubscription mCompositeSubscription;
     private ConnectivityManager mConnectivityManager;
     private RecyclerView convertView;
     private int spanCount;
-    private int spacingInPixels = 50;
     private Utils mUtils;
 
     @Nullable
@@ -76,24 +72,10 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @State(RecipeBundler.class)
     Recipe mRecipe;
 
-//    // Create the LeakCanary watcher
-//    public static RefWatcher getRefWatcher(Context context) {
-//        MainSelectionActivity activity = (MainSelectionActivity) context.getApplicationContext();
-//        return activity.refWatcher;
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
-
-//        // Install the LeakCanary watcher
-//        if (LeakCanary.isInAnalyzerProcess(this)) {
-//            // This process is dedicated to LeakCanary for heap analysis.
-//            // You should not init your app in this process.
-//            return;
-//        }
-//        refWatcher = LeakCanary.install(getApplication());
 
         mConnectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 
@@ -113,6 +95,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
         }
 
         assert convertView != null;
+        int spacingInPixels = 50;
         convertView.addItemDecoration(
                 new GridSpacingItemDecoration(spanCount, spacingInPixels, true));
     }
@@ -127,6 +110,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
 
+        // Use CompositeSubscription to check if network is available.
         mCompositeSubscription = new CompositeSubscription();
         mCompositeSubscription.add(
                 RxNetwork.connectivityChanges(this, mConnectivityManager)
@@ -168,7 +152,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
     public void onItemClick(View view, int position) {
         position = convertView.getChildLayoutPosition(view);
         Recipe recipeItem = recipeList.get(position);
-        intent = new Intent(
+        Intent intent = new Intent(
                 MainSelectionActivity.this,
                 StepsListActivity.class);
         intent.putExtra("recipe", Parcels.wrap(recipeItem));
@@ -208,7 +192,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
                             mRecipe.setIngredientList(recipes.get(i).getIngredientList());
 
                             recipeList.add(mRecipe);
-
                         }
 
                         if (convertView != null) {
@@ -218,9 +201,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
                             mAdapter.setClickListener(MainSelectionActivity.this);
                             convertView.setAdapter(mAdapter);
                         }
-
                     }
-
                 });
     }
 }
