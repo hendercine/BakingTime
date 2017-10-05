@@ -1,10 +1,20 @@
+<!--
+  ~ Created by James Henderson on 2017
+  ~ Copyright (c) Hendercine Productions and James Henderson 2017.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 9/19/17 1:06 PM
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:layout_marginLeft="16dp"
-              android:layout_marginRight="16dp"
+              android:layout_marginLeft="8dp"
+              android:layout_marginStart="8dp"
+              android:layout_marginRight="8dp"
+              android:layout_marginEnd="8dp"
               android:baselineAligned="false"
               android:divider="?android:attr/dividerHorizontal"
               android:orientation="horizontal"
@@ -20,15 +30,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="16dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/ingredients_btn"
-            android:layout_width="@dimen/item_width"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/min_btn_height"
             android:padding="@dimen/text_margin"
@@ -41,7 +47,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/steps_list"
             android:name="com.example.hendercine.bakinbuns.RecipeListFragment"
-            android:layout_width="@dimen/item_width"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
             tools:context="com.hendercine.android.bakinbuns.ui.StepsListActivity"
