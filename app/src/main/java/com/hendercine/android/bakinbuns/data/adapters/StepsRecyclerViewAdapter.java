@@ -76,15 +76,6 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
         return position;
     }
 
-    public void setStepList(ArrayList<Step> steps) {
-        if (steps == null) {
-            return;
-        }
-        mStepList.clear();
-        mStepList.addAll(steps);
-        notifyDataSetChanged();
-    }
-
     class StepsListViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener {
 

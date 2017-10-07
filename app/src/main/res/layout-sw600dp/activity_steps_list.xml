@@ -42,7 +42,8 @@
             android:ellipsize="none"
             android:focusableInTouchMode="true"
             android:text="@string/recipe_ingredients_btn"
-            android:textAppearance="?attr/textAppearanceListItem"/>
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:onClick=""/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/steps_list"

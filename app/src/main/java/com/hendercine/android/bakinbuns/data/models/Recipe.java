@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class Recipe {
 
         // Fields must be public
-    @SerializedName("id")
+    @SerializedName("ingredient_name")
     public int recipeId;
 
     @SerializedName("name")

@@ -62,7 +62,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -102,7 +101,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private NotificationManager mNotificationManager;
 
     StepsDetailFragment stepsDetailFragment;
-
+//TODO: Test IcePick vs savedinstances.
 //    @State(StepBundler.class)
     Step mStep;
 //    @State
@@ -264,13 +263,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public void onVisibilityChange(int visibility) {
 
-    }
-
-    @Override
-    public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
-        super.onMultiWindowModeChanged(isInMultiWindowMode);
-
-        Timber.i("onMultiWindowModeChanged was called!");
     }
 
     /**

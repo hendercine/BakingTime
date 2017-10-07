@@ -19,7 +19,7 @@ import org.parceler.Parcel;
 @Parcel(Parcel.Serialization.BEAN)
 public class Step {
 
-    @SerializedName("id")
+    @SerializedName("ingredient_name")
     public int stepId;
 
     @SerializedName("shortDescription")
