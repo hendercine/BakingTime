@@ -187,7 +187,8 @@ public class StepsListActivity extends AppCompatActivity
         } else {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.step_frame, mStepsDetailFragment)
+                    .replace(R.id.step_frame,
+                            IngredientFragment.newInstance(mRecipe))
                     .commit();
             findViewById(R.id.steps_list_layout).setVisibility(View.GONE);
         }
