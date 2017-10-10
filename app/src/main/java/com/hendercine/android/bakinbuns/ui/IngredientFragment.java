@@ -8,11 +8,10 @@
 
 package com.hendercine.android.bakinbuns.ui;
 
-import android.app.ActionBar;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -43,8 +42,8 @@ public class IngredientFragment extends Fragment {
     private static final String TAG = IngredientFragment.class.getSimpleName();
     private static final String RECIPE = "ingredients";
 
-//    @BindView(R.id.toolbar)
-//    Toolbar toolbar;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Nullable
     @BindView(R.id.ingredient_list)
@@ -55,6 +54,7 @@ public class IngredientFragment extends Fragment {
 
     @State(IngredientListBundler.class)
     ArrayList<Ingredient> mIngredientList;
+    private RemoveFragmentListener removeListener;
 
 
     /**
@@ -73,6 +73,18 @@ public class IngredientFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            removeListener = (RemoveFragmentListener) context;
+        } catch (ClassCastException e) {
+            throw new RuntimeException(getActivity()
+                    .getClass().getSimpleName()
+                    + getString(R.string.remove_fragment_listener_error), e);
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -81,6 +93,7 @@ public class IngredientFragment extends Fragment {
             mIngredientList = new ArrayList<>();
             mIngredientList = mRecipe.getIngredientList();
         }
+
     }
 
     @Override
@@ -90,26 +103,23 @@ public class IngredientFragment extends Fragment {
                 R.layout.fragment_ingredient_list, container, false);
         ButterKnife.bind(this, rootView);
 
-        // Set the toolbar up target
-//        toolbar.setTitle(mRecipe.getRecipeName());
-//        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setNavigationOnClickListener(new View.OnClickListener() {
+        // Show the toolbar and send callback to parent activity.
+        toolbar.setTitle(mRecipe.getRecipeName());
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = getFragmentManager().findFragmentByTag(TAG);
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.remove(fragment).commit();
+                removeListener.onRemoveFragment(TAG);
             }
         });
 
         // Set the adapter
         IngredientRVAdapter adapter = new IngredientRVAdapter(mIngredientList);
-
         if (mIngredientListView != null) {
             mIngredientListView.setLayoutManager(new LinearLayoutManager(getContext()));
             mIngredientListView.setAdapter(adapter);
         }
         return rootView;
     }
+
 }

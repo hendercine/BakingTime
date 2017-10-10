@@ -2,7 +2,6 @@ package com.hendercine.android.bakinbuns.ui;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -43,7 +42,7 @@ import icepick.State;
  * // * recipe andrecipe details side-by-side using two vertical panes.
  */
 public class StepsListActivity extends AppCompatActivity
-        implements StepsRecyclerViewAdapter.OnItemClickListener {
+        implements StepsRecyclerViewAdapter.OnItemClickListener, RemoveFragmentListener {
 
     private static final String TAG = StepsListActivity.class.getSimpleName();
     private StepsDetailFragment mStepsDetailFragment;
@@ -54,13 +53,16 @@ public class StepsListActivity extends AppCompatActivity
     @BindView(R.id.recipe_detail_container)
     FrameLayout detailsContainerView;
 
-    @NonNull
     @BindView(R.id.steps_list_layout)
     LinearLayout stepListLayout;
 
     @Nullable
     @BindView(R.id.steps_list)
     RecyclerView stepsListView;
+
+    @Nullable
+    @BindView(R.id.step_detail_layout)
+    RecyclerView stepDetailView;
 
     @Nullable
     @BindView(R.id.ingredient_list)
@@ -90,6 +92,8 @@ public class StepsListActivity extends AppCompatActivity
 
     @State
     boolean mIsDualPane;
+    private ActionBar actionBar;
+    private String mRecipeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,12 +114,16 @@ public class StepsListActivity extends AppCompatActivity
         }
 
         mRecipe = Parcels.unwrap(getIntent().getParcelableExtra("recipe"));
+        mRecipeName = mRecipe.getRecipeName();
 
-        // Set the title and show the Up button in the action bar.
-        setTitle(mRecipe.getRecipeName());
-        ActionBar actionBar = getSupportActionBar();
+        // Set the title and, if in DualPane mode show the Up button in the
+        // action bar.
+        setTitle(mRecipeName);
+        actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            if (mIsDualPane) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
         }
 
         mStepArrayList = new ArrayList<>();
@@ -183,21 +191,18 @@ public class StepsListActivity extends AppCompatActivity
             getSupportFragmentManager()
                     .putFragment(outState, TAG, mStepsDetailFragment);
         }
-//        if (mIngredientFragment != null) {
-//            getSupportFragmentManager()
-//                    .putFragment(outState, TAG, mIngredientFragment);
-//        }
+
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                if (!mIsDualPane && ingredientsListView != null) {
-                    stepListLayout.setVisibility(View.GONE);
-                }
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if (!mIsDualPane && ingredientsListView != null) {
+                stepListLayout.setVisibility(View.GONE);
             }
+        }
     }
 
     @OnClick(R.id.ingredients_btn)
@@ -213,9 +218,11 @@ public class StepsListActivity extends AppCompatActivity
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.step_frame,
-                            mIngredientFragment.newInstance(mRecipe))
+                            mIngredientFragment.newInstance(mRecipe),
+                            "INGREDIENTS_FRAGMENT")
                     .addToBackStack(null)
                     .commit();
+            actionBar.hide();
             stepListLayout.setVisibility(View.GONE);
         }
     }
@@ -225,6 +232,7 @@ public class StepsListActivity extends AppCompatActivity
         this.mSelectedStep = selectedStep;
         int stepIndex = mStepDetailsList.indexOf(mSelectedStep);
         Bundle extras = new Bundle();
+        extras.putString("recipe_name", mRecipeName);
         extras.putParcelable("selected_step", Parcels.wrap(selectedStep));
         extras.putParcelable("steps_list", Parcels.wrap(mStepDetailsList));
         extras.putInt("step_index", stepIndex);
@@ -235,14 +243,38 @@ public class StepsListActivity extends AppCompatActivity
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.recipe_detail_container, mStepsDetailFragment)
+                    .addToBackStack(null)
                     .commit();
         } else {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.step_frame, mStepsDetailFragment)
+                    .replace(R.id.step_frame, mStepsDetailFragment, "DETAIL_FRAGMENT")
+                    .addToBackStack(null)
                     .commit();
+            actionBar.hide();
             stepListLayout.setVisibility(View.GONE);
         }
-
     }
+
+    @Override
+    public void onRemoveFragment(String tag) {
+        getSupportFragmentManager().findFragmentByTag(tag);
+        getSupportFragmentManager().popBackStack();
+        stepListLayout.setVisibility(View.VISIBLE);
+        actionBar.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (stepDetailView != null || ingredientsListView != null) {
+            stepListLayout.setVisibility(View.VISIBLE);
+            actionBar.show();
+            onResume();
+        }
+    }
+}
+
+interface RemoveFragmentListener {
+    void onRemoveFragment(String tag);
 }

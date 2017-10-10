@@ -6,24 +6,25 @@
   ~
   ~ Last modified 10/5/17 3:37 PM
   -->
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:name="com.hendercine.android.bakinbuns.ui.IngredientFragment"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     tools:context="com.hendercine.android.bakinbuns.ui.IngredientFragment">
 
-    <!--<android.support.v7.widget.Toolbar-->
-        <!--android:id="@+id/toolbar"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:fitsSystemWindows="true"-->
-        <!--android:minHeight="?attr/actionBarSize"-->
-        <!--app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
-        <!--android:background="?attr/colorPrimaryDark">-->
-    <!--</android.support.v7.widget.Toolbar>-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
+        android:minHeight="?attr/actionBarSize"
+       android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:background="?attr/colorPrimary">
+    </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ingredient_list"
@@ -33,5 +34,5 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/ingredient_list_item"/>
-</FrameLayout>
+</LinearLayout>
 

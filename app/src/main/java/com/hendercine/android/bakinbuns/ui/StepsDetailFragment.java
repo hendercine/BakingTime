@@ -1,6 +1,5 @@
 package com.hendercine.android.bakinbuns.ui;
 
-import android.app.ActionBar;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -16,6 +15,7 @@ import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.NotificationCompat;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +67,9 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class StepsDetailFragment extends Fragment implements ExoPlayer.EventListener, PlaybackControlView.VisibilityListener {
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     @Nullable
     @BindView(R.id.step_description_text_view)
     TextView stepDescriptionView;
@@ -99,6 +102,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private SimpleExoPlayer mExoPlayer;
     private PlaybackStateCompat.Builder mStateBuilder;
     private NotificationManager mNotificationManager;
+    private RemoveFragmentListener removeListener;
 
     StepsDetailFragment stepsDetailFragment;
 //TODO: Test IcePick vs savedinstances.
@@ -113,6 +117,8 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
 //    @State
     ArrayList<Step> mStepDetailsList;
 //    @State
+    String mRecipeName;
+//    @State
     int mStepIndex;
 //    @State
     long mVideoPosition;
@@ -125,24 +131,26 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            mVideoPosition = savedInstanceState.getLong(CURRENT_VIDEO_POSITION);
-            mStepIndex = savedInstanceState.getInt(STEP_INDEX);
-            mIsVideoVisible = savedInstanceState.getBoolean(VIDEO_VISIBLE);
-            stepsDetailFragment = (StepsDetailFragment) getFragmentManager()
-                    .getFragment(savedInstanceState, TAG);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            removeListener = (RemoveFragmentListener) context;
+        } catch (ClassCastException e) {
+            throw new RuntimeException(getActivity()
+                    .getClass().getSimpleName()
+                    + getString(R.string.remove_fragment_listener_error), e);
         }
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Show the Up button in the action bar.
-        ActionBar actionBar = getActivity().getActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        if (getArguments() != null) {
+            mRecipeName = getArguments().getString("recipe_name");
+            mStep = Parcels.unwrap(getArguments().getParcelable("selected_step"));
+            mStepDetailsList = Parcels.unwrap(getArguments().getParcelable("steps_list"));
+            mStepIndex = getArguments().getInt("step_index");
         }
     }
 
@@ -153,13 +161,20 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
         ButterKnife.bind(this, rootView);
 
+        // Show the toolbar and send callback to parent activity.
+        toolbar.setTitle(mRecipeName);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeListener.onRemoveFragment(TAG);
+
+            }
+        });
+
         if (exoPlayerView != null) {
             exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
         }
-
-        mStep = Parcels.unwrap(getArguments().getParcelable("selected_step"));
-        mStepDetailsList = Parcels.unwrap(getArguments().getParcelable("steps_list"));
-        mStepIndex = getArguments().getInt("step_index");
 
         if (savedInstanceState != null) {
             mVideoPosition = savedInstanceState
@@ -188,16 +203,15 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        Icepick.saveInstanceState(this, outState);
-        outState.putLong(CURRENT_VIDEO_POSITION, mVideoPosition);
-        outState.putInt(STEP_INDEX, mStepIndex);
-        outState.putBoolean(VIDEO_VISIBLE, mIsVideoVisible);
-        if (stepsDetailFragment != null) {
-            getFragmentManager().putFragment(outState, TAG, stepsDetailFragment);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            mVideoPosition = savedInstanceState.getLong(CURRENT_VIDEO_POSITION);
+            mStepIndex = savedInstanceState.getInt(STEP_INDEX);
+            mIsVideoVisible = savedInstanceState.getBoolean(VIDEO_VISIBLE);
+            stepsDetailFragment = (StepsDetailFragment) getFragmentManager()
+                    .getFragment(savedInstanceState, TAG);
         }
-
     }
 
     @Override
@@ -222,12 +236,18 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         releasePlayer();
     }
 
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        releasePlayer();
-//        mMediaSession.setActive(false);
-//    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        Icepick.saveInstanceState(this, outState);
+        outState.putLong(CURRENT_VIDEO_POSITION, mVideoPosition);
+        outState.putInt(STEP_INDEX, mStepIndex);
+        outState.putBoolean(VIDEO_VISIBLE, mIsVideoVisible);
+        if (stepsDetailFragment != null) {
+            getFragmentManager().putFragment(outState, TAG, stepsDetailFragment);
+        }
+
+    }
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
