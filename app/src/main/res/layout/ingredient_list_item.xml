@@ -17,7 +17,7 @@
     <RelativeLayout
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:layout_weight="1">
+        android:layout_weight="3">
 
         <TextView
             android:id="@+id/ingredient_quantity"
@@ -51,7 +51,7 @@
         android:id="@+id/ingredient_name"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:layout_weight="3"
+        android:layout_weight="5"
         android:layout_marginTop="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"
         tools:text="@string/ingredient_text_placeholder"/>

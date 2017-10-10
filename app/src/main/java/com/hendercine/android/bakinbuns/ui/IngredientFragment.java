@@ -8,11 +8,14 @@
 
 package com.hendercine.android.bakinbuns.ui;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +40,11 @@ import icepick.State;
  */
 public class IngredientFragment extends Fragment {
 
+    private static final String TAG = IngredientFragment.class.getSimpleName();
     private static final String RECIPE = "ingredients";
+
+//    @BindView(R.id.toolbar)
+//    Toolbar toolbar;
 
     @Nullable
     @BindView(R.id.ingredient_list)
@@ -57,7 +64,7 @@ public class IngredientFragment extends Fragment {
     public IngredientFragment() {
     }
 
-    public static IngredientFragment newInstance(Recipe recipe) {
+    public IngredientFragment newInstance(Recipe recipe) {
         IngredientFragment fragment = new IngredientFragment();
         Bundle args = new Bundle();
         args.putParcelable(RECIPE, Parcels.wrap(recipe));
@@ -83,12 +90,26 @@ public class IngredientFragment extends Fragment {
                 R.layout.fragment_ingredient_list, container, false);
         ButterKnife.bind(this, rootView);
 
+        // Set the toolbar up target
+//        toolbar.setTitle(mRecipe.getRecipeName());
+//        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = getFragmentManager().findFragmentByTag(TAG);
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.remove(fragment).commit();
+            }
+        });
+
         // Set the adapter
-        IngredientRVAdapter adapter =
-                new IngredientRVAdapter(mIngredientList);
-        mIngredientListView = (RecyclerView) rootView;
-        mIngredientListView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mIngredientListView.setAdapter(adapter);
+        IngredientRVAdapter adapter = new IngredientRVAdapter(mIngredientList);
+
+        if (mIngredientListView != null) {
+            mIngredientListView.setLayoutManager(new LinearLayoutManager(getContext()));
+            mIngredientListView.setAdapter(adapter);
+        }
         return rootView;
     }
 }

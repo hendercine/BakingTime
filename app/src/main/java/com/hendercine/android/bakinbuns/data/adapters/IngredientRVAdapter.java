@@ -56,7 +56,7 @@ public class IngredientRVAdapter extends RecyclerView.Adapter<IngredientRVAdapte
         }
     }
 
-    public Ingredient getItem(int position) {
+    private Ingredient getItem(int position) {
         if (position < 0 || position >= mIngredientList.size()) {
             return null;
         } else {
@@ -69,7 +69,7 @@ public class IngredientRVAdapter extends RecyclerView.Adapter<IngredientRVAdapte
         return mIngredientList.size();
     }
 
-    public class IngredientViewHolder extends RecyclerView.ViewHolder {
+    class IngredientViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.ingredient_quantity)
         TextView ingredientQuantityView;
@@ -80,7 +80,7 @@ public class IngredientRVAdapter extends RecyclerView.Adapter<IngredientRVAdapte
         @BindView(R.id.ingredient_name)
         TextView ingredientNameView;
 
-        public IngredientViewHolder(View itemView) {
+        IngredientViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

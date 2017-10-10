@@ -1,6 +1,8 @@
 package com.hendercine.android.bakinbuns.ui;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hendercine.android.bakinbuns.R;
@@ -51,9 +54,17 @@ public class StepsListActivity extends AppCompatActivity
     @BindView(R.id.recipe_detail_container)
     FrameLayout detailsContainerView;
 
+    @NonNull
+    @BindView(R.id.steps_list_layout)
+    LinearLayout stepListLayout;
+
     @Nullable
     @BindView(R.id.steps_list)
     RecyclerView stepsListView;
+
+    @Nullable
+    @BindView(R.id.ingredient_list)
+    RecyclerView ingredientsListView;
 
     @Nullable
     @BindView(R.id.ingredients_btn)
@@ -147,12 +158,14 @@ public class StepsListActivity extends AppCompatActivity
                         mIngredientArrayList.get(i).getIngredientMeasure());
             }
         }
+
+        mIngredientFragment = new IngredientFragment();
         if (mIsDualPane && savedInstanceState == null) {
             if (mStepsDetailFragment == null) {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.recipe_detail_container,
-                                IngredientFragment.newInstance(mRecipe))
+                                mIngredientFragment.newInstance(mRecipe))
                         .commit();
             }
         }
@@ -170,10 +183,21 @@ public class StepsListActivity extends AppCompatActivity
             getSupportFragmentManager()
                     .putFragment(outState, TAG, mStepsDetailFragment);
         }
-        if (mIngredientFragment != null) {
-            getSupportFragmentManager()
-                    .putFragment(outState, TAG, mIngredientFragment);
-        }
+//        if (mIngredientFragment != null) {
+//            getSupportFragmentManager()
+//                    .putFragment(outState, TAG, mIngredientFragment);
+//        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                if (!mIsDualPane && ingredientsListView != null) {
+                    stepListLayout.setVisibility(View.GONE);
+                }
+            }
     }
 
     @OnClick(R.id.ingredients_btn)
@@ -182,15 +206,17 @@ public class StepsListActivity extends AppCompatActivity
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.recipe_detail_container,
-                            IngredientFragment.newInstance(mRecipe))
+                            mIngredientFragment.newInstance(mRecipe))
+                    .addToBackStack(null)
                     .commit();
         } else {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.step_frame,
-                            IngredientFragment.newInstance(mRecipe))
+                            mIngredientFragment.newInstance(mRecipe))
+                    .addToBackStack(null)
                     .commit();
-            findViewById(R.id.steps_list_layout).setVisibility(View.GONE);
+            stepListLayout.setVisibility(View.GONE);
         }
     }
 
@@ -215,7 +241,7 @@ public class StepsListActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.step_frame, mStepsDetailFragment)
                     .commit();
-            findViewById(R.id.steps_list_layout).setVisibility(View.GONE);
+            stepListLayout.setVisibility(View.GONE);
         }
 
     }
