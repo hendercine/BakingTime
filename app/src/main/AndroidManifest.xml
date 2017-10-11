@@ -12,25 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
-            android:name="com.hendercine.android.bakingtime.ui.MainSelectionActivity"
+            android:name=".ui.MainSelectionActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.hendercine.android.bakingtime.ui.StepsListActivity"
-            android:parentActivityName="com.hendercine.android.bakingtime.ui.MainSelectionActivity"
+            android:name=".ui.StepsListActivity"
             android:configChanges="orientation|screenSize"
+            android:parentActivityName=".ui.MainSelectionActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.hendercine.android.bakingtime.ui.MainSelectionActivity"/>
-
         </activity>
 
         <fragment
@@ -42,13 +40,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.hendercine.android.bakingtime.ui.StepsListActivity"/>
         </fragment>
-        <receiver
-            android:name="com.hendercine.android.bakingtime.ui.StepsDetailFragment$MediaReceiver">
+
+        <receiver android:name=".ui.StepsDetailFragment$MediaReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON"/>
             </intent-filter>
         </receiver>
+        <receiver android:name=".widget.RecipeWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
 
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_widget_provider_info"/>
+        </receiver>
     </application>
 
 </manifest>
