@@ -137,6 +137,94 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084643559582:android:61a083d19840c4a3",
+        "android_client_info": {
+          "package_name": "com.hendercine.android.bakingtime.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1084643559582-vf1b8p28jcooshgd2s9diu3hrhntqtk2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hendercine.android.bakingtime.debug",
+            "certificate_hash": "1dc0bcb4cc415917ede2aa331b349256ea0c79ef"
+          }
+        },
+        {
+          "client_id": "1084643559582-cmff2354c5pi4qucfct1hsferrkelvr6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU_5_TplT5zo8SsAUlR8WyvMAl6WNekTc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1084643559582-cmff2354c5pi4qucfct1hsferrkelvr6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084643559582:android:36d73b29aa84a85c",
+        "android_client_info": {
+          "package_name": "com.hendercine.android.bakingtime.jnidebug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1084643559582-ljf8lddthvc5n6nnkk0crh4fnqm1gop1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hendercine.android.bakingtime.jnidebug",
+            "certificate_hash": "1dc0bcb4cc415917ede2aa331b349256ea0c79ef"
+          }
+        },
+        {
+          "client_id": "1084643559582-cmff2354c5pi4qucfct1hsferrkelvr6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU_5_TplT5zo8SsAUlR8WyvMAl6WNekTc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1084643559582-cmff2354c5pi4qucfct1hsferrkelvr6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"

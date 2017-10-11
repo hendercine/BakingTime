@@ -38,7 +38,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:layoutManager="LinearLayoutManager"
-            tools:context="com.hendercine.android.bakinbuns.ui.StepsListActivity"
+            tools:context="com.hendercine.android.bakingtime.ui.StepsListActivity"
             tools:listitem="@layout/step_list_item"/>
 
     </LinearLayout>
