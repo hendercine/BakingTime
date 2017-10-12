@@ -54,6 +54,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.hendercine.android.bakingtime.R;
+import com.hendercine.android.bakingtime.data.bundlers.StepBundler;
 import com.hendercine.android.bakingtime.data.models.Step;
 
 import org.parceler.Parcels;
@@ -62,6 +63,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import icepick.Icepick;
+import icepick.State;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -103,28 +106,27 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private PlaybackStateCompat.Builder mStateBuilder;
     private NotificationManager mNotificationManager;
     private RemoveFragmentListener removeListener;
-
     StepsDetailFragment stepsDetailFragment;
 //TODO: Test IcePick vs savedinstances.
-//    @State(StepBundler.class)
+    @State(StepBundler.class)
     Step mStep;
-//    @State
+    @State
     Uri mStepVideoURL;
-//    @State
+    @State
     Uri mStepThumbnailURL;
-//    @State
+    @State
     String mStepDescription;
-//    @State
+    @State
     ArrayList<Step> mStepDetailsList;
-//    @State
+    @State
     String mRecipeName;
-//    @State
+    @State
     int mStepIndex;
-//    @State
+    @State
     long mVideoPosition;
-//    @State
+    @State
     boolean mIsDualPane;
-//    @State
+    @State
     boolean mIsVideoVisible;
 
     public StepsDetailFragment() {
@@ -157,7 +159,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-//        Icepick.restoreInstanceState(this, savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
         ButterKnife.bind(this, rootView);
 
@@ -239,10 +241,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        Icepick.saveInstanceState(this, outState);
-        outState.putLong(CURRENT_VIDEO_POSITION, mVideoPosition);
-        outState.putInt(STEP_INDEX, mStepIndex);
-        outState.putBoolean(VIDEO_VISIBLE, mIsVideoVisible);
+        Icepick.saveInstanceState(this, outState);
         if (stepsDetailFragment != null) {
             getFragmentManager().putFragment(outState, TAG, stepsDetailFragment);
         }
@@ -351,6 +350,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private void initializeNavButtons() {
         if (nextStepButton != null && prevStepButton != null) {
             nextStepButton.setOnClickListener(new View.OnClickListener() {
+                @SuppressWarnings("ConstantConditions")
                 @Override
                 public void onClick(View v) {
                     if (mStepIndex < mStepDetailsList.size() - 1) {
@@ -364,10 +364,12 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                         stepThumbnailView.setVisibility(View.GONE);
                         noVidOrThumbView.setVisibility(View.GONE);
                     }
+                    mVideoPosition = C.TIME_UNSET;
                     showStepInstructions();
                 }
             });
             prevStepButton.setOnClickListener(new View.OnClickListener() {
+                @SuppressWarnings("ConstantConditions")
                 @Override
                 public void onClick(View v) {
                     if (mStepIndex > mStep.getStepId()) {
@@ -381,6 +383,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                         stepThumbnailView.setVisibility(View.GONE);
                         noVidOrThumbView.setVisibility(View.GONE);
                     }
+                    mVideoPosition = C.TIME_UNSET;
                     showStepInstructions();
                 }
             });
@@ -430,6 +433,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     /**
      * Displays the video, thumbnail or step description.
      */
+    @SuppressWarnings("ConstantConditions")
     private void showStepInstructions() {
 
         if (URLUtil.isNetworkUrl(mStepVideoURL.toString())) {
