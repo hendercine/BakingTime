@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * BakingTime created by hendercine on 10/11/17.
  */
 
-public class RecipeWidgetRemoteViewsService extends RemoteViewsService {
+class RecipeWidgetRemoteViewsService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {

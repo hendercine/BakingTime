@@ -280,9 +280,10 @@ public class StepsListActivity extends AppCompatActivity
                         mIngredientArrayList.get(i).getIngredientQuantity());
                 mIngredients.setIngredientMeasure(
                         mIngredientArrayList.get(i).getIngredientMeasure());
+
+                ingredientsForWidget.add(mIngredients);
             }
         }
-        ingredientsForWidget.add(mIngredients);
         Gson gson = new Gson();
         String json = gson.toJson(ingredientsForWidget);
 
