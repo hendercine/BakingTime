@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BakinBuns</string>
+    <string name="app_name">Baking Time</string>
     <string name="title_recipe_detail">Recipe Detail</string>
 
     <string name="action_settings">Settings</string>
@@ -21,4 +21,5 @@
     <string name="remove_fragment_listener_error">must implement the remove fragement listener to use this fragment!</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="empty_view_text">Nothing to see here...</string>
 </resources>

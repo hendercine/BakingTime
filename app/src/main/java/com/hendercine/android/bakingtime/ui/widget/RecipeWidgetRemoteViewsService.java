@@ -6,7 +6,7 @@
  * Last modified 10/11/17 4:26 PM
  */
 
-package com.hendercine.android.bakingtime.widget;
+package com.hendercine.android.bakingtime.ui.widget;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * BakingTime created by hendercine on 10/11/17.
  */
 
-class RecipeWidgetRemoteViewsService extends RemoteViewsService {
+public class RecipeWidgetRemoteViewsService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -37,13 +37,23 @@ class RecipeWidgetRemoteViewsService extends RemoteViewsService {
 
     private class RecipeWidgetRemoteViewsFactory implements RemoteViewsFactory {
 
+        private String quantityStr;
+        private String measure;
+        private String ingredientName;
+        private float quantity;
         private Context mContext;
-        ArrayList<Ingredient> mIngredients;
+        ArrayList<Ingredient> mIngredientList;
 
-        public RecipeWidgetRemoteViewsFactory(Context context) {
+        RecipeWidgetRemoteViewsFactory(Context context) {
             this.mContext = context;
 
-            mIngredients = new ArrayList<>();
+            mIngredientList = new ArrayList<>();
+            Ingredient ingredient = new Ingredient();
+            ingredient.getIngredientQuantity();
+            ingredient.getIngredientMeasure();
+            ingredient.getIngredientName();
+
+            mIngredientList.add(ingredient);
         }
 
         @Override
@@ -58,7 +68,7 @@ class RecipeWidgetRemoteViewsService extends RemoteViewsService {
                     .SHARED_PREFS_KEY, "");
             if (!json.equals("")) {
                 Gson gson = new Gson();
-                mIngredients = gson.fromJson(json, new
+                mIngredientList = gson.fromJson(json, new
                         TypeToken<ArrayList<Ingredient>>() {
                         }.getType());
             }
@@ -71,19 +81,19 @@ class RecipeWidgetRemoteViewsService extends RemoteViewsService {
 
         @Override
         public int getCount() {
-            if (mIngredients != null) {
-                return mIngredients.size();
+            if (mIngredientList != null) {
+                return mIngredientList.size();
             } else return 0;
         }
 
         @Override
         public RemoteViews getViewAt(int position) {
 
-            Ingredient ingredient = mIngredients.get(position);
-            float quantity = ingredient.getIngredientQuantity();
-            CharSequence quantityStr = NumberFormat.getInstance().format(quantity);
-            CharSequence measure = ingredient.getIngredientMeasure();
-            CharSequence ingredientName = ingredient.getIngredientName();
+            Ingredient ingredient = mIngredientList.get(position);
+            quantity = ingredient.getIngredientQuantity();
+            quantityStr = NumberFormat.getInstance().format(quantity);
+            measure = ingredient.getIngredientMeasure();
+            ingredientName = ingredient.getIngredientName();
 
             RemoteViews rv = new RemoteViews(
                     mContext.getPackageName(), R.layout.recipe_widget_item);

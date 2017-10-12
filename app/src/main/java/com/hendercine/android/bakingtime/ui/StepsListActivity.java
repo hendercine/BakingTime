@@ -26,7 +26,7 @@ import com.hendercine.android.bakingtime.data.bundlers.StepListBundler;
 import com.hendercine.android.bakingtime.data.models.Ingredient;
 import com.hendercine.android.bakingtime.data.models.Recipe;
 import com.hendercine.android.bakingtime.data.models.Step;
-import com.hendercine.android.bakingtime.widget.RecipeWidgetProvider;
+import com.hendercine.android.bakingtime.ui.widget.RecipeWidgetProvider;
 
 import org.parceler.Parcels;
 
@@ -169,6 +169,9 @@ public class StepsListActivity extends AppCompatActivity
                         .commit();
             }
         }
+
+        makeData();
+        sendBroadcast();
     }
 
     @Override
@@ -215,8 +218,6 @@ public class StepsListActivity extends AppCompatActivity
             actionBar.hide();
             stepListLayout.setVisibility(View.GONE);
         }
-        makeData();
-        sendBroadcast();
     }
 
     @Override
@@ -293,7 +294,7 @@ public class StepsListActivity extends AppCompatActivity
 
     private void sendBroadcast() {
         Intent intent = new Intent(this, RecipeWidgetProvider.class);
-        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE\"");
+        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
         sendBroadcast(intent);
     }
 

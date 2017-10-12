@@ -20,4 +20,14 @@
         android:layout_margin="@dimen/detail_card_margin"
         tools:listitem="@layout/recipe_widget_item"/>
 
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/empty_view"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:textColor="#ffffff"
+              android:textStyle="bold"
+              android:text="@string/empty_view_text"
+              android:textSize="20sp" />
+
 </FrameLayout>

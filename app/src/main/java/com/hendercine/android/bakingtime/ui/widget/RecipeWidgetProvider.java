@@ -6,9 +6,8 @@
  * Last modified 10/10/17 6:02 PM
  */
 
-package com.hendercine.android.bakingtime.widget;
+package com.hendercine.android.bakingtime.ui.widget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -23,6 +22,7 @@ import com.hendercine.android.bakingtime.R;
  * Implementation of App Widget functionality.
  */
 public class RecipeWidgetProvider extends AppWidgetProvider {
+
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
@@ -68,11 +68,12 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
             // necessary for some API levels due to intent caching
             intent.putExtra("Random", Math.random() * 1000);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-            PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
+//            PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
             RemoteViews rv = new RemoteViews(context.getPackageName(), R
                     .layout.recipe_widget);
             rv.setRemoteAdapter(R.id.widget_list_view, intent);
-            rv.setOnClickPendingIntent(R.id.widget_list_view, pIntent);
+            rv.setEmptyView(R.id.widget_list_view, R.id.empty_view);
+//            rv.setOnClickPendingIntent(R.id.widget_list_view, pIntent);
             appWidgetManager.updateAppWidget(appWidgetId, rv);
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,
                     R.id.widget_list_view);
