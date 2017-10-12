@@ -53,7 +53,7 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/recipe_widget_provider_info"/>
+                android:resource="@xml/recipe_widget_info"/>
         </receiver>
     </application>
 

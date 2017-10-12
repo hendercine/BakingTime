@@ -4,12 +4,12 @@
   ~ Copyright (c) Hendercine Productions and James Henderson 2017.
   ~ All rights reserved.
   ~
-  ~ Last modified 10/10/17 6:02 PM
+  ~ Last modified 10/11/17 1:04 PM
   -->
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:initialKeyguardLayout="@layout/recipe_widget_provider"
-                    android:initialLayout="@layout/recipe_widget_provider"
+                    android:initialKeyguardLayout="@layout/recipe_widget"
+                    android:initialLayout="@layout/recipe_widget"
                     android:minHeight="40dp"
                     android:minWidth="40dp"
                     android:previewImage="@drawable/example_appwidget_preview"

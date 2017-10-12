@@ -21,23 +21,28 @@ import java.util.ArrayList;
 @Parcel(Parcel.Serialization.BEAN)
 public class Recipe {
 
-        // Fields must be public
+    // Fields must be public for Parceler.
+    @SuppressWarnings("WeakerAccess")
     @SerializedName("ingredient_name")
     public int recipeId;
 
+    @SuppressWarnings("WeakerAccess")
     @SerializedName("name")
     public String recipeName;
 
+    @SuppressWarnings("WeakerAccess")
     @SerializedName("servings")
     public int servings;
 
+    @SuppressWarnings("WeakerAccess")
     @SerializedName("steps")
     public ArrayList<Step> stepList;
 
+    @SuppressWarnings("WeakerAccess")
     @SerializedName("ingredients")
     public ArrayList<Ingredient> ingredientList;
 
-        // Empty constructor needed by the Parceler library
+    // Empty constructor needed by the Parceler library.
     public Recipe() {
     }
 

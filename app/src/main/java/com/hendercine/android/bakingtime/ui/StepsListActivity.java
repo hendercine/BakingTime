@@ -1,7 +1,10 @@
 package com.hendercine.android.bakingtime.ui;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.hendercine.android.bakingtime.R;
 import com.hendercine.android.bakingtime.data.adapters.StepsRecyclerViewAdapter;
 import com.hendercine.android.bakingtime.data.bundlers.IngredientBundler;
@@ -22,6 +26,7 @@ import com.hendercine.android.bakingtime.data.bundlers.StepListBundler;
 import com.hendercine.android.bakingtime.data.models.Ingredient;
 import com.hendercine.android.bakingtime.data.models.Recipe;
 import com.hendercine.android.bakingtime.data.models.Step;
+import com.hendercine.android.bakingtime.widget.RecipeWidgetProvider;
 
 import org.parceler.Parcels;
 
@@ -45,6 +50,7 @@ public class StepsListActivity extends AppCompatActivity
         implements StepsRecyclerViewAdapter.OnItemClickListener, RemoveFragmentListener {
 
     private static final String TAG = StepsListActivity.class.getSimpleName();
+    public static final String SHARED_PREFS_KEY = "SHARED_PREFS_KEY";
     private StepsDetailFragment mStepsDetailFragment;
     private IngredientFragment mIngredientFragment;
     private Step mSelectedStep;
@@ -153,20 +159,6 @@ public class StepsListActivity extends AppCompatActivity
             stepsListView.setAdapter(adapter);
         }
 
-        mIngredientArrayList = new ArrayList<>();
-        mIngredientArrayList = mRecipe.getIngredientList();
-        if (mIngredientArrayList != null) {
-            for (int i = 0; i < mIngredientArrayList.size(); i++) {
-                mIngredients = new Ingredient();
-                mIngredients.setIngredientName(
-                        mIngredientArrayList.get(i).getIngredientName());
-                mIngredients.setIngredientQuantity(
-                        mIngredientArrayList.get(i).getIngredientQuantity());
-                mIngredients.setIngredientMeasure(
-                        mIngredientArrayList.get(i).getIngredientMeasure());
-            }
-        }
-
         mIngredientFragment = new IngredientFragment();
         if (mIsDualPane && savedInstanceState == null) {
             if (mStepsDetailFragment == null) {
@@ -184,13 +176,11 @@ public class StepsListActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
         int stepIndex = mStepDetailsList.indexOf(mSelectedStep);
-        outState.putParcelable("selected_step", Parcels.wrap(mSelectedStep));
-        outState.putParcelable("steps_list", Parcels.wrap(mStepDetailsList));
         outState.putInt("step_index", stepIndex);
-        if (mStepsDetailFragment != null) {
-            getSupportFragmentManager()
-                    .putFragment(outState, TAG, mStepsDetailFragment);
-        }
+//        if (mStepsDetailFragment != null) {
+//            getSupportFragmentManager()
+//                    .putFragment(outState, TAG, mStepsDetailFragment);
+//        }
 
     }
 
@@ -225,6 +215,8 @@ public class StepsListActivity extends AppCompatActivity
             actionBar.hide();
             stepListLayout.setVisibility(View.GONE);
         }
+        makeData();
+        sendBroadcast();
     }
 
     @Override
@@ -273,6 +265,38 @@ public class StepsListActivity extends AppCompatActivity
             onResume();
         }
     }
+
+    private void makeData() {
+        ArrayList<Ingredient> ingredientsForWidget = new ArrayList<>();
+        mIngredientArrayList = new ArrayList<>();
+        mIngredientArrayList = mRecipe.getIngredientList();
+        if (mIngredientArrayList != null) {
+            for (int i = 0; i < mIngredientArrayList.size(); i++) {
+                mIngredients = new Ingredient();
+                mIngredients.setIngredientName(
+                        mIngredientArrayList.get(i).getIngredientName());
+                mIngredients.setIngredientQuantity(
+                        mIngredientArrayList.get(i).getIngredientQuantity());
+                mIngredients.setIngredientMeasure(
+                        mIngredientArrayList.get(i).getIngredientMeasure());
+            }
+        }
+        ingredientsForWidget.add(mIngredients);
+        Gson gson = new Gson();
+        String json = gson.toJson(ingredientsForWidget);
+
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(SHARED_PREFS_KEY, json).apply();
+    }
+
+    private void sendBroadcast() {
+        Intent intent = new Intent(this, RecipeWidgetProvider.class);
+        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE\"");
+        sendBroadcast(intent);
+    }
+
 }
 
 interface RemoveFragmentListener {

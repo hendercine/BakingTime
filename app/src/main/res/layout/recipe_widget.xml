@@ -1,0 +1,23 @@
+<!--
+  ~ Created by James Henderson on 2017
+  ~ Copyright (c) Hendercine Productions and James Henderson 2017.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 10/10/17 6:02 PM
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#09C"
+              android:padding="@dimen/widget_margin">
+
+    <ListView
+        android:id="@+id/widget_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/detail_card_margin"
+        tools:listitem="@layout/recipe_widget_item"/>
+
+</FrameLayout>
