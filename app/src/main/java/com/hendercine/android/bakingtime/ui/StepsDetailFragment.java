@@ -107,7 +107,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private NotificationManager mNotificationManager;
     private RemoveFragmentListener removeListener;
     StepsDetailFragment stepsDetailFragment;
-//TODO: Test IcePick vs savedinstances.
     @State(StepBundler.class)
     Step mStep;
     @State
