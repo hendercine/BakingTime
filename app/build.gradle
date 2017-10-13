@@ -79,10 +79,8 @@ dependencies {
     annotationProcessor 'org.parceler:parceler:1.1.6'
     // Retrofit
     compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    // OkHttp Interceptor
-    compile 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:latest.release'
     // RxJava
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'io.reactivex:rxjava:1.1.4'
@@ -100,12 +98,25 @@ dependencies {
     // Google Services
     compile 'com.google.gms:google-services:3.1.0'
 
-    // Testing Dependencies
+    // Testing-only Dependencies
     // Espresso
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2',
-            {exclude group: 'com.android.support',
-                    module: 'support-annotations'})
-    testCompile 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile('com.android.support.test:runner:0.3') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2') {
+        // Necessary to avoid version conflicts
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+    }
+    androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
+    compile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
+    // OkHttp3-IdlingResources
+//    androidTestCompile 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

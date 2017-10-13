@@ -37,3 +37,7 @@
 -keep interface org.parceler.Parcel
 -keep @org.parceler.Parcel class * { *; }
 -keep class **$$Parcelable { *; }
+
+# Retrofit2 library
+-dontwarn okio.**
+-dontwarn javax.annotation.**

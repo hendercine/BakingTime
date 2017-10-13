@@ -11,7 +11,10 @@ package com.hendercine.android.bakingtime.ui;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,8 +27,8 @@ import com.hendercine.android.bakingtime.data.bundlers.RecipeBundler;
 import com.hendercine.android.bakingtime.data.bundlers.RecipeListBundler;
 import com.hendercine.android.bakingtime.data.models.Recipe;
 import com.hendercine.android.bakingtime.data.network.RecipeClient;
+import com.hendercine.android.bakingtime.utils.BakingIdlingResource;
 import com.hendercine.android.bakingtime.utils.GridSpacingItemDecoration;
-import com.hendercine.android.bakingtime.utils.Utils;
 
 import org.parceler.Parcels;
 
@@ -53,15 +56,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
     private ConnectivityManager mConnectivityManager;
     private RecyclerView convertView;
     private int spanCount;
-    private Utils mUtils;
-
-    @Nullable
-    @BindView(R.id.tablet_rv_recipe_cards)
-    RecyclerView tabletGridCards;
-
-    @Nullable
-    @BindView(R.id.hand_held_rv_recipe_cards)
-    RecyclerView handHeldGridCards;
 
     @State
     boolean mIsTablet;
@@ -71,6 +65,26 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
     @State(RecipeBundler.class)
     Recipe mRecipe;
+
+    @Nullable
+    @BindView(R.id.tablet_rv_recipe_cards)
+    RecyclerView tabletGridCards;
+
+    @Nullable
+    @BindView(R.id.hand_held_rv_recipe_cards)
+    RecyclerView handHeldGridCards;
+
+    @Nullable
+    private BakingIdlingResource mIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new BakingIdlingResource();
+        }
+        return mIdlingResource;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +97,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
         ButterKnife.bind(this);
         Timber.tag("LifeCycles");
         Timber.d("Activity Created");
+
         mIsTablet = tabletGridCards != null &&
                 tabletGridCards.getVisibility() == View.VISIBLE;
 
@@ -98,6 +113,8 @@ public class MainSelectionActivity extends AppCompatActivity implements
         int spacingInPixels = 50;
         convertView.addItemDecoration(
                 new GridSpacingItemDecoration(spanCount, spacingInPixels, true));
+
+        getIdlingResource();
     }
 
     @Override
