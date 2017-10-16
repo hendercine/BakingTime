@@ -3,10 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.MainSelectionActivity">
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/menu_action_progress"
+        android:title="@string/loading"
+        android:visible="false"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:actionLayout="@layout/action_view_progress"/>
 
 </menu>

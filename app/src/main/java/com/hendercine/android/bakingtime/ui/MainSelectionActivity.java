@@ -15,9 +15,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -75,12 +78,11 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @BindView(R.id.hand_held_rv_recipe_cards)
     RecyclerView handHeldGridCards;
 
-    @BindView(R.id.main_progress_Bar)
-    ProgressBar mainProgressBar;
-
     @Nullable
     private BakingIdlingResource mIdlingResource;
     private ProgressListener mListener;
+    private MenuItem mActionProgressItem;
+    private ProgressBar mProgressBar;
 
     @VisibleForTesting
     @NonNull
@@ -171,6 +173,19 @@ public class MainSelectionActivity extends AppCompatActivity implements
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        mActionProgressItem = menu.findItem(R.id.menu_action_progress);
+        mProgressBar = (ProgressBar) MenuItemCompat.getActionView(mActionProgressItem);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public void onItemClick(View view, int position) {
         position = convertView.getChildLayoutPosition(view);
         Recipe recipeItem = recipeList.get(position);
@@ -178,6 +193,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
                 MainSelectionActivity.this,
                 StepsListActivity.class);
         intent.putExtra("recipe", Parcels.wrap(recipeItem));
+        showProgressBar();
         startActivity(intent);
     }
 
@@ -191,6 +207,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
                     @Override
                     public void onCompleted() {
                         Timber.d("In onCompleted()");
+                        hideProgressBar();
                     }
 
                     @Override
@@ -230,7 +247,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
     public interface ProgressListener {
         void onProgressShown();
 
-        void onProgressDismissed();
+        void onProgressHidden();
 
     }
 
@@ -238,19 +255,25 @@ public class MainSelectionActivity extends AppCompatActivity implements
         mListener = progressListener;
     }
 
-    private void showProgress() {
+    private void showProgressBar() {
         // show the progress and notify the listener
+        mActionProgressItem.setVisible(true);
         notifyListener(mListener);
     }
 
-    private void dismissProgress() {
+    private void hideProgressBar() {
         // hide the progress and notify the listener
+        mActionProgressItem.setVisible(false);
         notifyListener(mListener);
     }
 
     public boolean isInProgress() {
         // return true if progress is visible
-        return true;
+        boolean progressVisible = false;
+        if (mProgressBar != null) {
+            progressVisible = true;
+        }
+        return progressVisible;
     }
 
     private void notifyListener(ProgressListener listener) {
@@ -261,7 +284,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
             listener.onProgressShown();
         }
         else {
-            listener.onProgressDismissed();
+            listener.onProgressHidden();
         }
     }
 
