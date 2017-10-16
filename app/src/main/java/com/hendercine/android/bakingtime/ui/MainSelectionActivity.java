@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.hendercine.android.bakingtime.R;
@@ -74,8 +75,12 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @BindView(R.id.hand_held_rv_recipe_cards)
     RecyclerView handHeldGridCards;
 
+    @BindView(R.id.main_progress_Bar)
+    ProgressBar mainProgressBar;
+
     @Nullable
     private BakingIdlingResource mIdlingResource;
+    private ProgressListener mListener;
 
     @VisibleForTesting
     @NonNull
@@ -221,4 +226,43 @@ public class MainSelectionActivity extends AppCompatActivity implements
                     }
                 });
     }
+
+    public interface ProgressListener {
+        void onProgressShown();
+
+        void onProgressDismissed();
+
+    }
+
+    public void setProgressListener(ProgressListener progressListener) {
+        mListener = progressListener;
+    }
+
+    private void showProgress() {
+        // show the progress and notify the listener
+        notifyListener(mListener);
+    }
+
+    private void dismissProgress() {
+        // hide the progress and notify the listener
+        notifyListener(mListener);
+    }
+
+    public boolean isInProgress() {
+        // return true if progress is visible
+        return true;
+    }
+
+    private void notifyListener(ProgressListener listener) {
+        if (listener == null){
+            return;
+        }
+        if (isInProgress()){
+            listener.onProgressShown();
+        }
+        else {
+            listener.onProgressDismissed();
+        }
+    }
+
 }
