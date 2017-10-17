@@ -34,28 +34,6 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
-    //    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-//                                int appWidgetId) {
-//
-//        CharSequence quantity = context.getString(R.string.appwidget_text);
-//        CharSequence measure = context.getString(R.string.appwidget_text);
-//        CharSequence ingredient = context.getString(R.string.appwidget_text);
-//
-//        // Construct the RemoteViews object
-//        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
-//        views.setTextViewText(R.id.ingredient_quantity, quantity);
-//        views.setTextViewText(R.id.ingredient_measure, measure);
-//        views.setTextViewText(R.id.ingredient_name, ingredient);
-//
-//        Intent intent = new Intent(context, MainSelectionActivity.class);
-//        PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
-//
-//        views.setOnClickPendingIntent(R.id.widget_list_view, pIntent);
-//
-//        // Instruct the widget manager to update the widget
-//        appWidgetManager.updateAppWidget(appWidgetId, views);
-//    }
-
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
@@ -68,12 +46,12 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
             // necessary for some API levels due to intent caching
             intent.putExtra("Random", Math.random() * 1000);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-//            PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
             RemoteViews rv = new RemoteViews(context.getPackageName(), R
                     .layout.recipe_widget);
             rv.setRemoteAdapter(R.id.widget_list_view, intent);
             rv.setEmptyView(R.id.widget_list_view, R.id.empty_view);
-//            rv.setOnClickPendingIntent(R.id.widget_list_view, pIntent);
+
             appWidgetManager.updateAppWidget(appWidgetId, rv);
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,
                     R.id.widget_list_view);
@@ -81,14 +59,4 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
-//    @Override
-//    public void onEnabled(Context context) {
-//        // Enter relevant functionality for when the first widget is created
-//    }
-//
-//    @Override
-//    public void onDisabled(Context context) {
-//        // Enter relevant functionality for when the last widget is disabled
-//    }
 }
-

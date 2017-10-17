@@ -15,14 +15,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.hendercine.android.bakingtime.R;
@@ -82,7 +80,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
     private MainActivityIdlingResource mIdlingResource;
     private ProgressListener mListener;
     private MenuItem mActionProgressItem;
-    private ProgressBar mProgressBar;
 
     @VisibleForTesting
     @NonNull
@@ -90,14 +87,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
         if (mIdlingResource == null) {
             mIdlingResource = new MainActivityIdlingResource(this);
         }
-//        Boolean mIsIdleNow = !isInProgress();
-//        if (mIdlingResource != null){
-//            if (mIsIdleNow) {
-//                mIdlingResource.setIdleState(true);
-//            } else {
-//                mIdlingResource.setIdleState(false);
-//            }
-//        }
         return mIdlingResource;
     }
 
@@ -129,7 +118,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
         convertView.addItemDecoration(
                 new GridSpacingItemDecoration(spanCount, spacingInPixels, true));
 
-//        getIdlingResource();
+        getIdlingResource();
     }
 
     @Override
@@ -189,7 +178,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         mActionProgressItem = menu.findItem(R.id.menu_action_progress);
-        mProgressBar = (ProgressBar) MenuItemCompat.getActionView(mActionProgressItem);
         return super.onPrepareOptionsMenu(menu);
     }
 

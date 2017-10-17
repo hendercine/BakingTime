@@ -19,7 +19,7 @@ import rx.Observable;
  * BakinBuns created by hendercine on 7/24/17.
  */
 
-public interface RecipeService {
+interface RecipeService {
 
     @GET("android-baking-app-json") Observable<ArrayList<Recipe>> getRecipeData();
 }

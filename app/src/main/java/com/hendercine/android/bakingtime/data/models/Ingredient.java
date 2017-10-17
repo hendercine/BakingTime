@@ -19,12 +19,16 @@ import org.parceler.Parcel;
 @Parcel(Parcel.Serialization.BEAN)
 public class Ingredient {
 
+    // Fields must be public for Parceler.
+    @SuppressWarnings("WeakerAccess")
     @SerializedName("quantity")
     public float ingredientQuantity;
 
+    @SuppressWarnings("WeakerAccess")
     @SerializedName("measure")
     public String ingredientMeasure;
 
+    @SuppressWarnings("WeakerAccess")
     @SerializedName("ingredient")
     public String ingredientName;
 

@@ -19,18 +19,24 @@ import org.parceler.Parcel;
 @Parcel(Parcel.Serialization.BEAN)
 public class Step {
 
+    // Fields must be public for Parceler.
+    @SuppressWarnings("WeakerAccess")
     @SerializedName("ingredient_name")
     public int stepId;
 
+    @SuppressWarnings("WeakerAccess")
     @SerializedName("shortDescription")
     public String shortDescription;
 
+    @SuppressWarnings("WeakerAccess")
     @SerializedName("description")
     public String description;
 
+    @SuppressWarnings("WeakerAccess")
     @SerializedName("videoURL")
     public String videoURL;
 
+    @SuppressWarnings("WeakerAccess")
     @SerializedName("thumbnailURL")
     public String thumbnailURL;
 

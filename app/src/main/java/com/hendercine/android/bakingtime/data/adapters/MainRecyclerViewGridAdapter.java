@@ -58,25 +58,8 @@ public class MainRecyclerViewGridAdapter extends RecyclerView
         return list.size();
     }
 
-    public Recipe getItem(int position) {
-        if (position < 0 || position >= list.size()) {
-            return null;
-        } else {
-            return list.get(position);
-        }
-    }
-
     public long getItemId(int position) {
         return position;
-    }
-
-    public void setList(ArrayList<Recipe> recipes) {
-        if (recipes == null) {
-            return;
-        }
-        list.clear();
-        list.addAll(recipes);
-        notifyDataSetChanged();
     }
 
     class MainGridViewHolder extends RecyclerView.ViewHolder implements

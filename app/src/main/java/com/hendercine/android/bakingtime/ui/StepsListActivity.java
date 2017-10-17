@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -67,7 +65,6 @@ public class StepsListActivity extends AppCompatActivity
     private Step mSelectedStep;
     private ProgressListener mListener;
     private MenuItem mActionProgressItem;
-    private ProgressBar mProgressBar;
 
     @Nullable
     StepsListActivityIdlingResource mIdlingResource;
@@ -150,7 +147,9 @@ public class StepsListActivity extends AppCompatActivity
 
         // Set the title and, if in DualPane mode show the Up button in the
         // action bar.
-        setTitle(mRecipeName);
+        if (mRecipeName != null) {
+            setTitle(mRecipeName);
+        }
         actionBar = getSupportActionBar();
         if (actionBar != null) {
             if (mIsDualPane) {
@@ -223,7 +222,6 @@ public class StepsListActivity extends AppCompatActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         mActionProgressItem = menu.findItem(R.id.menu_action_progress);
-        mProgressBar = (ProgressBar) MenuItemCompat.getActionView(mActionProgressItem);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -292,7 +290,6 @@ public class StepsListActivity extends AppCompatActivity
         }
     }
 
-    @Override
     public void onRemoveFragment(String tag) {
         getSupportFragmentManager().findFragmentByTag(tag);
         getSupportFragmentManager().popBackStack();

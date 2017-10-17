@@ -18,12 +18,9 @@ import android.view.View;
 
 public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
-//    @State
-    int spanCount;
-//    @State
-    int spacing;
-//    @State
-    boolean includeEdge;
+    private int spanCount;
+    private int spacing;
+    private boolean includeEdge;
 
     public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
         this.spanCount = spanCount;

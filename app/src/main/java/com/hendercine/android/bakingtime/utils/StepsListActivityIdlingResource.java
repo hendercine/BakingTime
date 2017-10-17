@@ -22,7 +22,6 @@ public class StepsListActivityIdlingResource implements IdlingResource {
 
     private StepsListActivity mActivity;
     private volatile ResourceCallback mCallback;
-//    private AtomicBoolean mIsIdleNow = new AtomicBoolean(true);
 
     public StepsListActivityIdlingResource(StepsListActivity activity) {
         this.mActivity = activity;
@@ -58,16 +57,5 @@ public class StepsListActivityIdlingResource implements IdlingResource {
     public void registerIdleTransitionCallback(ResourceCallback callback) {
         mCallback = callback;
     }
-
-//    /**
-//     * Sets the new idle state, if isIdleNow is true, it pings the {@link ResourceCallback}.
-//     * @param isIdleNow false if there are pending operations, true if idle.
-//     */
-//    public void setIdleState(boolean isIdleNow) {
-//        mIsIdleNow.set(isIdleNow);
-//        if (isIdleNow && mCallback != null) {
-//            mCallback.onTransitionToIdle();
-//        }
-//    }
 
 }
