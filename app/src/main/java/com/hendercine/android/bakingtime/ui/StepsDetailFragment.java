@@ -56,6 +56,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.hendercine.android.bakingtime.R;
 import com.hendercine.android.bakingtime.data.bundlers.StepBundler;
 import com.hendercine.android.bakingtime.data.models.Step;
+import com.hendercine.android.bakingtime.utils.RemoveFragmentListener;
 
 import org.parceler.Parcels;
 

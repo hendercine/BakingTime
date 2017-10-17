@@ -25,6 +25,7 @@ import com.hendercine.android.bakingtime.data.bundlers.IngredientListBundler;
 import com.hendercine.android.bakingtime.data.bundlers.RecipeBundler;
 import com.hendercine.android.bakingtime.data.models.Ingredient;
 import com.hendercine.android.bakingtime.data.models.Recipe;
+import com.hendercine.android.bakingtime.utils.RemoveFragmentListener;
 
 import org.parceler.Parcels;
 

@@ -8,6 +8,7 @@
 
 package com.hendercine.android.bakingtime;
 
+import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -21,6 +22,7 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -44,9 +46,10 @@ public class MainSelectionActivityScreenTest {
     @Test
     public void clickRecyclerViewGridItem_OpensStepsListActivity() {
 
+        onView(withId(R.id.hand_held_rv_recipe_cards)).check(ViewAssertions
+                .matches(isDisplayed()));
         onView(withId(R.id.hand_held_rv_recipe_cards)).perform
                 (RecyclerViewActions.actionOnItemAtPosition(1, click()));
-
         onView(withId(R.id.ingredients_btn)).check(matches(withText
                 (INGREDIENTS_BTN)));
     }

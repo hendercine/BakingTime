@@ -5,14 +5,21 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -27,6 +34,8 @@ import com.hendercine.android.bakingtime.data.models.Ingredient;
 import com.hendercine.android.bakingtime.data.models.Recipe;
 import com.hendercine.android.bakingtime.data.models.Step;
 import com.hendercine.android.bakingtime.ui.widget.RecipeWidgetProvider;
+import com.hendercine.android.bakingtime.utils.RemoveFragmentListener;
+import com.hendercine.android.bakingtime.utils.StepsListActivityIdlingResource;
 
 import org.parceler.Parcels;
 
@@ -37,6 +46,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.Icepick;
 import icepick.State;
+
+import static com.hendercine.android.bakingtime.ui.MainSelectionActivity.ProgressListener;
 
 /**
  * // * An activity representing a recipeList of Recipes. This activity
@@ -54,6 +65,12 @@ public class StepsListActivity extends AppCompatActivity
     private StepsDetailFragment mStepsDetailFragment;
     private IngredientFragment mIngredientFragment;
     private Step mSelectedStep;
+    private ProgressListener mListener;
+    private MenuItem mActionProgressItem;
+    private ProgressBar mProgressBar;
+
+    @Nullable
+    StepsListActivityIdlingResource mIdlingResource;
 
     @Nullable
     @BindView(R.id.recipe_detail_container)
@@ -100,6 +117,15 @@ public class StepsListActivity extends AppCompatActivity
     boolean mIsDualPane;
     private ActionBar actionBar;
     private String mRecipeName;
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new StepsListActivityIdlingResource(this);
+        }
+        return mIdlingResource;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +196,7 @@ public class StepsListActivity extends AppCompatActivity
             }
         }
 
+        getIdlingResource();
         makeData();
         sendBroadcast();
     }
@@ -188,6 +215,19 @@ public class StepsListActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        mActionProgressItem = menu.findItem(R.id.menu_action_progress);
+        mProgressBar = (ProgressBar) MenuItemCompat.getActionView(mActionProgressItem);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
@@ -200,6 +240,7 @@ public class StepsListActivity extends AppCompatActivity
 
     @OnClick(R.id.ingredients_btn)
     public void onClick() {
+        showProgressBar();
         if (mIsDualPane) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -207,6 +248,7 @@ public class StepsListActivity extends AppCompatActivity
                             mIngredientFragment.newInstance(mRecipe))
                     .addToBackStack(null)
                     .commit();
+            hideProgressBar();
         } else {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -215,6 +257,7 @@ public class StepsListActivity extends AppCompatActivity
                             "INGREDIENTS_FRAGMENT")
                     .addToBackStack(null)
                     .commit();
+            hideProgressBar();
             actionBar.hide();
             stepListLayout.setVisibility(View.GONE);
         }
@@ -299,8 +342,41 @@ public class StepsListActivity extends AppCompatActivity
         sendBroadcast(intent);
     }
 
-}
+    public void setProgressListener(ProgressListener progressListener) {
+        mListener = progressListener;
+    }
 
-interface RemoveFragmentListener {
-    void onRemoveFragment(String tag);
+    private void showProgressBar() {
+        // show the progress and notify the listener
+        mActionProgressItem.setVisible(true);
+        notifyListener(mListener);
+    }
+
+    private void hideProgressBar() {
+        // hide the progress and notify the listener
+        mActionProgressItem.setVisible(false);
+        notifyListener(mListener);
+    }
+
+    public boolean isInProgress() {
+        // return true if progress is visible
+        boolean progressVisible = false;
+        if (mActionProgressItem.isVisible()) {
+            progressVisible = true;
+        }
+        return progressVisible;
+    }
+
+    private void notifyListener(ProgressListener listener) {
+        if (listener == null){
+            return;
+        }
+        if (isInProgress()){
+            listener.onProgressShown();
+        }
+        else {
+            listener.onProgressHidden();
+        }
+    }
+
 }

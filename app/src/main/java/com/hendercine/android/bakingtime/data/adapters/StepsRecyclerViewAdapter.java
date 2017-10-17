@@ -102,5 +102,7 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
 
     public interface OnItemClickListener {
         void onItemClick(Step step);
+
+        void onRemoveFragment(String tag);
     }
 }

@@ -31,8 +31,8 @@ import com.hendercine.android.bakingtime.data.bundlers.RecipeBundler;
 import com.hendercine.android.bakingtime.data.bundlers.RecipeListBundler;
 import com.hendercine.android.bakingtime.data.models.Recipe;
 import com.hendercine.android.bakingtime.data.network.RecipeClient;
-import com.hendercine.android.bakingtime.utils.BakingIdlingResource;
 import com.hendercine.android.bakingtime.utils.GridSpacingItemDecoration;
+import com.hendercine.android.bakingtime.utils.MainActivityIdlingResource;
 
 import org.parceler.Parcels;
 
@@ -79,7 +79,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
     RecyclerView handHeldGridCards;
 
     @Nullable
-    private BakingIdlingResource mIdlingResource;
+    private MainActivityIdlingResource mIdlingResource;
     private ProgressListener mListener;
     private MenuItem mActionProgressItem;
     private ProgressBar mProgressBar;
@@ -88,8 +88,16 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @NonNull
     public IdlingResource getIdlingResource() {
         if (mIdlingResource == null) {
-            mIdlingResource = new BakingIdlingResource();
+            mIdlingResource = new MainActivityIdlingResource(this);
         }
+//        Boolean mIsIdleNow = !isInProgress();
+//        if (mIdlingResource != null){
+//            if (mIsIdleNow) {
+//                mIdlingResource.setIdleState(true);
+//            } else {
+//                mIdlingResource.setIdleState(false);
+//            }
+//        }
         return mIdlingResource;
     }
 
@@ -121,7 +129,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
         convertView.addItemDecoration(
                 new GridSpacingItemDecoration(spanCount, spacingInPixels, true));
 
-        getIdlingResource();
+//        getIdlingResource();
     }
 
     @Override
@@ -270,7 +278,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
     public boolean isInProgress() {
         // return true if progress is visible
         boolean progressVisible = false;
-        if (mProgressBar != null) {
+        if (mActionProgressItem.isVisible()) {
             progressVisible = true;
         }
         return progressVisible;
