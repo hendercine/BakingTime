@@ -540,6 +540,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                 .setContentText(getString(R.string.notification_text))
                 .setContentIntent(contentPendingIntent)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setSmallIcon(R.drawable.exo_controls_play)
                 .addAction(restartAction)
                 .addAction(playPauseAction)
                 .setStyle(new NotificationCompat.MediaStyle()
