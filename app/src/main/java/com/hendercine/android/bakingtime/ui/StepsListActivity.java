@@ -145,16 +145,13 @@ public class StepsListActivity extends AppCompatActivity
         mRecipe = Parcels.unwrap(getIntent().getParcelableExtra("recipe"));
         mRecipeName = mRecipe.getRecipeName();
 
-        // Set the title and, if in DualPane mode show the Up button in the
-        // action bar.
+        // Set the title and show the Up button in the action bar.
         if (mRecipeName != null) {
             setTitle(mRecipeName);
         }
         actionBar = getSupportActionBar();
         if (actionBar != null) {
-            if (mIsDualPane) {
-                actionBar.setDisplayHomeAsUpEnabled(true);
-            }
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
         mStepArrayList = new ArrayList<>();
@@ -360,13 +357,12 @@ public class StepsListActivity extends AppCompatActivity
     }
 
     private void notifyListener(ProgressListener listener) {
-        if (listener == null){
+        if (listener == null) {
             return;
         }
-        if (isInProgress()){
+        if (isInProgress()) {
             listener.onProgressShown();
-        }
-        else {
+        } else {
             listener.onProgressHidden();
         }
     }
