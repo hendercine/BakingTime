@@ -71,6 +71,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class StepsDetailFragment extends Fragment implements ExoPlayer.EventListener, PlaybackControlView.VisibilityListener {
 
+    @Nullable
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -163,16 +164,19 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
         ButterKnife.bind(this, rootView);
 
-        // Show the toolbar and send callback to parent activity.
-        toolbar.setTitle(mRecipeName);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                removeListener.onRemoveFragment(TAG);
+        // If view is not Dual Pane show the toolbar and send callback to
+        // parent activity.
+        if (!mIsDualPane && toolbar != null) {
+            toolbar.setTitle(mRecipeName);
+            toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeListener.onRemoveFragment(TAG);
 
-            }
-        });
+                }
+            });
+        }
 
         if (exoPlayerView != null) {
             exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);

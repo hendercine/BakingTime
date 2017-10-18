@@ -43,6 +43,7 @@ public class IngredientFragment extends Fragment {
     private static final String TAG = IngredientFragment.class.getSimpleName();
     private static final String RECIPE = "ingredients";
 
+    @Nullable
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -56,6 +57,7 @@ public class IngredientFragment extends Fragment {
     @State(IngredientListBundler.class)
     ArrayList<Ingredient> mIngredientList;
     private RemoveFragmentListener removeListener;
+    private Boolean mIsDualPane;
 
 
     /**
@@ -104,15 +106,21 @@ public class IngredientFragment extends Fragment {
                 R.layout.fragment_ingredient_list, container, false);
         ButterKnife.bind(this, rootView);
 
+        if (toolbar == null) {
+            mIsDualPane = true;
+        }
+
         // Show the toolbar and send callback to parent activity.
-        toolbar.setTitle(mRecipe.getRecipeName());
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                removeListener.onRemoveFragment(TAG);
-            }
-        });
+        if (!mIsDualPane) {
+            toolbar.setTitle(mRecipe.getRecipeName());
+            toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeListener.onRemoveFragment(TAG);
+                }
+            });
+        }
 
         // Set the adapter
         IngredientRVAdapter adapter = new IngredientRVAdapter(mIngredientList);

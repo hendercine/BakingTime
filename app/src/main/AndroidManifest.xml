@@ -31,15 +31,15 @@
                 android:value="com.hendercine.android.bakingtime.ui.MainSelectionActivity"/>
         </activity>
 
-        <fragment
-            android:name="com.hendercine.android.bakingtime.ui.StepsDetailFragment"
-            android:label="@string/title_recipe_detail"
-            android:parentActivityName="com.hendercine.android.bakingtime.ui.StepsListActivity"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.hendercine.android.bakingtime.ui.StepsListActivity"/>
-        </fragment>
+        <!--<fragment-->
+            <!--android:name="com.hendercine.android.bakingtime.ui.StepsDetailFragment"-->
+            <!--android:label="@string/title_recipe_detail"-->
+            <!--android:parentActivityName="com.hendercine.android.bakingtime.ui.StepsListActivity"-->
+            <!--android:theme="@style/AppTheme">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="com.hendercine.android.bakingtime.ui.StepsListActivity"/>-->
+        <!--</fragment>-->
 
         <receiver android:name=".ui.StepsDetailFragment$MediaReceiver">
             <intent-filter>

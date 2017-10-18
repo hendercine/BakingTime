@@ -206,11 +206,6 @@ public class StepsListActivity extends AppCompatActivity
         Icepick.saveInstanceState(this, outState);
         int stepIndex = mStepDetailsList.indexOf(mSelectedStep);
         outState.putInt("step_index", stepIndex);
-//        if (mStepsDetailFragment != null) {
-//            getSupportFragmentManager()
-//                    .putFragment(outState, TAG, mStepsDetailFragment);
-//        }
-
     }
 
     @Override

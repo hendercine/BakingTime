@@ -56,10 +56,10 @@
             tools:listitem="@layout/step_list_item"/>
     </LinearLayout>
 
-
     <FrameLayout
         android:id="@+id/recipe_detail_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="3"/>
+
 </LinearLayout>
