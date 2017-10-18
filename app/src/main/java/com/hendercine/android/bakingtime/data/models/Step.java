@@ -12,16 +12,18 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.io.Serializable;
+
 /**
  * BakinBuns created by hendercine on 7/10/17.
  */
 
 @Parcel(Parcel.Serialization.BEAN)
-public class Step {
+public class Step implements Serializable {
 
     // Fields must be public for Parceler.
     @SuppressWarnings("WeakerAccess")
-    @SerializedName("ingredient_name")
+    @SerializedName("id")
     public int stepId;
 
     @SuppressWarnings("WeakerAccess")

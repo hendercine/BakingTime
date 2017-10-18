@@ -12,6 +12,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  */
 
 @Parcel(Parcel.Serialization.BEAN)
-public class Recipe {
+public class Recipe implements Serializable {
 
     // Fields must be public for Parceler.
     @SuppressWarnings("WeakerAccess")
