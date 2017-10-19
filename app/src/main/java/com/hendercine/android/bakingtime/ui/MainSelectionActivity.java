@@ -11,6 +11,7 @@ package com.hendercine.android.bakingtime.ui;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -52,19 +53,23 @@ import timber.log.Timber;
 public class MainSelectionActivity extends AppCompatActivity implements
         MainRecyclerViewGridAdapter.ItemClickListener {
 
+    private static final String LIST_STATE_KEY = "classname.recycler.layout";
     private MainRecyclerViewGridAdapter mAdapter;
     private Subscription subscription;
     private CompositeSubscription mCompositeSubscription;
     private ConnectivityManager mConnectivityManager;
     private RecyclerView convertView;
+    private GridLayoutManager mGridLayoutManager;
+    private ProgressListener mListener;
+    private MenuItem mActionProgressItem;
     private int spanCount;
 
+//    @State
+//    int mScrollPosition;
     @State
     boolean mIsTablet;
-
     @State(RecipeListBundler.class)
     ArrayList<Recipe> recipeList;
-
     @State(RecipeBundler.class)
     Recipe mRecipe;
 
@@ -78,8 +83,8 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
     @Nullable
     private MainActivityIdlingResource mIdlingResource;
-    private ProgressListener mListener;
-    private MenuItem mActionProgressItem;
+    private Parcelable mListState;
+    private int topView;
 
     @VisibleForTesting
     @NonNull
@@ -105,6 +110,8 @@ public class MainSelectionActivity extends AppCompatActivity implements
         mIsTablet = tabletGridCards != null &&
                 tabletGridCards.getVisibility() == View.VISIBLE;
 
+//        mScrollPosition = 0;
+
         if (mIsTablet) {
             convertView = tabletGridCards;
             spanCount = 3;
@@ -114,17 +121,27 @@ public class MainSelectionActivity extends AppCompatActivity implements
         }
 
         assert convertView != null;
+        recipeList = new ArrayList<>();
         int spacingInPixels = 50;
+        mGridLayoutManager = new GridLayoutManager
+                (MainSelectionActivity.this, spanCount);
+        convertView.setLayoutManager(mGridLayoutManager);
+
+//        convertView.scrollToPosition(mScrollPosition);
+        mAdapter = new MainRecyclerViewGridAdapter(recipeList);
+        mAdapter.setClickListener(MainSelectionActivity.this);
+        convertView.setAdapter(mAdapter);
         convertView.addItemDecoration(
                 new GridSpacingItemDecoration(spanCount, spacingInPixels, true));
 
-        getIdlingResource();
-    }
+        getRecipeData();
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mCompositeSubscription.unsubscribe();
+        if (savedInstanceState != null) {
+            mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+            mGridLayoutManager.onRestoreInstanceState(mListState);
+        }
+
+        getIdlingResource();
     }
 
     @Override
@@ -140,7 +157,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
                             @Override
                             public void call(Boolean connected) {
                                 if (connected) {
-                                    getRecipeData();
+                                    Timber.i(getString(R.string.network_is_online));
                                 } else {
                                     Toast.makeText(getApplicationContext(),
                                             R.string.no_internet,
@@ -149,6 +166,20 @@ public class MainSelectionActivity extends AppCompatActivity implements
                                 }
                             }
                         }));
+        if (mListState != null) {
+            mGridLayoutManager.onRestoreInstanceState(mListState);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mCompositeSubscription.unsubscribe();
+//        mScrollPosition = mGridLayoutManager.findFirstCompletelyVisibleItemPosition();
+//        View startView = convertView.getChildAt(0);
+//        topView = (startView == null) ? 0 : (startView.getTop() - convertView
+//                .getPaddingTop());
     }
 
     @Override
@@ -167,7 +198,18 @@ public class MainSelectionActivity extends AppCompatActivity implements
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
+
+        mListState = mGridLayoutManager.onSaveInstanceState();
+        outState.putParcelable(LIST_STATE_KEY, mListState);
     }
+
+//    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        if (savedInstanceState != null) {
+//            mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -229,13 +271,13 @@ public class MainSelectionActivity extends AppCompatActivity implements
                             recipeList.add(mRecipe);
                         }
 
-                        if (convertView != null) {
-                            convertView.setLayoutManager(new GridLayoutManager
-                                    (MainSelectionActivity.this, spanCount));
-                            mAdapter = new MainRecyclerViewGridAdapter(recipeList);
-                            mAdapter.setClickListener(MainSelectionActivity.this);
-                            convertView.setAdapter(mAdapter);
-                        }
+                        convertView.setLayoutManager(new GridLayoutManager
+                                (MainSelectionActivity.this, spanCount));
+//                        convertView.scrollToPosition(mScrollPosition);
+                        mAdapter = new MainRecyclerViewGridAdapter(recipeList);
+                        mAdapter.setClickListener(MainSelectionActivity.this);
+                        convertView.setAdapter(mAdapter);
+                        mAdapter.notifyDataSetChanged();
                     }
                 });
     }
@@ -273,13 +315,12 @@ public class MainSelectionActivity extends AppCompatActivity implements
     }
 
     private void notifyListener(ProgressListener listener) {
-        if (listener == null){
+        if (listener == null) {
             return;
         }
-        if (isInProgress()){
+        if (isInProgress()) {
             listener.onProgressShown();
-        }
-        else {
+        } else {
             listener.onProgressHidden();
         }
     }

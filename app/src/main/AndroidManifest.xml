@@ -24,7 +24,6 @@
 
         <activity
             android:name=".ui.StepsListActivity"
-            android:configChanges="orientation|screenSize"
             android:parentActivityName=".ui.MainSelectionActivity"
             android:theme="@style/AppTheme">
             <meta-data
