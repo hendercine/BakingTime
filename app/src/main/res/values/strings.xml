@@ -15,7 +15,7 @@
     <string name="no_internet">No network available, please check your WiFi or Data connection</string>
     <string name="next_step_btn">Next Step</string>
     <string name="previous_step_btn">Previous Step</string>
-    <string name="ingredient_text_placeholder">vanilla</string>
+    <string name="ingredient_text_placeholder">Vanilla</string>
     <string name="ingredient_measure_placeholder">TBLSPs</string>
     <string name="ingredient_quantity_placeholder">2</string>
     <string name="remove_fragment_listener_error">must implement the remove fragement listener to use this fragment!</string>

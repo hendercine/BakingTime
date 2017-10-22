@@ -6,28 +6,30 @@
   ~ Last modified 10/10/17 6:02 PM
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#09C"
-              android:padding="@dimen/widget_margin">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/widget_main_style"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#09C">
 
     <ListView
         android:id="@+id/widget_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/detail_card_margin"
+        android:minWidth="256dp"
         tools:listitem="@layout/recipe_widget_item"/>
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/empty_view"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center"
-              android:textColor="#ffffff"
-              android:textStyle="bold"
-              android:text="@string/empty_view_text"
-              android:textSize="20sp" />
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/empty_view_text"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
 </FrameLayout>
