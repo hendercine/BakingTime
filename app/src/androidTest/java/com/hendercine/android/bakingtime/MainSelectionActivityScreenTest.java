@@ -8,22 +8,19 @@
 
 package com.hendercine.android.bakingtime;
 
-import android.support.test.espresso.assertion.ViewAssertions;
-import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.hendercine.android.bakingtime.ui.MainSelectionActivity;
+import com.hendercine.android.bakingtime.utils.RecyclerViewMatcher;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
@@ -39,18 +36,25 @@ public class MainSelectionActivityScreenTest {
     public ActivityTestRule<MainSelectionActivity> mActivityTestRule =
             new ActivityTestRule<>(MainSelectionActivity.class);
 
+    //Convenience helper
+    public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
+        return new RecyclerViewMatcher(recyclerViewId);
+    }
+
     /**
      * Clicks on a RecyclerViewGrid item and checks it opens up the
      * StepsListActivity with the correct details.
      */
     @Test
-    public void clickRecyclerViewGridItem_OpensStepsListActivity() {
+    public void checkRecyclerViewGridItem_HasContent() {
 
-        onView(withId(R.id.hand_held_rv_recipe_cards)).check(ViewAssertions
-                .matches(isDisplayed()));
-        onView(withId(R.id.hand_held_rv_recipe_cards)).perform
-                (RecyclerViewActions.actionOnItemAtPosition(1, click()));
-        onView(withId(R.id.ingredients_btn)).check(matches(withText
-                (INGREDIENTS_BTN)));
+        onView(withRecyclerView(R.id.hand_held_rv_recipe_cards).atPosition(1))
+                .check(matches(hasDescendant(withText("8"))));
+//        onView(withId(R.id.hand_held_rv_recipe_cards)).check(ViewAssertions
+//                .matches(isDisplayed()));
+//        onView(withId(R.id.hand_held_rv_recipe_cards)).perform
+//                (RecyclerViewActions.actionOnItemAtPosition(1, click()));
+//        onView(withId(R.id.ingredients_btn)).check(matches(withText
+//                (INGREDIENTS_BTN)));
     }
 }

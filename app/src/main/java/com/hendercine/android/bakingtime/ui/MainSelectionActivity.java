@@ -134,11 +134,11 @@ public class MainSelectionActivity extends AppCompatActivity implements
         convertView.addItemDecoration(
                 new GridSpacingItemDecoration(spanCount, spacingInPixels, true));
 
-        getRecipeData();
-
         if (savedInstanceState != null) {
             mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
             mGridLayoutManager.onRestoreInstanceState(mListState);
+        } else {
+            getRecipeData();
         }
 
         getIdlingResource();
@@ -158,6 +158,9 @@ public class MainSelectionActivity extends AppCompatActivity implements
                             public void call(Boolean connected) {
                                 if (connected) {
                                     Timber.i(getString(R.string.network_is_online));
+                                    if (mListState == null) {
+                                        getRecipeData();
+                                    }
                                 } else {
                                     Toast.makeText(getApplicationContext(),
                                             R.string.no_internet,
