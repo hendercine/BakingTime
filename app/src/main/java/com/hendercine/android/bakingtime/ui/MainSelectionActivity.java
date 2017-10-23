@@ -137,9 +137,8 @@ public class MainSelectionActivity extends AppCompatActivity implements
         if (savedInstanceState != null) {
             mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
             mGridLayoutManager.onRestoreInstanceState(mListState);
-        } else {
-            getRecipeData();
         }
+            getRecipeData();
 
         getIdlingResource();
     }
