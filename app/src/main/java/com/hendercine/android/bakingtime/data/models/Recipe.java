@@ -36,6 +36,10 @@ public class Recipe implements Serializable {
     public int servings;
 
     @SuppressWarnings("WeakerAccess")
+    @SerializedName("image")
+    public String imageUrl;
+
+    @SuppressWarnings("WeakerAccess")
     @SerializedName("steps")
     public ArrayList<Step> stepList;
 
@@ -71,6 +75,13 @@ public class Recipe implements Serializable {
         this.servings = servings;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public ArrayList<Step> getStepList() {
         return stepList;

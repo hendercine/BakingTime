@@ -265,6 +265,7 @@ public class MainSelectionActivity extends AppCompatActivity implements
                             mRecipe.setRecipeId(recipes.get(i).getRecipeId());
                             mRecipe.setRecipeName(recipes.get(i).getRecipeName());
                             mRecipe.setServings(recipes.get(i).getServings());
+                            mRecipe.setImageUrl(recipes.get(i).getImageUrl());
                             mRecipe.setStepList(recipes.get(i).getStepList());
                             mRecipe.setIngredientList(recipes.get(i).getIngredientList());
 

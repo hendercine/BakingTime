@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by James Henderson on 2017
+  ~ Copyright (c) Hendercine Productions and James Henderson 2017.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 10/20/17 11:14 AM
+  -->
+
+<resources>
+
+    <style name="widget_main_style">
+        <item name="android:paddingRight">@dimen/widget_side_margin</item>
+        <item name="android:paddingEnd">@dimen/widget_side_margin</item>
+        <item name="android:paddingLeft">@dimen/widget_side_margin</item>
+        <item name="android:paddingStart">@dimen/widget_side_margin</item>
+
+    </style>
+</resources>

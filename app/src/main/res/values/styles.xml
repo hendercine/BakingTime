@@ -2,19 +2,30 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <!-- App theme colors -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <!--App Bar styles-->
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <!--Widget styles-->
+    <style name="widget_main_style">
+        <item name="android:minWidth">272dp</item>
+        <item name="android:minResizeWidth">272dp</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:minResizeHeight">56dp</item>
+        <item name="android:paddingRight">@dimen/widget_side_margin</item>
+        <item name="android:paddingLeft">@dimen/widget_side_margin</item>
+        <item name="android:paddingTop">@dimen/widget_head_foot_margin</item>
+        <item name="android:paddingBottom">@dimen/widget_head_foot_margin</item>
+    </style>
 
 </resources>
