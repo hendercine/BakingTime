@@ -30,7 +30,7 @@ import com.hendercine.android.bakingtime.data.bundlers.RecipeListBundler;
 import com.hendercine.android.bakingtime.data.models.Recipe;
 import com.hendercine.android.bakingtime.data.network.RecipeClient;
 import com.hendercine.android.bakingtime.utils.GridSpacingItemDecoration;
-import com.hendercine.android.bakingtime.utils.MainActivityIdlingResource;
+import com.hendercine.android.bakingtime.utils.SimpleIdlingResource;
 
 import org.parceler.Parcels;
 
@@ -78,12 +78,15 @@ public class MainSelectionActivity extends AppCompatActivity implements
     RecyclerView handHeldGridCards;
 
     @Nullable
-    private MainActivityIdlingResource mIdlingResource;
+    private SimpleIdlingResource mIdlingResource;
+    private long waitingTime;
+
     @VisibleForTesting
     @NonNull
     public IdlingResource getIdlingResource() {
         if (mIdlingResource == null) {
-            mIdlingResource = new MainActivityIdlingResource(this);
+            waitingTime = 5000;
+            mIdlingResource = new SimpleIdlingResource(waitingTime);
         }
         return mIdlingResource;
     }
