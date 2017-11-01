@@ -21,7 +21,8 @@
     <string name="remove_fragment_listener_error">must implement the remove fragement listener to use this fragment!</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
-    <string name="empty_view_text">Nothing to see here...</string>
-    <string name="loading">Loading...</string>
+    <string name="empty_view_text">Nothing to see here…</string>
+    <string name="loading">Loading…</string>
     <string name="network_is_online">Device is connected!</string>
+    <string name="recipe_image">Recipe Image</string>
 </resources>

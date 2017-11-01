@@ -73,10 +73,19 @@ public class MainRecyclerViewGridAdapter extends RecyclerView
         return position;
     }
 
+    public void setList(ArrayList<Recipe> recipes) {
+        if (recipes == null) {
+            return;
+        }
+        list.clear();
+        list.addAll(recipes);
+        notifyDataSetChanged();
+    }
+
     class MainGridViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener {
 
-        @BindView(R.id.main_grid_item)
+        @BindView(R.id.main_grid_card_view)
         CardView mMainCardView;
         @BindView(R.id.main_grid_item_servings)
         TextView mServingsTextView;

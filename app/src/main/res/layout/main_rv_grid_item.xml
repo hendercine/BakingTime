@@ -11,7 +11,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/main_grid_item"
+        android:id="@+id/main_grid_card_view"
         android:layout_height="164dp"
         android:layout_width="match_parent"
         android:layout_gravity="center"

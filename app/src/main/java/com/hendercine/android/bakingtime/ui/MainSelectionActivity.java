@@ -11,7 +11,6 @@ package com.hendercine.android.bakingtime.ui;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -53,7 +52,7 @@ import timber.log.Timber;
 public class MainSelectionActivity extends AppCompatActivity implements
         MainRecyclerViewGridAdapter.ItemClickListener {
 
-    private static final String LIST_STATE_KEY = "classname.recycler.layout";
+    private static final String POSITION_STATE_KEY = "scroll_position";
     private MainRecyclerViewGridAdapter mAdapter;
     private Subscription subscription;
     private CompositeSubscription mCompositeSubscription;
@@ -62,10 +61,8 @@ public class MainSelectionActivity extends AppCompatActivity implements
     private GridLayoutManager mGridLayoutManager;
     private ProgressListener mListener;
     private MenuItem mActionProgressItem;
-    private int spanCount;
+    private int mScrollPosition;
 
-//    @State
-//    int mScrollPosition;
     @State
     boolean mIsTablet;
     @State(RecipeListBundler.class)
@@ -76,16 +73,12 @@ public class MainSelectionActivity extends AppCompatActivity implements
     @Nullable
     @BindView(R.id.tablet_rv_recipe_cards)
     RecyclerView tabletGridCards;
-
     @Nullable
     @BindView(R.id.hand_held_rv_recipe_cards)
     RecyclerView handHeldGridCards;
 
     @Nullable
     private MainActivityIdlingResource mIdlingResource;
-    private Parcelable mListState;
-    private int topView;
-
     @VisibleForTesting
     @NonNull
     public IdlingResource getIdlingResource() {
@@ -100,18 +93,25 @@ public class MainSelectionActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
 
-        mConnectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-
         setContentView(R.layout.activity_main_selection);
         ButterKnife.bind(this);
         Timber.tag("LifeCycles");
         Timber.d("Activity Created");
 
+        mConnectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+
         mIsTablet = tabletGridCards != null &&
                 tabletGridCards.getVisibility() == View.VISIBLE;
 
-//        mScrollPosition = 0;
+        if (savedInstanceState != null) {
+            mScrollPosition = savedInstanceState.getInt(POSITION_STATE_KEY);
+        } else {
+            recipeList = new ArrayList<>();
+            mScrollPosition = 0;
+        }
 
+        int spanCount;
+        // Set the spanCount for the view depending on device type.
         if (mIsTablet) {
             convertView = tabletGridCards;
             spanCount = 3;
@@ -120,28 +120,25 @@ public class MainSelectionActivity extends AppCompatActivity implements
             spanCount = 1;
         }
 
-        assert convertView != null;
-        recipeList = new ArrayList<>();
-        int spacingInPixels = 50;
         mGridLayoutManager = new GridLayoutManager
                 (MainSelectionActivity.this, spanCount);
+
+        assert convertView != null;
+        int spacingInPixels = 50;
+
         convertView.setLayoutManager(mGridLayoutManager);
 
-//        convertView.scrollToPosition(mScrollPosition);
         mAdapter = new MainRecyclerViewGridAdapter(recipeList);
         mAdapter.setClickListener(MainSelectionActivity.this);
         convertView.setAdapter(mAdapter);
+
         convertView.addItemDecoration(
                 new GridSpacingItemDecoration(spanCount, spacingInPixels, true));
 
         getRecipeData();
 
-        if (savedInstanceState != null) {
-            mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
-            mGridLayoutManager.onRestoreInstanceState(mListState);
-        }
-
         getIdlingResource();
+
     }
 
     @Override
@@ -166,20 +163,12 @@ public class MainSelectionActivity extends AppCompatActivity implements
                                 }
                             }
                         }));
-        if (mListState != null) {
-            mGridLayoutManager.onRestoreInstanceState(mListState);
-            mAdapter.notifyDataSetChanged();
-        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mCompositeSubscription.unsubscribe();
-//        mScrollPosition = mGridLayoutManager.findFirstCompletelyVisibleItemPosition();
-//        View startView = convertView.getChildAt(0);
-//        topView = (startView == null) ? 0 : (startView.getTop() - convertView
-//                .getPaddingTop());
     }
 
     @Override
@@ -198,18 +187,9 @@ public class MainSelectionActivity extends AppCompatActivity implements
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
-
-        mListState = mGridLayoutManager.onSaveInstanceState();
-        outState.putParcelable(LIST_STATE_KEY, mListState);
+        mScrollPosition = mGridLayoutManager.findFirstCompletelyVisibleItemPosition();
+        outState.putInt(POSITION_STATE_KEY, mScrollPosition);
     }
-
-//    @Override
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//        if (savedInstanceState != null) {
-//            mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
-//        }
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -236,7 +216,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
     }
 
     public void getRecipeData() {
-
         subscription = RecipeClient.getInstance()
                 .getRecipeFromJson()
                 .subscribeOn(Schedulers.newThread())
@@ -271,14 +250,9 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
                             recipeList.add(mRecipe);
                         }
-
-                        convertView.setLayoutManager(new GridLayoutManager
-                                (MainSelectionActivity.this, spanCount));
-//                        convertView.scrollToPosition(mScrollPosition);
-                        mAdapter = new MainRecyclerViewGridAdapter(recipeList);
-                        mAdapter.setClickListener(MainSelectionActivity.this);
-                        convertView.setAdapter(mAdapter);
-                        mAdapter.notifyDataSetChanged();
+                        convertView.setLayoutManager(mGridLayoutManager);
+                        convertView.smoothScrollToPosition(mScrollPosition);
+                        mAdapter.setList(recipeList);
                     }
                 });
     }
@@ -287,7 +261,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
         void onProgressShown();
 
         void onProgressHidden();
-
     }
 
     public void setProgressListener(ProgressListener progressListener) {
@@ -302,15 +275,19 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
     private void hideProgressBar() {
         // hide the progress and notify the listener
-        mActionProgressItem.setVisible(false);
+        if (mActionProgressItem != null) {
+            mActionProgressItem.setVisible(false);
+        }
         notifyListener(mListener);
     }
 
     public boolean isInProgress() {
         // return true if progress is visible
         boolean progressVisible = false;
-        if (mActionProgressItem.isVisible()) {
-            progressVisible = true;
+        if (mActionProgressItem != null) {
+            if (mActionProgressItem.isVisible()) {
+                progressVisible = true;
+            }
         }
         return progressVisible;
     }
@@ -325,5 +302,4 @@ public class MainSelectionActivity extends AppCompatActivity implements
             listener.onProgressHidden();
         }
     }
-
 }
