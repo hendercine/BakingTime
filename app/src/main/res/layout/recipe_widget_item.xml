@@ -7,55 +7,66 @@
   ~ Last modified 10/11/17 1:24 PM
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#FFF"
-              android:orientation="horizontal"
-              android:layout_margin="@dimen/detail_card_margin"
-              android:padding="@dimen/widget_margin">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity=""
+    android:layout_margin="@dimen/detail_card_margin"
+    android:background="#FFF"
+    android:minHeight="56dp"
+    android:minWidth="272dp"
+    android:padding="@dimen/widget_side_margin">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/ingredient_quantity"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="3"
-        android:gravity="center">
+        android:layout_marginStart="@dimen/widget_side_margin"
+        android:layout_marginLeft="@dimen/widget_side_margin"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="16dp"
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="@dimen/widget_text_size"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        tools:text="@string/ingredient_quantity_placeholder"/>
 
-        <TextView
-            android:id="@+id/ingredient_quantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginEnd="4dp"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:layout_marginRight="4dp"
-            android:layout_marginStart="@dimen/text_margin"
-            android:layout_marginTop="@dimen/text_margin"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="@string/ingredient_quantity_placeholder"/>
-
-        <TextView
-            android:id="@+id/ingredient_measure"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/ingredient_quantity"
-            android:layout_toEndOf="@+id/ingredient_quantity"
-            android:layout_marginEnd="@dimen/text_margin"
-            android:layout_marginRight="@dimen/text_margin"
-            android:layout_marginTop="@dimen/text_margin"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="@string/ingredient_measure_placeholder"/>
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/ingredient_measure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="@dimen/widget_text_size"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="@dimen/widget_side_margin"
+        android:layout_marginEnd="@dimen/widget_side_margin"
+        android:layout_marginStart="@dimen/widget_side_margin"
+        android:layout_marginLeft="@dimen/widget_side_margin"
+        android:layout_toEndOf="@+id/ingredient_quantity"
+        android:layout_toRightOf="@+id/ingredient_quantity"
+        tools:text="@string/ingredient_measure_placeholder"/>
 
     <TextView
         android:id="@+id/ingredient_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="5"
-        android:gravity="center_vertical"
-        android:layout_marginTop="@dimen/text_margin"
+        android:gravity="center"
         android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="@string/ingredient_text_placeholder"/>
-    </LinearLayout>
+        android:textSize="@dimen/widget_text_size"
+        tools:text="@string/ingredient_text_placeholder"
+        android:layout_marginRight="@dimen/widget_side_margin"
+        android:layout_marginEnd="@dimen/widget_side_margin"
+        android:layout_marginLeft="@dimen/widget_side_margin"
+        android:layout_marginStart="@dimen/widget_side_margin"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@+id/ingredient_measure"
+        android:layout_toRightOf="@+id/ingredient_measure"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

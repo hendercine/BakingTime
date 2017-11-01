@@ -1,167 +1,35 @@
 {
   "project_info": {
-    "project_number": "1084643559582",
-    "firebase_url": "https://bakinbuns-72459.firebaseio.com",
-    "project_id": "bakinbuns-72459",
-    "storage_bucket": "bakinbuns-72459.appspot.com"
+    "project_number": "853775984984",
+    "firebase_url": "https://bakingtime-d6f23.firebaseio.com",
+    "project_id": "bakingtime-d6f23",
+    "storage_bucket": "bakingtime-d6f23.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1084643559582:android:5969e18a1fca34c4",
-        "android_client_info": {
-          "package_name": "com.hendercine.android.bakinbuns"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1084643559582-5n5ouosp5mutd2nv8n1sgpgjd0s2iotf.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.hendercine.android.bakinbuns",
-            "certificate_hash": "1dc0bcb4cc415917ede2aa331b349256ea0c79ef"
-          }
-        },
-        {
-          "client_id": "1084643559582-cmff2354c5pi4qucfct1hsferrkelvr6.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCU_5_TplT5zo8SsAUlR8WyvMAl6WNekTc"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1084643559582-cmff2354c5pi4qucfct1hsferrkelvr6.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1084643559582:android:c2325644ec821b10",
-        "android_client_info": {
-          "package_name": "com.hendercine.android.bakinbuns.jnidebug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1084643559582-bqntoqi8kmnj37nq4luqc740b6iro1d4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.hendercine.android.bakinbuns.jnidebug",
-            "certificate_hash": "1dc0bcb4cc415917ede2aa331b349256ea0c79ef"
-          }
-        },
-        {
-          "client_id": "1084643559582-cmff2354c5pi4qucfct1hsferrkelvr6.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCU_5_TplT5zo8SsAUlR8WyvMAl6WNekTc"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1084643559582-cmff2354c5pi4qucfct1hsferrkelvr6.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1084643559582:android:b02621b6485267a6",
-        "android_client_info": {
-          "package_name": "com.hendercine.android.bakinbuns.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1084643559582-p1h8ef901fgu5ia68qvkfod401qpeae5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.hendercine.android.bakinbuns.debug",
-            "certificate_hash": "1dc0bcb4cc415917ede2aa331b349256ea0c79ef"
-          }
-        },
-        {
-          "client_id": "1084643559582-cmff2354c5pi4qucfct1hsferrkelvr6.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCU_5_TplT5zo8SsAUlR8WyvMAl6WNekTc"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1084643559582-cmff2354c5pi4qucfct1hsferrkelvr6.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1084643559582:android:61a083d19840c4a3",
+        "mobilesdk_app_id": "1:853775984984:android:61a083d19840c4a3",
         "android_client_info": {
           "package_name": "com.hendercine.android.bakingtime.debug"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1084643559582-vf1b8p28jcooshgd2s9diu3hrhntqtk2.apps.googleusercontent.com",
+          "client_id": "853775984984-abjihk11o9cs8qsvr349oscl33mcrcr3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.hendercine.android.bakingtime.debug",
-            "certificate_hash": "1dc0bcb4cc415917ede2aa331b349256ea0c79ef"
+            "certificate_hash": "b5aff5384b54c9b911ee8985060f8fb6d40457ab"
           }
         },
         {
-          "client_id": "1084643559582-cmff2354c5pi4qucfct1hsferrkelvr6.apps.googleusercontent.com",
+          "client_id": "853775984984-h7mapqs26lbm2419m5a4esr5h67kacvq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCU_5_TplT5zo8SsAUlR8WyvMAl6WNekTc"
+          "current_key": "AIzaSyCH3haeqx7tF5ZAA8iI_hCpKsfSQbeB8w4"
         }
       ],
       "services": {
@@ -172,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1084643559582-cmff2354c5pi4qucfct1hsferrkelvr6.apps.googleusercontent.com",
+              "client_id": "853775984984-h7mapqs26lbm2419m5a4esr5h67kacvq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -184,28 +52,28 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1084643559582:android:36d73b29aa84a85c",
+        "mobilesdk_app_id": "1:853775984984:android:36d73b29aa84a85c",
         "android_client_info": {
           "package_name": "com.hendercine.android.bakingtime.jnidebug"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1084643559582-ljf8lddthvc5n6nnkk0crh4fnqm1gop1.apps.googleusercontent.com",
+          "client_id": "853775984984-v0m16q71u2inbkiqdnk3l6bnf136jdh0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.hendercine.android.bakingtime.jnidebug",
-            "certificate_hash": "1dc0bcb4cc415917ede2aa331b349256ea0c79ef"
+            "certificate_hash": "b5aff5384b54c9b911ee8985060f8fb6d40457ab"
           }
         },
         {
-          "client_id": "1084643559582-cmff2354c5pi4qucfct1hsferrkelvr6.apps.googleusercontent.com",
+          "client_id": "853775984984-h7mapqs26lbm2419m5a4esr5h67kacvq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCU_5_TplT5zo8SsAUlR8WyvMAl6WNekTc"
+          "current_key": "AIzaSyCH3haeqx7tF5ZAA8iI_hCpKsfSQbeB8w4"
         }
       ],
       "services": {
@@ -216,7 +84,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1084643559582-cmff2354c5pi4qucfct1hsferrkelvr6.apps.googleusercontent.com",
+              "client_id": "853775984984-h7mapqs26lbm2419m5a4esr5h67kacvq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
