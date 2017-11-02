@@ -86,36 +86,30 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private PlaybackStateCompat.Builder mStateBuilder;
     private NotificationManager mNotificationManager;
     private RemoveFragmentListener removeListener;
+    StepsDetailFragment stepsDetailFragment;
 
     @Nullable
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     @Nullable
     @BindView(R.id.step_description_text_view)
     TextView stepDescriptionView;
-
     @Nullable
     @BindView(R.id.exo_player_view)
     SimpleExoPlayerView exoPlayerView;
-
     @Nullable
     @BindView(R.id.step_thumbnail_view)
     ImageView stepThumbnailView;
-
     @Nullable
     @BindView(R.id.no_vid_no_thumb_view)
     TextView noVidOrThumbView;
-
     @Nullable
     @BindView(R.id.next_step_btn)
     Button nextStepButton;
-
     @Nullable
     @BindView(R.id.prev_step_btn)
     Button prevStepButton;
 
-    StepsDetailFragment stepsDetailFragment;
     @State(StepBundler.class)
     Step mStep;
     @State
@@ -155,6 +149,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
         if (getArguments() != null) {
             mRecipeName = getArguments().getString("recipe_name");
