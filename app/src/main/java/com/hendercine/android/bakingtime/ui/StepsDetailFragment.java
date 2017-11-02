@@ -74,8 +74,6 @@ import icepick.State;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
-//import android.support.v7.app.NotificationCompat;
-
 public class StepsDetailFragment extends Fragment implements ExoPlayer.EventListener, PlaybackControlView.VisibilityListener {
 
     private static final String TAG = StepsDetailFragment.class.getSimpleName();
@@ -208,8 +206,8 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         showStepInstructions();
 
         if (!mIsDualPane) {
-            nextStepButton = (Button) rootView.findViewById(R.id.next_step_btn);
-            prevStepButton = (Button) rootView.findViewById(R.id.prev_step_btn);
+            nextStepButton = rootView.findViewById(R.id.next_step_btn);
+            prevStepButton = rootView.findViewById(R.id.prev_step_btn);
 
             // Initialize the Navigation Buttons
             initializeNavButtons();
