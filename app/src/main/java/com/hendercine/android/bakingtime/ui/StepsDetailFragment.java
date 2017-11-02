@@ -1,5 +1,7 @@
 package com.hendercine.android.bakingtime.ui;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -7,14 +9,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.media.app.NotificationCompat.MediaStyle;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +74,20 @@ import icepick.State;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
+//import android.support.v7.app.NotificationCompat;
+
 public class StepsDetailFragment extends Fragment implements ExoPlayer.EventListener, PlaybackControlView.VisibilityListener {
+
+    private static final String TAG = StepsDetailFragment.class.getSimpleName();
+    private static final String CHANNEL_ID = "media_playback_channel";
+    private static final String CURRENT_VIDEO_POSITION = "CURRENT_VIDEO_POSITION";
+    private static final String STEP_INDEX = "STEP_INDEX";
+    private static final String VIDEO_VISIBLE = "VIDEO_VISIBLE";
+    private static MediaSessionCompat mMediaSession;
+    private SimpleExoPlayer mExoPlayer;
+    private PlaybackStateCompat.Builder mStateBuilder;
+    private NotificationManager mNotificationManager;
+    private RemoveFragmentListener removeListener;
 
     @Nullable
     @BindView(R.id.toolbar)
@@ -99,15 +117,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     @BindView(R.id.prev_step_btn)
     Button prevStepButton;
 
-    private static final String TAG = StepsDetailFragment.class.getSimpleName();
-    private static final String CURRENT_VIDEO_POSITION = "CURRENT_VIDEO_POSITION";
-    private static final String STEP_INDEX = "STEP_INDEX";
-    private static final String VIDEO_VISIBLE = "VIDEO_VISIBLE";
-    private static MediaSessionCompat mMediaSession;
-    private SimpleExoPlayer mExoPlayer;
-    private PlaybackStateCompat.Builder mStateBuilder;
-    private NotificationManager mNotificationManager;
-    private RemoveFragmentListener removeListener;
     StepsDetailFragment stepsDetailFragment;
     @State(StepBundler.class)
     Step mStep;
@@ -509,8 +518,12 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
      * @param state The PlaybackState of the MediaSession.
      */
     private void showNotification(PlaybackStateCompat state) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createChannel();
+        }
+
         NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(getContext());
+                new NotificationCompat.Builder(getContext(), CHANNEL_ID);
 
         int icon;
         String play_pause;
@@ -543,7 +556,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                 .setSmallIcon(R.drawable.exo_controls_play)
                 .addAction(restartAction)
                 .addAction(playPauseAction)
-                .setStyle(new NotificationCompat.MediaStyle()
+                .setStyle(new MediaStyle()
                         .setMediaSession(mMediaSession.getSessionToken())
                         .setShowActionsInCompactView(0, 1));
 
@@ -551,6 +564,30 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         mNotificationManager = (NotificationManager) getContext()
                 .getSystemService(NOTIFICATION_SERVICE);
         mNotificationManager.notify(0, builder.build());
+    }
+
+    /**
+     * Method to create channel for devices running API 26+
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private void createChannel() {
+        NotificationManager
+                mNotificationManager =
+                (NotificationManager) getContext()
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+        // The user-visible name of the channel.
+        CharSequence name = "Media playback";
+        // The user-visible description of the channel.
+        String description = "Media playback controls";
+        int importance = NotificationManager.IMPORTANCE_LOW;
+        NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+        // Configure the notification channel.
+        mChannel.setDescription(description);
+        mChannel.setShowBadge(false);
+        mChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+        if (mNotificationManager != null) {
+            mNotificationManager.createNotificationChannel(mChannel);
+        }
     }
 
     /**
