@@ -2,6 +2,7 @@ package com.hendercine.android.bakingtime.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -139,6 +140,19 @@ public class StepsListActivity extends AppCompatActivity
                     (StepsDetailFragment) getSupportFragmentManager()
                             .getFragment(savedInstanceState, TAG);
 
+            if (mStepsDetailFragment != null || mIngredientFragment != null) {
+                int getOrientation = getResources().getConfiguration().orientation;
+                if (!mIsDualPane && getOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    if (mStepsDetailFragment.toolbar != null ||
+                            mIngredientFragment.toolbar != null) {
+                        if (actionBar != null) {
+                            actionBar.hide();
+                            stepListLayout.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+
 //            if (!mIsDualPane) {
 //                if (getResources().getConfiguration().orientation ==
 //                        Configuration.ORIENTATION_LANDSCAPE) {
@@ -151,18 +165,16 @@ public class StepsListActivity extends AppCompatActivity
         mRecipe = Parcels.unwrap(getIntent().getParcelableExtra("recipe"));
         mRecipeName = mRecipe.getRecipeName();
 
-        if (mStepsDetailFragment.toolbar != null) {
-            actionBar.hide();
-        } else {
+        actionBar = getSupportActionBar();
+
+        if (actionBar != null && actionBar.isShowing()) {
             // Set the title and show the Up button in the action bar.
             if (mRecipeName != null) {
                 setTitle(mRecipeName);
             }
-            actionBar = getSupportActionBar();
-            if (actionBar != null) {
                 actionBar.setDisplayHomeAsUpEnabled(true);
             }
-        }
+
 
         mStepArrayList = new ArrayList<>();
         mStepDetailsList = new ArrayList<>();
@@ -294,10 +306,7 @@ public class StepsListActivity extends AppCompatActivity
 
 //    public int getScreenOrientation() {
 //        Display getOrient = getWindowManager().getDefaultDisplay();
-//        int orientation = Configuration.ORIENTATION_UNDEFINED;
-//        if (getOrient.getSize(Point); == getOrient.getHeight()) {
-//            orientation = Configuration.ORIENTATION_SQUARE;
-//        } else {
+// else {
 //
 //        }
 //    }
