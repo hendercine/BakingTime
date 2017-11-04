@@ -2,7 +2,6 @@ package com.hendercine.android.bakingtime.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -82,7 +81,7 @@ public class StepsListActivity extends AppCompatActivity
 
     @Nullable
     @BindView(R.id.step_detail_layout)
-    RecyclerView stepDetailView;
+    LinearLayout stepDetailView;
 
     @Nullable
     @BindView(R.id.ingredient_list)
@@ -140,18 +139,18 @@ public class StepsListActivity extends AppCompatActivity
                     (StepsDetailFragment) getSupportFragmentManager()
                             .getFragment(savedInstanceState, TAG);
 
-            if (mStepsDetailFragment != null || mIngredientFragment != null) {
-                int getOrientation = getResources().getConfiguration().orientation;
-                if (!mIsDualPane && getOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    if (mStepsDetailFragment.toolbar != null ||
-                            mIngredientFragment.toolbar != null) {
-                        if (actionBar != null) {
-                            actionBar.hide();
-                            stepListLayout.setVisibility(View.GONE);
-                        }
-                    }
-                }
-            }
+//            if (stepDetailView != null || ingredientsListView != null) {
+//                int getOrientation = getResources().getConfiguration().orientation;
+//                if (!mIsDualPane && getOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+//                    if (mStepsDetailFragment.toolbar != null ||
+//                            mIngredientFragment.toolbar != null) {
+//                        if (actionBar != null) {
+//                            actionBar.hide();
+//                            stepListLayout.setVisibility(View.GONE);
+//                        }
+//                    }
+//                }
+//            }
 
 //            if (!mIsDualPane) {
 //                if (getResources().getConfiguration().orientation ==
@@ -174,7 +173,6 @@ public class StepsListActivity extends AppCompatActivity
             }
                 actionBar.setDisplayHomeAsUpEnabled(true);
             }
-
 
         mStepArrayList = new ArrayList<>();
         mStepDetailsList = new ArrayList<>();
@@ -239,16 +237,10 @@ public class StepsListActivity extends AppCompatActivity
         return super.onPrepareOptionsMenu(menu);
     }
 
-//    @Override
-//    public void onConfigurationChanged(Configuration newConfig) {
-//        super.onConfigurationChanged(newConfig);
-//
-//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            if (!mIsDualPane && ingredientsListView != null) {
-//                stepListLayout.setVisibility(View.GONE);
-//            }
-//        }
-//    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
     @OnClick(R.id.ingredients_btn)
     public void onClick() {
@@ -270,8 +262,8 @@ public class StepsListActivity extends AppCompatActivity
                     .addToBackStack(null)
                     .commit();
             hideProgressBar();
-            actionBar.hide();
-            stepListLayout.setVisibility(View.GONE);
+//            actionBar.hide();
+//            stepListLayout.setVisibility(View.GONE);
         }
     }
 
@@ -299,17 +291,10 @@ public class StepsListActivity extends AppCompatActivity
                     .replace(R.id.step_frame, mStepsDetailFragment, "DETAIL_FRAGMENT")
                     .addToBackStack(null)
                     .commit();
-            actionBar.hide();
-            stepListLayout.setVisibility(View.GONE);
+//            actionBar.hide();
+//            stepListLayout.setVisibility(View.GONE);
         }
     }
-
-//    public int getScreenOrientation() {
-//        Display getOrient = getWindowManager().getDefaultDisplay();
-// else {
-//
-//        }
-//    }
 
     public void onRemoveFragment(String tag) {
         getSupportFragmentManager().findFragmentByTag(tag);

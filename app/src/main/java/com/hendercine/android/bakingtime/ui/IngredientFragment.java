@@ -12,6 +12,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -83,6 +85,10 @@ public class IngredientFragment extends Fragment {
             throw new RuntimeException(getActivity()
                     .getClass().getSimpleName()
                     + getString(R.string.remove_fragment_listener_error), e);
+        }
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
         }
     }
 

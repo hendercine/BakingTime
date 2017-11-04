@@ -20,6 +20,8 @@ import android.support.v4.media.app.NotificationCompat.MediaStyle;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -143,6 +145,10 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
             throw new RuntimeException(getActivity()
                     .getClass().getSimpleName()
                     + getString(R.string.remove_fragment_listener_error), e);
+        }
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
         }
     }
 
