@@ -96,6 +96,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private PlaybackStateCompat.Builder mStateBuilder;
     private NotificationManager mNotificationManager;
     private RemoveFragmentListener removeListener;
+    private ActionBar mActionBar;
     StepsDetailFragment stepsDetailFragment;
 
     @Nullable
@@ -154,9 +155,9 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
                     .getClass().getSimpleName()
                     + getString(R.string.remove_fragment_listener_error), e);
         }
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
+        mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (mActionBar != null) {
+            mActionBar.hide();
         }
     }
 
@@ -256,6 +257,12 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
             mVideoPosition = mExoPlayer.getCurrentPosition();
         }
         releasePlayer();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActionBar.show();
     }
 
     @Override
@@ -461,7 +468,10 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
             initializePlayer(mStepVideoURL);
         } else if (URLUtil.isNetworkUrl(mStepThumbnailURL.toString())) {
             if (mStepThumbnailURL.toString().endsWith(".mp4")) {
-                initializePlayer(mStepThumbnailURL);
+                exoPlayerView.setVisibility(View.GONE);
+                stepThumbnailView.setVisibility(View.GONE);
+                noVidOrThumbView.setVisibility(View.VISIBLE);
+                noVidOrThumbView.setText(mStepDescription);
             } else {
                 exoPlayerView.setVisibility(View.GONE);
                 stepThumbnailView.setVisibility(View.VISIBLE);
