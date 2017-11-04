@@ -3,7 +3,7 @@
  * Copyright (c) Hendercine Productions and James Henderson 2017.
  * All rights reserved.
  *
- * Last modified 7/10/17 5:51 PM
+ * Last modified 10/23/17 1:35 PM
  */
 
 package com.hendercine.android.bakingtime.data.models;
@@ -15,7 +15,7 @@ import org.parceler.Parcel;
 import java.io.Serializable;
 
 /**
- * BakinBuns created by hendercine on 7/10/17.
+ * BakingTime created by hendercine on 7/10/17.
  */
 
 @Parcel(Parcel.Serialization.BEAN)

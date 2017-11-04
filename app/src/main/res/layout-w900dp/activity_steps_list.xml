@@ -1,58 +1,63 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_marginLeft="16dp"
-              android:layout_marginRight="16dp"
-              android:baselineAligned="false"
-              android:divider="?android:attr/dividerHorizontal"
-              android:orientation="horizontal"
-              android:showDividers="middle"
-              tools:context="com.hendercine.android.bakingtime.ui.StepsListActivity">
+<!--
+  ~ Created by James Henderson on 2017
+  ~ Copyright (c) Hendercine Productions and James Henderson 2017.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 11/3/17 5:06 PM
+  -->
 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:baselineAligned="false"
+    android:divider="?android:attr/dividerHorizontal"
+    android:orientation="horizontal"
+    android:showDividers="middle"
+    tools:context="com.hendercine.android.bakingtime.ui.StepsListActivity">
     <!--
     This layout is a two-pane layout for the Recipes
     master/detail flow.
-    
     -->
     <LinearLayout
         android:id="@+id/steps_list_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/ingredients_btn"
             android:layout_width="@dimen/item_width"
             android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:focusableInTouchMode="true"
             android:minHeight="@dimen/min_btn_height"
             android:padding="@dimen/text_margin"
             android:scrollHorizontally="false"
-            android:ellipsize="none"
-            android:focusableInTouchMode="true"
             android:text="@string/recipe_ingredients_btn"
-            android:textAppearance="?attr/textAppearanceListItem"/>
+            android:textAppearance="?attr/textAppearanceListItem" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/steps_list"
-            android:name="com.example.hendercine.bakinbuns.RecipeListFragment"
+            android:name="com.example.hendercine.BakingTime.RecipeListFragment"
             android:layout_width="@dimen/item_width"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
             tools:context="com.hendercine.android.bakingtime.ui.StepsListActivity"
-            tools:listitem="@layout/step_list_item"/>
+            tools:listitem="@layout/step_list_item" />
     </LinearLayout>
-
 
     <FrameLayout
         android:id="@+id/recipe_detail_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3"/>
+        android:layout_weight="3" />
 </LinearLayout>

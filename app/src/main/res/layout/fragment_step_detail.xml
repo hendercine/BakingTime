@@ -4,7 +4,7 @@
   ~ Copyright (c) Hendercine Productions and James Henderson 2017.
   ~ All rights reserved.
   ~
-  ~ Last modified 9/11/17 11:36 PM
+  ~ Last modified 11/3/17 6:42 PM
   -->
 
 <LinearLayout
@@ -43,7 +43,8 @@
             android:id="@+id/step_thumbnail_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:contentDescription="@string/step_thumbnail_image" />
 
 
         <TextView
@@ -88,7 +89,8 @@
             android:layout_weight="1"
             android:minHeight="@dimen/min_btn_height"
             android:text="@string/previous_step_btn"
-            android:visibility="visible"/>
+            android:visibility="visible"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/next_step_btn"
@@ -97,7 +99,8 @@
             android:layout_weight="1"
             android:minHeight="@dimen/min_btn_height"
             android:text="@string/next_step_btn"
-            android:visibility="visible"/>
+            android:visibility="visible"
+            tools:ignore="ButtonStyle" />
 
     </LinearLayout>
 

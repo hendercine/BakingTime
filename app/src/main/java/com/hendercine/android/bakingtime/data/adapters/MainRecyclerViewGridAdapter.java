@@ -3,7 +3,7 @@
  * Copyright (c) Hendercine Productions and James Henderson 2017.
  * All rights reserved.
  *
- * Last modified 7/21/17 4:33 PM
+ * Last modified 11/1/17 2:09 PM
  */
 
 package com.hendercine.android.bakingtime.data.adapters;
@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * BakinBuns created by hendercine on 7/10/17.
+ * BakingTime created by hendercine on 7/10/17.
  */
 
 public class MainRecyclerViewGridAdapter extends RecyclerView

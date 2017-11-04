@@ -3,7 +3,7 @@
  * Copyright (c) Hendercine Productions and James Henderson 2017.
  * All rights reserved.
  *
- * Last modified 11/1/17 3:14 PM
+ * Last modified 11/1/17 4:48 PM
  */
 
 package com.hendercine.android.bakingtime.utils;
@@ -20,8 +20,6 @@ package com.hendercine.android.bakingtime.utils;
 public class SimpleIdlingResource implements android.support.test.espresso.IdlingResource {
 
     private ResourceCallback mCallback;
-
-    // Idleness is controlled with this boolean.
     private final long startTime;
     private final long waitingTime;
 

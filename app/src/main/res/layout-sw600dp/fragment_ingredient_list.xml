@@ -4,13 +4,13 @@
   ~ Copyright (c) Hendercine Productions and James Henderson 2017.
   ~ All rights reserved.
   ~
-  ~ Last modified 10/17/17 12:54 PM
+  ~ Last modified 11/3/17 6:44 PM
   -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:name="com.hendercine.android.bakinbuns.ui.IngredientFragment"
+    android:name="com.hendercine.android.BakingTime.ui.IngredientFragment"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -25,5 +25,5 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/ingredient_list_item"/>
-</LinearLayout>
 
+</LinearLayout>

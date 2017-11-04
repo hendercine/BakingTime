@@ -4,7 +4,7 @@
   ~ Copyright (c) Hendercine Productions and James Henderson 2017.
   ~ All rights reserved.
   ~
-  ~ Last modified 9/12/17 7:19 PM
+  ~ Last modified 10/9/17 9:00 PM
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,23 +22,35 @@
         android:paddingTop="4dp"
         android:orientation="horizontal">
 
-        <ImageButton android:id="@id/exo_prev"
-                     style="@style/ExoMediaButton.Previous"/>
+        <ImageButton
+            android:id="@id/exo_prev"
+            style="@style/ExoMediaButton.Previous"
+            android:contentDescription="@string/previous_button" />
 
-        <ImageButton android:id="@id/exo_rew"
-                     style="@style/ExoMediaButton.Rewind"/>
+        <ImageButton
+            android:id="@id/exo_rew"
+            style="@style/ExoMediaButton.Rewind"
+            android:contentDescription="@string/rewind_button" />
 
-        <ImageButton android:id="@id/exo_play"
-                     style="@style/ExoMediaButton.Play"/>
+        <ImageButton
+            android:id="@id/exo_play"
+            style="@style/ExoMediaButton.Play"
+            android:contentDescription="@string/play_button" />
 
-        <ImageButton android:id="@id/exo_pause"
-                     style="@style/ExoMediaButton.Pause"/>
+        <ImageButton
+            android:id="@id/exo_pause"
+            style="@style/ExoMediaButton.Pause"
+            android:contentDescription="@string/pause_button" />
 
-        <ImageButton android:id="@id/exo_ffwd"
-                     style="@style/ExoMediaButton.FastForward"/>
+        <ImageButton
+            android:id="@id/exo_ffwd"
+            style="@style/ExoMediaButton.FastForward"
+            android:contentDescription="@string/fast_forward_button" />
 
-        <ImageButton android:id="@id/exo_next"
-                     style="@style/ExoMediaButton.Next"/>
+        <ImageButton
+            android:id="@id/exo_next"
+            style="@style/ExoMediaButton.Next"
+            android:contentDescription="@string/next_button" />
 
     </LinearLayout>
 

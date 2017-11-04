@@ -1,1 +1,9 @@
+/*
+ * Created by James Henderson on 2017
+ * Copyright (c) Hendercine Productions and James Henderson 2017.
+ * All rights reserved.
+ *
+ * Last modified 10/9/17 9:00 PM
+ */
+
 include ':app'

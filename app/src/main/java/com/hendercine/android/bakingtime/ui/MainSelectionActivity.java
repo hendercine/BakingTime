@@ -3,7 +3,7 @@
  * Copyright (c) Hendercine Productions and James Henderson 2017.
  * All rights reserved.
  *
- * Last modified 7/22/17 6:08 PM
+ * Last modified 11/1/17 4:48 PM
  */
 
 package com.hendercine.android.bakingtime.ui;
@@ -79,13 +79,12 @@ public class MainSelectionActivity extends AppCompatActivity implements
 
     @Nullable
     private SimpleIdlingResource mIdlingResource;
-    private long waitingTime;
 
     @VisibleForTesting
     @NonNull
     public IdlingResource getIdlingResource() {
         if (mIdlingResource == null) {
-            waitingTime = 5000;
+            long waitingTime = 5000;
             mIdlingResource = new SimpleIdlingResource(waitingTime);
         }
         return mIdlingResource;
@@ -139,15 +138,12 @@ public class MainSelectionActivity extends AppCompatActivity implements
                 new GridSpacingItemDecoration(spanCount, spacingInPixels, true));
 
         getRecipeData();
-
         getIdlingResource();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         // Use CompositeSubscription to check if network is available.
         mCompositeSubscription = new CompositeSubscription();
         mCompositeSubscription.add(
@@ -180,7 +176,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
         if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
-
         if (mCompositeSubscription != null && !mCompositeSubscription.isUnsubscribed()) {
             mCompositeSubscription.unsubscribe();
         }
@@ -264,10 +259,6 @@ public class MainSelectionActivity extends AppCompatActivity implements
         void onProgressShown();
 
         void onProgressHidden();
-    }
-
-    public void setProgressListener(ProgressListener progressListener) {
-        mListener = progressListener;
     }
 
     private void showProgressBar() {

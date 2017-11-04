@@ -4,7 +4,7 @@
   ~ Copyright (c) Hendercine Productions and James Henderson 2017.
   ~ All rights reserved.
   ~
-  ~ Last modified 9/12/17 3:00 PM
+  ~ Last modified 11/3/17 6:42 PM
   -->
 
 <LinearLayout
@@ -54,4 +54,5 @@
         android:layout_margin="@dimen/detail_card_margin"
         android:layout_weight="1"
         android:visibility="gone"/>
+
 </LinearLayout>

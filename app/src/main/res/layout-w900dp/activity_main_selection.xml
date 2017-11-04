@@ -1,17 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Created by James Henderson on 2017
+  ~ Copyright (c) Hendercine Productions and James Henderson 2017.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 10/9/17 9:00 PM
+  -->
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:id="@+id/container"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".ui.MainSelectionActivity"
-             tools:ignore="MergeRootFrame">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.MainSelectionActivity"
+    tools:ignore="MergeRootFrame">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/tablet_rv_recipe_cards"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="3"
-        android:fitsSystemWindows="true"/>
+        android:fitsSystemWindows="true"
+        android:numColumns="3" />
 
 </FrameLayout>

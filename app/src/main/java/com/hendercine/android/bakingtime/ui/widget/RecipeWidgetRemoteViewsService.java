@@ -3,7 +3,7 @@
  * Copyright (c) Hendercine Productions and James Henderson 2017.
  * All rights reserved.
  *
- * Last modified 10/11/17 4:26 PM
+ * Last modified 10/23/17 1:35 PM
  */
 
 package com.hendercine.android.bakingtime.ui.widget;
@@ -44,6 +44,7 @@ public class RecipeWidgetRemoteViewsService extends RemoteViewsService {
         private Context mContext;
         ArrayList<Ingredient> mIngredientList;
 
+        @SuppressWarnings("ResultOfMethodCallIgnored")
         RecipeWidgetRemoteViewsFactory(Context context) {
             this.mContext = context;
 

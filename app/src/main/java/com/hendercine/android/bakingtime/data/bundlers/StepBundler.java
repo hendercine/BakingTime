@@ -3,7 +3,7 @@
  * Copyright (c) Hendercine Productions and James Henderson 2017.
  * All rights reserved.
  *
- * Last modified 8/29/17 1:17 PM
+ * Last modified 10/23/17 1:35 PM
  */
 
 package com.hendercine.android.bakingtime.data.bundlers;
@@ -17,7 +17,7 @@ import org.parceler.Parcels;
 import icepick.Bundler;
 
 /**
- * BakinBuns created by hendercine on 8/29/17.
+ * BakingTime created by hendercine on 8/29/17.
  */
 
 public class StepBundler implements Bundler<Step> {

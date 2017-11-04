@@ -3,7 +3,7 @@
  * Copyright (c) Hendercine Productions and James Henderson 2017.
  * All rights reserved.
  *
- * Last modified 7/24/17 12:46 PM
+ * Last modified 10/23/17 1:35 PM
  */
 
 package com.hendercine.android.bakingtime.data.network;
@@ -16,7 +16,7 @@ import retrofit2.http.GET;
 import rx.Observable;
 
 /**
- * BakinBuns created by hendercine on 7/24/17.
+ * BakingTime created by hendercine on 7/24/17.
  */
 
 interface RecipeService {

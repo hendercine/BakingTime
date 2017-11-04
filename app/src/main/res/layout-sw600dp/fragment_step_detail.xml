@@ -4,7 +4,7 @@
   ~ Copyright (c) Hendercine Productions and James Henderson 2017.
   ~ All rights reserved.
   ~
-  ~ Last modified 10/6/17 6:29 PM
+  ~ Last modified 11/3/17 6:42 PM
   -->
 
 <LinearLayout
@@ -37,7 +37,6 @@
             android:layout_height="wrap_content"
             android:visibility="gone"/>
 
-
         <TextView
             android:id="@+id/no_vid_no_thumb_view"
             android:layout_width="wrap_content"
@@ -50,7 +49,6 @@
             android:visibility="gone"/>
 
     </android.support.v7.widget.CardView>
-
 
     <android.support.v7.widget.CardView
         android:id="@+id/step_description_card_view"

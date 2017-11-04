@@ -1,6 +1,13 @@
+/*
+ * Created by James Henderson on 2017
+ * Copyright (c) Hendercine Productions and James Henderson 2017.
+ * All rights reserved.
+ *
+ * Last modified 11/1/17 9:02 PM
+ */
+
 apply plugin: 'com.android.application'
 apply plugin: 'maven'
-
 
 android {
     compileSdkVersion 26
@@ -13,8 +20,8 @@ android {
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -25,7 +32,6 @@ android {
         debug {
             applicationIdSuffix ".debug"
         }
-
         /**
          * The 'initWith' property allows you to copy configurations from other build types,
          * so you don't have to configure one from the beginning. You can then configure
@@ -35,14 +41,13 @@ android {
          */
 
         jnidebug {
-
             // This copies the debuggable attribute and debug signing configurations.
             initWith debug
-
             applicationIdSuffix ".jnidebug"
             jniDebuggable true
         }
     }
+
     lintOptions {
         textReport true
         textOutput 'stdout'
@@ -53,7 +58,6 @@ android {
         pickFirst 'project.clj'
         exclude 'META-INF/services/javax.annotation.processing.Processor'  // butterknife
     }
-
 }
 
 def AAVersion = '4.3.1'
@@ -126,8 +130,6 @@ dependencies {
     }
     androidTestImplementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.1'
     implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.1'
-    // OkHttp3-IdlingResources
-    //    androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

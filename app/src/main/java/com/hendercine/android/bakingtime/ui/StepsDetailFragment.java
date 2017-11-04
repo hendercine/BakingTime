@@ -1,3 +1,11 @@
+/*
+ * Created by James Henderson on 2017
+ * Copyright (c) Hendercine Productions and James Henderson 2017.
+ * All rights reserved.
+ *
+ * Last modified 11/3/17 6:37 PM
+ */
+
 package com.hendercine.android.bakingtime.ui;
 
 import android.app.Notification;
@@ -412,7 +420,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private void initializePlayer(Uri mediaUri) {
         if (mExoPlayer == null) {
             // Prepare the MediaSource.
-            String userAgent = Util.getUserAgent(getContext(), "BakinBuns");
+            String userAgent = Util.getUserAgent(getContext(), "BakingTime");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri,
                     new DefaultDataSourceFactory(getContext(), userAgent),
                     new DefaultExtractorsFactory(),

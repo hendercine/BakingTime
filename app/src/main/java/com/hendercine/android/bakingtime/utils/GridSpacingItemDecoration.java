@@ -3,7 +3,7 @@
  * Copyright (c) Hendercine Productions and James Henderson 2017.
  * All rights reserved.
  *
- * Last modified 7/20/17 10:07 PM
+ * Last modified 10/23/17 1:35 PM
  */
 
 package com.hendercine.android.bakingtime.utils;
@@ -13,7 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * BakinBuns created by hendercine on 7/20/17.
+ * BakingTime created by hendercine on 7/20/17.
  */
 
 public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {

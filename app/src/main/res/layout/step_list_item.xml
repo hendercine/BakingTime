@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+  ~ Created by James Henderson on 2017
+  ~ Copyright (c) Hendercine Productions and James Henderson 2017.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 10/9/17 9:00 PM
+  -->
+
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/step_description_btn"

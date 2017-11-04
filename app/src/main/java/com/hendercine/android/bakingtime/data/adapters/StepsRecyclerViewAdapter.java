@@ -3,7 +3,7 @@
  * Copyright (c) Hendercine Productions and James Henderson 2017.
  * All rights reserved.
  *
- * Last modified 8/7/17 10:07 AM
+ * Last modified 11/3/17 8:15 PM
  */
 
 package com.hendercine.android.bakingtime.data.adapters;
@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * BakinBuns created by hendercine on 8/7/17.
+ * BakingTime created by hendercine on 8/7/17.
  */
 
 public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecyclerViewAdapter.StepsListViewHolder> {
@@ -64,6 +64,7 @@ public class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecycler
         return (mStepList == null) ? 0 : mStepList.size();
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Step getItem(int position) {
         if (position < 0 || position >= mStepList.size()) {
             return null;

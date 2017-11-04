@@ -1,13 +1,18 @@
+/*
+ * Created by James Henderson on 2017
+ * Copyright (c) Hendercine Productions and James Henderson 2017.
+ * All rights reserved.
+ *
+ * Last modified 11/3/17 6:12 PM
+ */
+
 package com.hendercine.android.bakingtime.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,7 +37,6 @@ import com.hendercine.android.bakingtime.data.models.Recipe;
 import com.hendercine.android.bakingtime.data.models.Step;
 import com.hendercine.android.bakingtime.ui.widget.RecipeWidgetProvider;
 import com.hendercine.android.bakingtime.utils.RemoveFragmentListener;
-import com.hendercine.android.bakingtime.utils.StepsListActivityIdlingResource;
 
 import org.parceler.Parcels;
 
@@ -66,27 +70,19 @@ public class StepsListActivity extends AppCompatActivity
     private MenuItem mActionProgressItem;
 
     @Nullable
-    StepsListActivityIdlingResource mIdlingResource;
-
-    @Nullable
     @BindView(R.id.recipe_detail_container)
     FrameLayout detailsContainerView;
-
     @BindView(R.id.steps_list_layout)
     LinearLayout stepListLayout;
-
     @Nullable
     @BindView(R.id.steps_list)
     RecyclerView stepsListView;
-
     @Nullable
     @BindView(R.id.step_detail_layout)
     LinearLayout stepDetailView;
-
     @Nullable
     @BindView(R.id.ingredient_list)
     RecyclerView ingredientsListView;
-
     @Nullable
     @BindView(R.id.ingredients_btn)
     TextView ingredientsBtnView;
@@ -114,15 +110,6 @@ public class StepsListActivity extends AppCompatActivity
     private ActionBar actionBar;
     private String mRecipeName;
 
-    @VisibleForTesting
-    @NonNull
-    public IdlingResource getIdlingResource() {
-        if (mIdlingResource == null) {
-            mIdlingResource = new StepsListActivityIdlingResource(this);
-        }
-        return mIdlingResource;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,27 +125,6 @@ public class StepsListActivity extends AppCompatActivity
             mStepsDetailFragment =
                     (StepsDetailFragment) getSupportFragmentManager()
                             .getFragment(savedInstanceState, TAG);
-
-//            if (stepDetailView != null || ingredientsListView != null) {
-//                int getOrientation = getResources().getConfiguration().orientation;
-//                if (!mIsDualPane && getOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-//                    if (mStepsDetailFragment.toolbar != null ||
-//                            mIngredientFragment.toolbar != null) {
-//                        if (actionBar != null) {
-//                            actionBar.hide();
-//                            stepListLayout.setVisibility(View.GONE);
-//                        }
-//                    }
-//                }
-//            }
-
-//            if (!mIsDualPane) {
-//                if (getResources().getConfiguration().orientation ==
-//                        Configuration.ORIENTATION_LANDSCAPE) {
-//
-//                }
-//            }
-
         }
 
         mRecipe = Parcels.unwrap(getIntent().getParcelableExtra("recipe"));
@@ -212,7 +178,6 @@ public class StepsListActivity extends AppCompatActivity
             }
         }
 
-        getIdlingResource();
         makeData();
         sendBroadcast();
     }
@@ -262,8 +227,6 @@ public class StepsListActivity extends AppCompatActivity
                     .addToBackStack(null)
                     .commit();
             hideProgressBar();
-//            actionBar.hide();
-//            stepListLayout.setVisibility(View.GONE);
         }
     }
 
@@ -291,8 +254,6 @@ public class StepsListActivity extends AppCompatActivity
                     .replace(R.id.step_frame, mStepsDetailFragment, "DETAIL_FRAGMENT")
                     .addToBackStack(null)
                     .commit();
-//            actionBar.hide();
-//            stepListLayout.setVisibility(View.GONE);
         }
     }
 
@@ -380,5 +341,4 @@ public class StepsListActivity extends AppCompatActivity
             listener.onProgressHidden();
         }
     }
-
 }

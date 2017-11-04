@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by James Henderson on 2017
+  ~ Copyright (c) Hendercine Productions and James Henderson 2017.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 11/1/17 2:09 PM
+  -->
+
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_height">200dp</dimen>

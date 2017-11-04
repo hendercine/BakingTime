@@ -1,10 +1,10 @@
 /*
-* Created by James Henderson on 2017
-* Copyright (c) Hendercine Productions and James Henderson 2017.
-* All rights reserved.
-*
-* Last modified 10/5/17 3:37 PM
-*/
+ * Created by James Henderson on 2017
+ * Copyright (c) Hendercine Productions and James Henderson 2017.
+ * All rights reserved.
+ *
+ * Last modified 11/3/17 6:37 PM
+ */
 
 package com.hendercine.android.bakingtime.ui;
 
@@ -44,11 +44,11 @@ public class IngredientFragment extends Fragment {
 
     private static final String TAG = IngredientFragment.class.getSimpleName();
     private static final String RECIPE = "ingredients";
+    private RemoveFragmentListener removeListener;
 
     @Nullable
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     @Nullable
     @BindView(R.id.ingredient_list)
     RecyclerView mIngredientListView;
@@ -58,8 +58,6 @@ public class IngredientFragment extends Fragment {
 
     @State(IngredientListBundler.class)
     ArrayList<Ingredient> mIngredientList;
-    private RemoveFragmentListener removeListener;
-
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -101,7 +99,6 @@ public class IngredientFragment extends Fragment {
             mIngredientList = new ArrayList<>();
             mIngredientList = mRecipe.getIngredientList();
         }
-
     }
 
     @Override
@@ -110,7 +107,6 @@ public class IngredientFragment extends Fragment {
         View rootView = inflater.inflate(
                 R.layout.fragment_ingredient_list, container, false);
         ButterKnife.bind(this, rootView);
-
         // Show the toolbar and send callback to parent activity.
         if (toolbar != null) {
             toolbar.setTitle(mRecipe.getRecipeName());
@@ -131,5 +127,4 @@ public class IngredientFragment extends Fragment {
         }
         return rootView;
     }
-
 }
