@@ -97,6 +97,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     private NotificationManager mNotificationManager;
     private RemoveFragmentListener removeListener;
     private ActionBar mActionBar;
+    private long mVideoPosition;
     StepsDetailFragment stepsDetailFragment;
 
     @Nullable
@@ -135,8 +136,6 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
     String mRecipeName;
     @State
     int mStepIndex;
-    @State
-    long mVideoPosition;
     @State
     boolean mIsDualPane;
     @State
@@ -199,11 +198,10 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
             exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
         }
 
+        mVideoPosition = C.TIME_UNSET;
         if (savedInstanceState != null) {
             mVideoPosition = savedInstanceState
                     .getLong(CURRENT_VIDEO_POSITION, C.TIME_UNSET);
-        } else {
-            mVideoPosition = C.TIME_UNSET;
         }
 
         // Initialize data variables
@@ -272,6 +270,7 @@ public class StepsDetailFragment extends Fragment implements ExoPlayer.EventList
         if (stepsDetailFragment != null) {
             getFragmentManager().putFragment(outState, TAG, stepsDetailFragment);
         }
+        outState.putLong(CURRENT_VIDEO_POSITION, mVideoPosition);
 
     }
 

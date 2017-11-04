@@ -24,4 +24,5 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_side_margin">8dp</dimen>
     <dimen name="widget_head_foot_margin">4dp</dimen>
     <dimen name="widget_text_size">32sp</dimen>
+    <dimen name="no_vid_no_thumb_text_size">48sp</dimen>
 </resources>
