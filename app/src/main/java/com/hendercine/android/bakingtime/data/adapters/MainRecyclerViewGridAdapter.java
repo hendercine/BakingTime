@@ -54,7 +54,7 @@ public class MainRecyclerViewGridAdapter extends RecyclerView
         Recipe recipe = list.get(position);
         holder.mTitleTextView.setText(recipe.getRecipeName());
         holder.mServingsTextView.setText(String.valueOf(recipe.getServings()));
-        if (!recipe.getImageUrl().equals("")) {
+        if (!recipe.getImageUrl().isEmpty()) {
             Glide.with(context)
                     .load(recipe.getImageUrl())
                     .into(holder.mMainImageView);
